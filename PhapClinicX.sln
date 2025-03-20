@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.35906.104 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhapClinicX", "PhapClinicX.csproj", "{AACDAE05-3942-45C7-92B9-1E0676F44775}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AACDAE05-3942-45C7-92B9-1E0676F44775}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AACDAE05-3942-45C7-92B9-1E0676F44775}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AACDAE05-3942-45C7-92B9-1E0676F44775}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AACDAE05-3942-45C7-92B9-1E0676F44775}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5623EC20-F706-4169-A7BC-8642375510A0}
+	EndGlobalSection
+EndGlobal
