@@ -17,6 +17,7 @@ namespace PhapClinicX.Controllers
 
         public IActionResult Index()
         {
+            ViewBag.blogcategories = _context.BlogCategories.Where(p=>p.IsActive==true).ToList();
             ViewBag.Faqs = _context.Faqs.ToList();
             return View();
         }

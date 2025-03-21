@@ -13,5 +13,13 @@ public partial class DoctorProfile
 
     public string? Education { get; set; }
 
+    public string? Image { get; set; }
+
+    public bool Isactive { get; set; }
+
+    public string? Fullname { get; set; }
+
+    public string? Phone { get; set; }
+
     public virtual User Doctor { get; set; } = null!;
 }

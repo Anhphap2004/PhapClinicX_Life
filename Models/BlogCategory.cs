@@ -11,5 +11,7 @@ public partial class BlogCategory
 
     public bool? IsActive { get; set; }
 
+    public string? Alias { get; set; }
+
     public virtual ICollection<Blog> Blogs { get; set; } = new List<Blog>();
 }

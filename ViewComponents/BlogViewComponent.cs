@@ -15,14 +15,14 @@ namespace PhapClinicX.ViewComponents
             _context = context;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(int? id)
+        public async Task<IViewComponentResult> InvokeAsync(int? categoryID)
         {
+
             // Truy vấn dữ liệu từ database
-            var blogs = await _context.Blogs
+            var blogs =  await _context.Blogs
                 .Include(p => p.BlogComments) // Nạp bình luận
                 .Include(p => p.Author) // Nạp thông tin người viết bài
-                .Include(p => p.Category) // Nạp thông tin danh mục
-                .Where(p => p.IsActive == true && (id == null || p.BlogId == id))
+                .Where(p => p.IsActive == true && p.CategoryId == categoryID)
                 .OrderByDescending(p => p.CreatedAt)
                 .ToListAsync(); // Lấy danh sách bài viết
 
