@@ -33,6 +33,8 @@ public partial class ClinicManagementContext : DbContext
 
     public virtual DbSet<DoctorProfile> DoctorProfiles { get; set; }
 
+    public virtual DbSet<Faq> Faqs { get; set; }
+
     public virtual DbSet<Invoice> Invoices { get; set; }
 
     public virtual DbSet<InvoiceDetail> InvoiceDetails { get; set; }
@@ -59,6 +61,7 @@ public partial class ClinicManagementContext : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
+   
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -250,6 +253,22 @@ public partial class ClinicManagementContext : DbContext
                 .HasConstraintName("FK__DoctorPro__docto__6A30C649");
         });
 
+        modelBuilder.Entity<Faq>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__FAQ__3214EC27067D77BA");
+
+            entity.ToTable("FAQ");
+
+            entity.Property(e => e.Id)
+                .ValueGeneratedNever()
+                .HasColumnName("ID");
+            entity.Property(e => e.Answer).HasColumnType("text");
+            entity.Property(e => e.CreatedAt).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.Question)
+                .HasMaxLength(500)
+                .IsUnicode(false);
+        });
+
         modelBuilder.Entity<Invoice>(entity =>
         {
             entity.HasKey(e => e.InvoiceId).HasName("PK__Invoices__F58DFD49C4B29A2D");
@@ -428,6 +447,12 @@ public partial class ClinicManagementContext : DbContext
             entity.HasKey(e => e.ServiceId).HasName("PK__Services__3E0DB8AF345B94A6");
 
             entity.Property(e => e.ServiceId).HasColumnName("service_id");
+            entity.Property(e => e.Detail)
+                .HasMaxLength(255)
+                .HasColumnName("detail");
+            entity.Property(e => e.Image)
+                .HasMaxLength(255)
+                .HasColumnName("image");
             entity.Property(e => e.IsActive)
                 .HasDefaultValue(true)
                 .HasColumnName("is_active");
@@ -437,13 +462,6 @@ public partial class ClinicManagementContext : DbContext
             entity.Property(e => e.ServiceName)
                 .HasMaxLength(255)
                 .HasColumnName("service_name");
-            entity.Property(e => e.Image)
-               .HasMaxLength(255)
-               .HasColumnName("image");
-            entity.Property(e => e.Detail)
-               .HasMaxLength(255)
-               .HasColumnName("detail");
-
         });
 
         modelBuilder.Entity<ServicePackage>(entity =>
