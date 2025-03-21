@@ -61,7 +61,7 @@ public partial class ClinicManagementContext : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
-
+  
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<About>(entity =>
@@ -124,6 +124,10 @@ public partial class ClinicManagementContext : DbContext
             entity.HasKey(e => e.CategoryId).HasName("PK__BlogCate__D54EE9B4B51A1C87");
 
             entity.Property(e => e.CategoryId).HasColumnName("category_id");
+            entity.Property(e => e.Alias)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("alias");
             entity.Property(e => e.CategoryName)
                 .HasMaxLength(255)
                 .HasColumnName("category_name");
@@ -237,19 +241,21 @@ public partial class ClinicManagementContext : DbContext
         {
             entity.HasKey(e => e.DoctorId).HasName("PK__DoctorPr__F39935644BA7BC59");
 
-            entity.Property(e => e.DoctorId)
-                .ValueGeneratedNever()
-                .HasColumnName("doctor_id");
+            entity.Property(e => e.DoctorId).HasColumnName("doctor_id");
             entity.Property(e => e.Education).HasColumnName("education");
             entity.Property(e => e.Experience).HasColumnName("experience");
+            entity.Property(e => e.Fullname)
+                .HasMaxLength(100)
+                .HasColumnName("fullname");
+            entity.Property(e => e.Image).HasColumnName("image");
+            entity.Property(e => e.Isactive).HasColumnName("isactive");
+            entity.Property(e => e.Phone)
+                .HasMaxLength(10)
+                .IsFixedLength()
+                .HasColumnName("phone");
             entity.Property(e => e.Specialization)
                 .HasMaxLength(255)
                 .HasColumnName("specialization");
-
-            entity.HasOne(d => d.Doctor).WithOne(p => p.DoctorProfile)
-                .HasForeignKey<DoctorProfile>(d => d.DoctorId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__DoctorPro__docto__6A30C649");
         });
 
         modelBuilder.Entity<Faq>(entity =>

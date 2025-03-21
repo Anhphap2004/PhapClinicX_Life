@@ -1,0 +1,45 @@
+﻿@model IEnumerable<PhapClinicX.Models.DoctorProfile>
+<div style="max-width:1200px;margin: 0 auto; font-family: 'Segoe UI', Roboto, Arial, sans-serif; padding: 20px; background-color: #fafafa;">
+    <h2>Đội Ngũ Chuyên Gia</h2>
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; background-color: #dcd5d5; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.03); overflow: hidden;">
+
+        <!-- Left side with doctors (70% width) -->
+        <div style="width: 68%; padding: 20px;">
+            <div style="display: flex; flex-wrap: wrap; gap: 15px;">
+                @foreach (var p in Model)
+                {
+                    <!-- First row of experts - 2 columns -->
+                    <div style="display: flex; width: calc(50% - 8px); align-items: center; padding: 10px; border-radius: 8px; transition: all 0.3s ease; background-color: #f8f9fa;">
+                        <div style="width: 70px; height: 70px; border-radius: 35px; overflow: hidden; margin-right: 12px; box-shadow: 0 3px 8px rgba(0,0,0,0.1);">
+                        <img src="~/assets/img/team/@p.Image" alt="bác sĩ nổi bật"
+                             style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <div>
+                        <h3 style="font-size: 20px; color: #2c3e50; margin: 0 0 3px 0; font-weight: 600;">@p.Fullname</h3>
+                        <p style="font-size: 15px; color: #1e88e5; margin: 0; font-weight: 500;">@p.Specialization</p>
+                    </div>
+                </div>
+}
+            
+            </div>
+        </div>
+
+        <!-- Right side with title and description (30% width) -->
+        <div style="width: 30%; background: linear-gradient(135deg, #f5f7fa 0%, #e4eafc 100%); padding: 25px; display: flex; flex-direction: column; justify-content: center; height: 100%;">
+            <h2 style="font-size: 22px; color: #2c3e50; margin-bottom: 15px; font-weight: 600; position: relative; padding-bottom: 10px;">
+                Đội ngũ chuyên gia
+                <span style="display: block; width: 40px; height: 3px; background-color: #1e88e5; position: absolute; bottom: 0; left: 0;"></span>
+            </h2>
+
+            <p style="font-size: 14px; color: #34495e; line-height: 1.5; margin-bottom: 20px;">
+                Hội đồng tham vấn y khoa cùng đội ngũ biên tập viên là các bác sĩ, dược sĩ đảm bảo nội dung chúng tôi
+                cung cấp chính xác về mặt y khoa và cập nhật những thông tin mới nhất.
+            </p>
+
+            <a href="#"
+               style="display: inline-block; background-color: #1e88e5; color: white; text-decoration: none; padding: 8px 15px; border-radius: 20px; font-size: 13px; font-weight: 500; box-shadow: 0 3px 6px rgba(21,101,192,0.2);">
+                Xem thêm <span style="margin-left: 3px;">&rsaquo;</span>
+            </a>
+        </div>
+    </div>
+</div>

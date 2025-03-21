@@ -187,7 +187,7 @@
 </div>
 
 <div style="display: flex; justify-content: center; margin-top: -25px;">
-    <div style="display: flex; align-items: center; justify-content: space-between; gap: 20px; background-color: white; padding: 12px 25px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08); width: 80%; max-width: 900px;">
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 20px; background-color: #e0e0e0; padding: 12px 25px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08); width: 80%; max-width: 900px;">
         <div style="display: flex; gap: 10px;" class="nav-tabs">
             @foreach (var p in blogcategories)
             {
@@ -223,7 +223,7 @@
         @await Component.InvokeAsync("Blog", new { categoryID = 2 })
     </div>
     <div style="display: none; background-color: white; padding: 25px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08); margin-top: 20px;"
-         class="tab-content" id="duoclieu">
+         class="tab-content" id="benh">
         <h3 style="font-size: 22px; font-weight: 600; margin-bottom: 20px; color: #202124; display: flex; align-items: center; gap: 8px;">
             <span style="content: ''; display: inline-block; width: 4px; height: 20px; background-color: #1a73e8; border-radius: 2px;"></span>Danh
             sách
@@ -231,7 +231,7 @@
         @await Component.InvokeAsync("Blog", new { categoryID = 3 })
     </div>
     <div style="display: none; background-color: white; padding: 25px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08); margin-top: 20px;"
-         class="tab-content" id="duoclieu">
+         class="tab-content" id="cothe">
         <h3 style="font-size: 22px; font-weight: 600; margin-bottom: 20px; color: #202124; display: flex; align-items: center; gap: 8px;">
             <span style="content: ''; display: inline-block; width: 4px; height: 20px; background-color: #1a73e8; border-radius: 2px;"></span>Danh
             sách
@@ -240,89 +240,8 @@
     </div>
 </div>
 <!-- Blog End -->
-
 <!-- Team Start -->
-<div class="container-fluid team pb-5">
-    <div class="container pb-5">
-        <div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.2s" style="max-width: 800px;">
-            <h4 class="text-primary">Our Team</h4>
-            <h1 class="display-4 mb-4">Meet Our Expert Team Members</h1>
-            <p class="mb-0">
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tenetur adipisci facilis cupiditate recusandae aperiam temporibus corporis itaque quis facere, numquam, ad culpa deserunt sint dolorem autem obcaecati, ipsam mollitia hic.
-            </p>
-        </div>
-        <div class="row g-4">
-            <div class="col-md-6 col-lg-6 col-xl-3 wow fadeInUp" data-wow-delay="0.2s">
-                <div class="team-item">
-                    <div class="team-img">
-                        <img src="~/assets/img/team-1.jpg" class="img-fluid rounded-top w-100" alt="">
-                        <div class="team-icon">
-                            <a class="btn btn-primary btn-sm-square rounded-pill mb-2" href=""><i class="fab fa-facebook-f"></i></a>
-                            <a class="btn btn-primary btn-sm-square rounded-pill mb-2" href=""><i class="fab fa-twitter"></i></a>
-                            <a class="btn btn-primary btn-sm-square rounded-pill mb-2" href=""><i class="fab fa-linkedin-in"></i></a>
-                            <a class="btn btn-primary btn-sm-square rounded-pill mb-0" href=""><i class="fab fa-instagram"></i></a>
-                        </div>
-                    </div>
-                    <div class="team-title p-4">
-                        <h4 class="mb-0">David James</h4>
-                        <p class="mb-0">Profession</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-6 col-xl-3 wow fadeInUp" data-wow-delay="0.4s">
-                <div class="team-item">
-                    <div class="team-img">
-                        <img src="~/assets/img/team-2.jpg" class="img-fluid rounded-top w-100" alt="">
-                        <div class="team-icon">
-                            <a class="btn btn-primary btn-sm-square rounded-pill mb-2" href=""><i class="fab fa-facebook-f"></i></a>
-                            <a class="btn btn-primary btn-sm-square rounded-pill mb-2" href=""><i class="fab fa-twitter"></i></a>
-                            <a class="btn btn-primary btn-sm-square rounded-pill mb-2" href=""><i class="fab fa-linkedin-in"></i></a>
-                            <a class="btn btn-primary btn-sm-square rounded-pill mb-0" href=""><i class="fab fa-instagram"></i></a>
-                        </div>
-                    </div>
-                    <div class="team-title p-4">
-                        <h4 class="mb-0">David James</h4>
-                        <p class="mb-0">Profession</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-6 col-xl-3 wow fadeInUp" data-wow-delay="0.6s">
-                <div class="team-item">
-                    <div class="team-img">
-                        <img src="~/assets/img/team-3.jpg" class="img-fluid rounded-top w-100" alt="">
-                        <div class="team-icon">
-                            <a class="btn btn-primary btn-sm-square rounded-pill mb-2" href=""><i class="fab fa-facebook-f"></i></a>
-                            <a class="btn btn-primary btn-sm-square rounded-pill mb-2" href=""><i class="fab fa-twitter"></i></a>
-                            <a class="btn btn-primary btn-sm-square rounded-pill mb-2" href=""><i class="fab fa-linkedin-in"></i></a>
-                            <a class="btn btn-primary btn-sm-square rounded-pill mb-0" href=""><i class="fab fa-instagram"></i></a>
-                        </div>
-                    </div>
-                    <div class="team-title p-4">
-                        <h4 class="mb-0">David James</h4>
-                        <p class="mb-0">Profession</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-6 col-xl-3 wow fadeInUp" data-wow-delay="0.8s">
-                <div class="team-item">
-                    <div class="team-img">
-                        <img src="~/assets/img/team-4.jpg" class="img-fluid rounded-top w-100" alt="">
-                        <div class="team-icon">
-                            <a class="btn btn-primary btn-sm-square rounded-pill mb-2" href=""><i class="fab fa-facebook-f"></i></a>
-                            <a class="btn btn-primary btn-sm-square rounded-pill mb-2" href=""><i class="fab fa-twitter"></i></a>
-                            <a class="btn btn-primary btn-sm-square rounded-pill mb-2" href=""><i class="fab fa-linkedin-in"></i></a>
-                            <a class="btn btn-primary btn-sm-square rounded-pill mb-0" href=""><i class="fab fa-instagram"></i></a>
-                        </div>
-                    </div>
-                    <div class="team-title p-4">
-                        <h4 class="mb-0">David James</h4>
-                        <p class="mb-0">Profession</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+@await Component.InvokeAsync("Doctor")
 <!-- Team End -->
 <!-- Testimonial Start -->
 <div class="container-fluid testimonial pb-5">

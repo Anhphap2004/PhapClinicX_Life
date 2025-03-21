@@ -20,6 +20,4 @@ public partial class DoctorProfile
     public string? Fullname { get; set; }
 
     public string? Phone { get; set; }
-
-    public virtual User Doctor { get; set; } = null!;
 }
