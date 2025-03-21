@@ -1,0 +1,40 @@
+﻿@model IEnumerable<PhapClinicX.Models.Blog>
+<div class="container-fluid blog py-5">
+    <div class="container py-5">
+        <div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.2s" style="max-width: 800px;">
+            <h4 class="text-primary">Từ Blog</h4>
+            <h1 class="display-4 mb-4">Tin tức & Cập nhật</h1>
+            <p class="mb-0">
+                Cập nhật những tin tức mới nhất, các bài viết hữu ích về sức khỏe, khám chữa bệnh và nhiều thông tin quan trọng từ phòng khám.
+            </p>
+        </div>
+        <div class="row g-4 justify-content-center">
+            @foreach(var blog in Model)
+            {
+                <div class="col-lg-6 col-xl-4 wow fadeInUp" data-wow-delay="0.2s">
+                <div class="blog-item">
+                    <div class="blog-img">
+                        <img src="~/assets/img/blogs/@blog.Image" class="img-fluid rounded-top w-100" alt="Hình ảnh bài viết">
+                        <div class="blog-categiry py-2 px-4">
+                            <span>@blog.Category?.CategoryName</span>
+                        </div>
+                    </div>
+                    <div class="blog-content p-4">
+                        <div class="blog-comment d-flex justify-content-between mb-3">
+                            <div class="small"><span class="fa fa-user text-primary"></span> @blog.Author?.FullName</div>
+                                <div class="small">
+                                    <span class="fa fa-calendar text-primary"></span> @blog.CreatedAt?.ToString("dd 'Tháng' MM, yyyy", new System.Globalization.CultureInfo("vi-VN"))
+                                </div>
+
+                                <div class="small"><span class="fa fa-comment-alt text-primary"></span> @blog.BlogComments.Count() Bình luận</div>
+                        </div>
+                        <a href="#" class="h4 d-inline-block mb-3">@blog.Title</a>
+                        <p class="mb-3">@blog.Content</p>
+                        <a href="#" class="btn p-0">Đọc thêm <i class="fa fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+</div>
