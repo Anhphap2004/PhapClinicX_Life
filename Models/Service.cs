@@ -13,5 +13,8 @@ public partial class Service
 
     public bool? IsActive { get; set; }
 
+    public string? Image { get; set; }
+
+    public string? Detail { get; set; }
     public virtual ICollection<ServiceReview> ServiceReviews { get; set; } = new List<ServiceReview>();
 }

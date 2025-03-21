@@ -437,6 +437,13 @@ public partial class ClinicManagementContext : DbContext
             entity.Property(e => e.ServiceName)
                 .HasMaxLength(255)
                 .HasColumnName("service_name");
+            entity.Property(e => e.Image)
+               .HasMaxLength(255)
+               .HasColumnName("image");
+            entity.Property(e => e.Detail)
+               .HasMaxLength(255)
+               .HasColumnName("detail");
+
         });
 
         modelBuilder.Entity<ServicePackage>(entity =>
