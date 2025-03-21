@@ -61,7 +61,6 @@ public partial class ClinicManagementContext : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
-   
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -259,14 +258,9 @@ public partial class ClinicManagementContext : DbContext
 
             entity.ToTable("FAQ");
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("ID");
-            entity.Property(e => e.Answer).HasColumnType("text");
+            entity.Property(e => e.Id).HasColumnName("ID");
             entity.Property(e => e.CreatedAt).HasDefaultValueSql("(getdate())");
-            entity.Property(e => e.Question)
-                .HasMaxLength(500)
-                .IsUnicode(false);
+            entity.Property(e => e.Question).HasMaxLength(500);
         });
 
         modelBuilder.Entity<Invoice>(entity =>

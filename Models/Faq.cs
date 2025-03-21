@@ -9,7 +9,7 @@ public partial class Faq
 
     public string Question { get; set; } = null!;
 
-    public string Answer { get; set; } = null!;
+    public string? Answer { get; set; }
 
     public DateTime? CreatedAt { get; set; }
 }

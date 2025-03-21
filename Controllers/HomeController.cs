@@ -6,15 +6,18 @@ namespace PhapClinicX.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly ClinicManagementContext _context;
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ClinicManagementContext context, ILogger<HomeController> logger)
         {
+            _context = context;
             _logger = logger;
         }
 
         public IActionResult Index()
         {
+            ViewBag.Faqs = _context.Faqs.ToList();
             return View();
         }
 
