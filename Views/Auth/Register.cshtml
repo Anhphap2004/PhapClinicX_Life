@@ -1,0 +1,394 @@
+﻿@{
+    Layout = null;
+}
+@model PhapClinicX.Models.User
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(to right, #f0f8ff, #e6f2ff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .container {
+            background-color: #fff;
+            border-radius: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
+            position: relative;
+            overflow: hidden;
+            width: 768px;
+            max-width: 100%;
+            min-height: 480px;
+            z-index: 10;
+        }
+
+            .container p {
+                font-size: 14px;
+                line-height: 20px;
+                letter-spacing: 0.3px;
+                margin: 20px 0;
+            }
+
+            .container span {
+                font-size: 12px;
+            }
+
+            .container a {
+                color: #333;
+                font-size: 13px;
+                text-decoration: none;
+                margin: 15px 0 10px;
+            }
+
+            .container button {
+                background-color: #4285f4;
+                color: #fff;
+                font-size: 12px;
+                padding: 10px 45px;
+                border: 1px solid transparent;
+                border-radius: 8px;
+                font-weight: 600;
+                letter-spacing: 0.5px;
+                text-transform: uppercase;
+                margin-top: 10px;
+                cursor: pointer;
+            }
+
+                .container button.hidden {
+                    background-color: transparent;
+                    border-color: #fff;
+                }
+
+            .container form {
+                background-color: #fff;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-direction: column;
+                padding: 0 40px;
+                height: 100%;
+            }
+
+            .container input {
+                background-color: #eee;
+                border: none;
+                margin: 8px 0;
+                padding: 10px 15px;
+                font-size: 13px;
+                border-radius: 8px;
+                width: 100%;
+                outline: none;
+            }
+
+        .form-container {
+            position: absolute;
+            top: 0;
+            height: 100%;
+            transition: all 0.6s ease-in-out;
+        }
+
+        .sign-in {
+            left: 0;
+            width: 50%;
+            z-index: 2;
+        }
+
+        .container.active .sign-in {
+            transform: translateX(100%);
+        }
+
+        .sign-up {
+            left: 0;
+            width: 50%;
+            opacity: 0;
+            z-index: 1;
+        }
+
+        .container.active .sign-up {
+            transform: translateX(100%);
+            opacity: 1;
+            z-index: 5;
+            animation: move 0.6s;
+        }
+
+
+
+        .toggle-container {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 50%;
+            height: 100%;
+            overflow: hidden;
+            transition: all 0.6s ease-in-out;
+            border-radius: 150px 0 0 100px;
+            z-index: 1000;
+        }
+
+        .container.active .toggle-container {
+            transform: translateX(-100%);
+            border-radius: 0 150px 100px 0;
+        }
+
+        .toggle {
+            background: linear-gradient(to right, #5c8fdd, #4285f4);
+            height: 100%;
+            background-size: cover;
+            background-position: 0 0;
+            color: #fff;
+            position: relative;
+            left: -100%;
+            height: 100%;
+            width: 200%;
+            transform: translateX(0);
+            transition: all 0.6s ease-in-out;
+        }
+
+        .container.active .toggle {
+            transform: translateX(50%);
+        }
+
+        .toggle-panel {
+            position: absolute;
+            width: 50%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            padding: 0 30px;
+            text-align: center;
+            top: 0;
+            transform: translateX(0);
+            transition: all 0.6s ease-in-out;
+        }
+
+        .toggle-left {
+            transform: translateX(-200%);
+        }
+
+        .container.active .toggle-left {
+            transform: translateX(0);
+        }
+
+        .toggle-right {
+            right: 0;
+            transform: translateX(0);
+        }
+
+        .container.active .toggle-right {
+            transform: translateX(200%);
+        }
+
+        .social-icons {
+            margin: 20px 0;
+        }
+
+            .social-icons a {
+                border: 1px solid #ccc;
+                border-radius: 20%;
+                display: inline-flex;
+                justify-content: center;
+                align-items: center;
+                margin: 0 3px;
+                width: 40px;
+                height: 40px;
+            }
+
+        /* Medical themed additions */
+        .medical-icon {
+            position: absolute;
+            color: rgba(66, 133, 244, 0.3);
+            animation: float 6s infinite ease-in-out;
+            z-index: 1;
+        }
+
+
+
+        .pulse-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(66, 133, 244, 0.1);
+            animation: pulse 4s infinite;
+            z-index: 1;
+        }
+
+
+
+        .clinic-name {
+            position: absolute;
+            top: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            color: #4285f4;
+            z-index: 5;
+        }
+
+        .heartbeat-line {
+            position: absolute;
+            bottom: 30px;
+            width: 100%;
+            height: 50px;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+            .heartbeat-line svg {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+            }
+
+            .heartbeat-line path {
+                stroke: rgba(66, 133, 244, 0.3);
+                stroke-width: 2;
+                fill: none;
+                animation: heartbeat 2s infinite linear;
+            }
+
+
+        .medical-badge {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background-color: white;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            z-index: 11;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+            .medical-badge i {
+                font-size: 40px;
+                color: #4285f4;
+            }
+    </style>
+    <title>Medical Clinic Login</title>
+</head>
+
+<body>
+
+
+    <!-- Floating Medical Icons -->
+    <i class="fas fa-heartbeat medical-icon" style="font-size: 40px; top: 15%; left: 15%;"></i>
+    <i class="fas fa-stethoscope medical-icon" style="font-size: 35px; top: 70%; left: 20%; animation-delay: 1s;"></i>
+    <i class="fas fa-pills medical-icon" style="font-size: 30px; top: 25%; right: 15%; animation-delay: 2s;"></i>
+    <i class="fas fa-syringe medical-icon" style="font-size: 25px; top: 65%; right: 20%; animation-delay: 1.5s;"></i>
+    <i class="fas fa-user-md medical-icon" style="font-size: 45px; top: 85%; left: 45%; animation-delay: 2.5s;"></i>
+
+    <!-- Pulsing Circles -->
+    <div class="pulse-circle" style="width: 200px; height: 200px; top: 20%; left: 10%;"></div>
+    <div class="pulse-circle" style="width: 150px; height: 150px; bottom: 20%; right: 10%; animation-delay: 1s;"></div>
+    <div class="pulse-circle" style="width: 180px; height: 180px; top: 30%; right: 20%; animation-delay: 2s;"></div>
+
+    <!-- Heartbeat Line -->
+    <div class="heartbeat-line">
+        <svg viewBox="0 0 1200 60" preserveAspectRatio="none">
+            <path d="M0,30 L30,30 L40,10 L50,50 L60,30 L100,30 L120,30 L130,10 L140,50 L150,30 L300,30 L310,30 L320,10 L330,50 L340,30 L600,30 L610,30 L620,10 L630,50 L640,30 L900,30 L910,30 L920,10 L930,50 L940,30 L1200,30">
+            </path>
+        </svg>
+    </div>
+
+    <div class="container" id="container">
+        <div class="form-container sign-up">
+            <form method="post" asp-action="Register">
+                <h1>Create Account</h1>
+
+                <div class="social-icons">
+                    <a href="#" class="icon"><i class="fa-brands fa-google-plus-g"></i></a>
+                    <a href="#" class="icon"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#" class="icon"><i class="fa-brands fa-github"></i></a>
+                    <a href="#" class="icon"><i class="fa-brands fa-linkedin-in"></i></a>
+                </div>
+
+                <span>or use your email for registration</span>
+
+                <!-- Nhập tên đầy đủ -->
+                <input type="text" required placeholder="Name" asp-for="FullName" class="form-control" />
+                <span asp-validation-for="FullName" class="text-danger"></span>
+
+                <!-- Nhập email -->
+                <input type="email" required placeholder="Email" asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+
+                <!-- Nhập mật khẩu -->
+                <input type="password" required placeholder="Password" asp-for="PasswordHash" class="form-control" />
+                <span asp-validation-for="PasswordHash" class="text-danger"></span>
+
+                <button type="submit" class="btn btn-primary">Sign Up</button>
+            </form>
+        </div>
+        <div class="form-container sign-in">
+            <form>
+                <h1>Sign In</h1>
+                <div class="social-icons">
+                    <a href="#" class="icon"><i class="fa-brands fa-google-plus-g"></i></a>
+                    <a href="#" class="icon"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#" class="icon"><i class="fa-brands fa-github"></i></a>
+                    <a href="#" class="icon"><i class="fa-brands fa-linkedin-in"></i></a>
+                </div>
+                <span>or use your email password</span>
+                <input type="email" placeholder="Email">
+                <input type="password" placeholder="Password">
+                <a href="#">Forget Your Password?</a>
+                <button>Sign In</button>
+            </form>
+        </div>
+        <div class="toggle-container">
+            <div class="toggle">
+                <div class="toggle-panel toggle-left">
+                    <h1>Welcome Back!</h1>
+                    <p>Enter your personal details to access your medical records and appointments</p>
+                    <button class="hidden" id="login">Sign In</button>
+                </div>
+                <div class="toggle-panel toggle-right">
+                    <h1>Hello, Patient!</h1>
+                    <p>Register to schedule appointments and manage your healthcare needs</p>
+                    <button class="hidden" id="register">Sign Up</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const container = document.getElementById('container');
+        const registerBtn = document.getElementById('register');
+        const loginBtn = document.getElementById('login');
+
+        registerBtn.addEventListener('click', () => {
+            container.classList.add("active");
+        });
+
+        loginBtn.addEventListener('click', () => {
+            container.classList.remove("active");
+        });
+    </script>
+    @section Scripts {
+        <partial name="_ValidationScriptsPartial" />
+    }
+</body>
+
+</html>
