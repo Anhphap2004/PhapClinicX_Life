@@ -9,6 +9,7 @@ builder.Services.AddDbContext<ClinicManagementContext>(options =>
 });
 // Add services to the container.
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
+builder.Services.AddScoped<IMenuService, MenuService>();
 
 var app = builder.Build();
 

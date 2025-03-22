@@ -11,12 +11,28 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <div class="navbar-nav mx-0 mx-lg-auto">
-                    @foreach(var p in Model)
+                    @foreach (var p in Model)
                     {
-                        <a href="@p.Url" class="nav-item nav-link text-truncate" style="min-width: 110px;" title="@p.MenuName">
-                            @p.MenuName
-                        </a>
-
+                        if (p.InverseParent.Any()) // Nếu có menu con
+                        {
+                            <div class="nav-item dropdown">
+                                <a href="@p.Url" class="nav-link dropdown-toggle text-truncate" data-bs-toggle="dropdown" style="min-width: 110px;" title="@p.MenuName">
+                                    @p.MenuName
+                                </a>
+                                <div class="dropdown-menu">
+                                    @foreach (var subMenu in p.InverseParent)
+                                    {
+                                        <a href="@subMenu.Url" class="dropdown-item">@subMenu.MenuName</a>
+                                    }
+                                </div>
+                            </div>
+                        }
+                        else // Nếu không có menu con
+                        {
+                            <a href="@p.Url" class="nav-item nav-link text-truncate" style="min-width: 110px;" title="@p.MenuName">
+                                @p.MenuName
+                            </a>
+                        }
                     }
                     
                     <div class="nav-btn px-3">

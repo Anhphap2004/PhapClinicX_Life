@@ -1,21 +1,36 @@
-﻿using PhapClinicX.Models;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using PhapClinicX.Models;
 
-namespace PhapClinicX.ViewComponents
+public class MenuTopViewComponent : ViewComponent
 {
-    public class MenuTopViewComponent : ViewComponent
-    {
-        private readonly ClinicManagementContext _context;
-        public MenuTopViewComponent(ClinicManagementContext context)
-        {
-            _context = context;
-        }
-        public async Task<IViewComponentResult> InvokeAsync()
-        {
-            var menu = await _context.Menus.Where(p=> p.IsActive == true).OrderBy(p => p.Position).ToListAsync();
-            return View(menu);
-        }
+    private readonly IMenuService _menuService;
 
+    public MenuTopViewComponent(IMenuService menuService)
+    {
+        _menuService = menuService;
+    }
+
+    public async Task<IViewComponentResult> InvokeAsync()
+    {
+        var menus = await _menuService.GetActiveMenusAsync();
+
+        // Tạo danh sách menu cha - con
+        var menuHierarchy = menus
+            .Where(m => m.ParentId == null)
+            .Select(m => new Menu
+            {
+                MenuId = m.MenuId,
+                MenuName = m.MenuName,
+                Url = m.Url,
+                Position = m.Position,
+                IsActive = m.IsActive,
+                InverseParent = menus.Where(sub => sub.ParentId == m.MenuId).ToList()
+            })
+            .ToList();
+
+        return View(menuHierarchy);
     }
 }
