@@ -1,0 +1,135 @@
+﻿@{
+    List<Faq> faqs = ViewBag.faqs;
+}
+    <!-- Header Start -->
+
+<div class="pb-2 mb-5 container-fluid bg-breadcrumb">
+    <div class="container text-center py-5" style="max-width: 900px;">
+        <h4 class="text-white display-4 mb-4 wow fadeInDown" data-wow-delay="0.1s">About Us</h4>
+        <ol class="breadcrumb d-flex justify-content-center mb-0 wow fadeInDown" data-wow-delay="0.3s">
+            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+            <li class="breadcrumb-item"><a href="#">Pages</a></li>
+            <li class="breadcrumb-item active text-primary">About</li>
+        </ol>
+    </div>
+</div>
+<!-- Header End -->
+@await Component.InvokeAsync("About")
+<!-- Feature Start -->
+<div class="container-fluid feature bg-light py-5">
+    <div class="container py-5">
+        <div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.2s" style="max-width: 800px;">
+            <h4 class="text-primary">Dịch Vụ Của Chúng Tôi</h4>
+            <h1 class="display-4 mb-4">Chăm Sóc Sức Khỏe Toàn Diện Cho Bạn</h1>
+            <p class="mb-0">
+                Chúng tôi mang đến những dịch vụ y tế chất lượng cao, tận tâm vì sức khỏe của bạn. Đội ngũ bác sĩ giàu kinh nghiệm, trang thiết bị hiện đại, đảm bảo chẩn đoán chính xác và điều trị hiệu quả.
+            </p>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-6 col-xl-3 wow fadeInUp" data-wow-delay="0.2s">
+                <div class="feature-item p-4 pt-0">
+                    <div class="feature-icon p-4 mb-4">
+                        <i class="far fa-handshake fa-3x"></i>
+                    </div>
+                    <h4 class="mb-4">Phòng Khám Uy Tín</h4>
+                    <p class="mb-4">
+                        Chúng tôi cam kết cung cấp dịch vụ y tế chuyên nghiệp, tận tâm và đáng tin cậy.
+                    </p>
+                    <a class="btn btn-primary rounded-pill py-2 px-4" href="#">Tìm Hiểu Thêm</a>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-6 col-xl-3 wow fadeInUp" data-wow-delay="0.4s">
+                <div class="feature-item p-4 pt-0">
+                    <div class="feature-icon p-4 mb-4">
+                        <i class="fa fa-dollar-sign fa-3x"></i>
+                    </div>
+                    <h4 class="mb-4">Chi Phí Hợp Lý</h4>
+                    <p class="mb-4">
+                        Dịch vụ y tế chất lượng với mức giá minh bạch, phù hợp với mọi đối tượng khách hàng.
+                    </p>
+                    <a class="btn btn-primary rounded-pill py-2 px-4" href="#">Tìm Hiểu Thêm</a>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-6 col-xl-3 wow fadeInUp" data-wow-delay="0.6s">
+                <div class="feature-item p-4 pt-0">
+                    <div class="feature-icon p-4 mb-4">
+                        <i class="fa fa-bullseye fa-3x"></i>
+                    </div>
+                    <h4 class="mb-4">Dịch Vụ Linh Hoạt</h4>
+                    <p class="mb-4">
+                        Nhiều gói khám và điều trị phù hợp với từng nhu cầu sức khỏe của bạn.
+                    </p>
+                    <a class="btn btn-primary rounded-pill py-2 px-4" href="#">Tìm Hiểu Thêm</a>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-6 col-xl-3 wow fadeInUp" data-wow-delay="0.8s">
+                <div class="feature-item p-4 pt-0">
+                    <div class="feature-icon p-4 mb-4">
+                        <i class="fa fa-headphones fa-3x"></i>
+                    </div>
+                    <h4 class="mb-4">Hỗ Trợ 24/7</h4>
+                    <p class="mb-4">
+                        Đội ngũ tư vấn viên sẵn sàng hỗ trợ bạn mọi lúc, mọi nơi, liên hệ để được hỗ trợ.
+                    </p>
+                    <a class="btn btn-primary rounded-pill py-2 px-4" href="#">Tìm Hiểu Thêm</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Feature End -->
+@await Component.InvokeAsync("Service")
+<!-- FAQs Start -->
+<div class="container-fluid faq-section bg-light py-5">
+    <div class="container py-5">
+        <div class="row g-5 align-items-center">
+            <div class="col-xl-6 wow fadeInLeft" data-wow-delay="0.2s">
+                <div class="h-100">
+                    <div class="mb-5">
+                        <h4 class="text-primary">Một số câu hỏi quan trọng</h4>
+                        <h1 class="display-4 mb-0">Câu hỏi thường gặp</h1>
+                    </div>
+                    <div class="accordion" id="accordionExample">
+                        @if (faqs != null)
+                        {
+                            int index = 0;
+                            @foreach (var p in faqs)
+                            {
+                                var collapseId = "collapse" + index;
+                                var headingId = "heading" + index;
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="@headingId">
+                                        <button class="accordion-button border-0" type="button" data-bs-toggle="collapse" data-bs-target="#@collapseId" aria-expanded="true" aria-controls="@collapseId">
+                                            Q: @p.Question
+                                        </button>
+                                    </h2>
+                                    <div id="@collapseId" class="accordion-collapse collapse @(index == 0 ? "show" : "")" aria-labelledby="@headingId" data-bs-parent="#accordionExample">
+                                        <div class="accordion-body rounded">
+                                            A: @p.Answer
+                                        </div>
+                                    </div>
+                                </div>
+                                index++;
+                            }
+                        }
+                        else
+                        {
+                            <p class="text-muted">Không có câu hỏi nào.</p>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-6 wow fadeInRight" data-wow-delay="0.4s">
+                <img src="~/assets/img/carousel-2.png" class="img-fluid w-100" alt="FAQ Image">
+            </div>
+        </div>
+    </div>
+</div>
+<!-- FAQs End -->
+<br />
+<br />
+<br />
+<br />
+<!-- Team Start -->
+@await Component.InvokeAsync("Doctor")
+<!-- Team End -->
