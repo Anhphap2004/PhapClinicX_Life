@@ -20,4 +20,8 @@ public partial class DoctorProfile
     public string? Fullname { get; set; }
 
     public string? Phone { get; set; }
+
+    public int? PhongKhamId { get; set; }
+
+    public virtual PhongKham? PhongKham { get; set; }
 }

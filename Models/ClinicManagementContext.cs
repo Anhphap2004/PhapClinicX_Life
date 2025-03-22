@@ -29,6 +29,10 @@ public partial class ClinicManagementContext : DbContext
 
     public virtual DbSet<Contact> Contacts { get; set; }
 
+    public virtual DbSet<DoanhThuPhongKham> DoanhThuPhongKhams { get; set; }
+
+    public virtual DbSet<DoanhThuTong> DoanhThuTongs { get; set; }
+
     public virtual DbSet<DoctorAppointment> DoctorAppointments { get; set; }
 
     public virtual DbSet<DoctorProfile> DoctorProfiles { get; set; }
@@ -39,11 +43,15 @@ public partial class ClinicManagementContext : DbContext
 
     public virtual DbSet<InvoiceDetail> InvoiceDetails { get; set; }
 
+    public virtual DbSet<KhoaKham> KhoaKhams { get; set; }
+
     public virtual DbSet<MedicalEquipment> MedicalEquipments { get; set; }
 
     public virtual DbSet<Menu> Menus { get; set; }
 
     public virtual DbSet<Payment> Payments { get; set; }
+
+    public virtual DbSet<PhongKham> PhongKhams { get; set; }
 
     public virtual DbSet<Product> Products { get; set; }
 
@@ -61,7 +69,8 @@ public partial class ClinicManagementContext : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
-  
+   
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<About>(entity =>
@@ -214,6 +223,32 @@ public partial class ClinicManagementContext : DbContext
                 .HasConstraintName("FK__Contacts__user_i__60A75C0F");
         });
 
+        modelBuilder.Entity<DoanhThuPhongKham>(entity =>
+        {
+            entity.HasKey(e => e.DoanhThuId).HasName("PK__DoanhThu__D2C18FB1C8148A0E");
+
+            entity.ToTable("DoanhThuPhongKham");
+
+            entity.Property(e => e.DoanhThuId).HasColumnName("DoanhThuID");
+            entity.Property(e => e.DoanhThu).HasColumnType("decimal(15, 2)");
+            entity.Property(e => e.PhongKhamId).HasColumnName("PhongKhamID");
+
+            entity.HasOne(d => d.PhongKham).WithMany(p => p.DoanhThuPhongKhams)
+                .HasForeignKey(d => d.PhongKhamId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("FK__DoanhThuP__Phong__3493CFA7");
+        });
+
+        modelBuilder.Entity<DoanhThuTong>(entity =>
+        {
+            entity.HasKey(e => e.DoanhThuTongId).HasName("PK__DoanhThu__FC40012C84371545");
+
+            entity.ToTable("DoanhThuTong");
+
+            entity.Property(e => e.DoanhThuTongId).HasColumnName("DoanhThuTongID");
+            entity.Property(e => e.TongDoanhThu).HasColumnType("decimal(15, 2)");
+        });
+
         modelBuilder.Entity<DoctorAppointment>(entity =>
         {
             entity.HasKey(e => e.AppointmentId).HasName("PK__DoctorAp__A50828FCA18705B9");
@@ -253,9 +288,14 @@ public partial class ClinicManagementContext : DbContext
                 .HasMaxLength(10)
                 .IsFixedLength()
                 .HasColumnName("phone");
+            entity.Property(e => e.PhongKhamId).HasColumnName("PhongKhamID");
             entity.Property(e => e.Specialization)
                 .HasMaxLength(255)
                 .HasColumnName("specialization");
+
+            entity.HasOne(d => d.PhongKham).WithMany(p => p.DoctorProfiles)
+                .HasForeignKey(d => d.PhongKhamId)
+                .HasConstraintName("FK_DoctorProfiles_PhongKham");
         });
 
         modelBuilder.Entity<Faq>(entity =>
@@ -278,6 +318,7 @@ public partial class ClinicManagementContext : DbContext
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime")
                 .HasColumnName("created_at");
+            entity.Property(e => e.PhongKhamId).HasColumnName("PhongKhamID");
             entity.Property(e => e.Status)
                 .HasMaxLength(50)
                 .HasColumnName("status");
@@ -285,6 +326,11 @@ public partial class ClinicManagementContext : DbContext
                 .HasColumnType("decimal(10, 2)")
                 .HasColumnName("total_amount");
             entity.Property(e => e.UserId).HasColumnName("user_id");
+
+            entity.HasOne(d => d.PhongKham).WithMany(p => p.Invoices)
+                .HasForeignKey(d => d.PhongKhamId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Invoices_PhongKham");
 
             entity.HasOne(d => d.User).WithMany(p => p.Invoices)
                 .HasForeignKey(d => d.UserId)
@@ -306,6 +352,24 @@ public partial class ClinicManagementContext : DbContext
             entity.HasOne(d => d.Invoice).WithMany(p => p.InvoiceDetails)
                 .HasForeignKey(d => d.InvoiceId)
                 .HasConstraintName("FK__InvoiceDe__invoi__70DDC3D8");
+        });
+
+        modelBuilder.Entity<KhoaKham>(entity =>
+        {
+            entity.HasKey(e => e.KhoaKhamId).HasName("PK__KhoaKham__2DAB88FB5C4017AA");
+
+            entity.ToTable("KhoaKham");
+
+            entity.Property(e => e.KhoaKhamId).HasColumnName("KhoaKhamID");
+            entity.Property(e => e.DoctorId).HasColumnName("doctor_id");
+            entity.Property(e => e.MoTa).HasMaxLength(1000);
+            entity.Property(e => e.PhongKhamId).HasColumnName("PhongKhamID");
+            entity.Property(e => e.TenKhoa).HasMaxLength(255);
+
+            entity.HasOne(d => d.PhongKham).WithMany(p => p.KhoaKhams)
+                .HasForeignKey(d => d.PhongKhamId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("FK__KhoaKham__PhongK__2EDAF651");
         });
 
         modelBuilder.Entity<MedicalEquipment>(entity =>
@@ -365,6 +429,19 @@ public partial class ClinicManagementContext : DbContext
             entity.HasOne(d => d.Invoice).WithMany(p => p.Payments)
                 .HasForeignKey(d => d.InvoiceId)
                 .HasConstraintName("FK__Payments__invoic__73BA3083");
+        });
+
+        modelBuilder.Entity<PhongKham>(entity =>
+        {
+            entity.HasKey(e => e.PhongKhamId).HasName("PK__PhongKha__33E1EFBB7394E92A");
+
+            entity.ToTable("PhongKham");
+
+            entity.Property(e => e.PhongKhamId).HasColumnName("PhongKhamID");
+            entity.Property(e => e.DiaChi).HasMaxLength(500);
+            entity.Property(e => e.Email).HasMaxLength(255);
+            entity.Property(e => e.SoDienThoai).HasMaxLength(15);
+            entity.Property(e => e.TenPhongKham).HasMaxLength(255);
         });
 
         modelBuilder.Entity<Product>(entity =>
