@@ -17,6 +17,10 @@ public partial class PhongKham
 
     public DateOnly? NgayThanhLap { get; set; }
 
+    public string? Image { get; set; }
+
+    public bool Isactive { get; set; }
+
     public virtual ICollection<DoanhThuPhongKham> DoanhThuPhongKhams { get; set; } = new List<DoanhThuPhongKham>();
 
     public virtual ICollection<DoctorProfile> DoctorProfiles { get; set; } = new List<DoctorProfile>();

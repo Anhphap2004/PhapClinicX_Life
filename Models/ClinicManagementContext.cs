@@ -69,7 +69,7 @@ public partial class ClinicManagementContext : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
-  
+   
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -440,6 +440,8 @@ public partial class ClinicManagementContext : DbContext
             entity.Property(e => e.PhongKhamId).HasColumnName("PhongKhamID");
             entity.Property(e => e.DiaChi).HasMaxLength(500);
             entity.Property(e => e.Email).HasMaxLength(255);
+            entity.Property(e => e.Image).HasMaxLength(255);
+            entity.Property(e => e.Isactive).HasColumnName("isactive");
             entity.Property(e => e.SoDienThoai).HasMaxLength(15);
             entity.Property(e => e.TenPhongKham).HasMaxLength(255);
         });

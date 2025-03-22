@@ -60,38 +60,12 @@
     </div>
 </div>
 <!-- Kết thúc Carousel -->
-
-
-<div style="max-width:1450px;" class="container my-5">
-    <!-- Tiêu đề -->
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <div>
-            <h2 class="fw-bold">Đặt lịch khám trực tuyến</h2>
-            <p style="color:#bc1616 !important">Tìm Bác sĩ chính xác - Đặt lịch khám dễ dàng</p>
-        </div>
-        <button style="border-radius: 30px; padding: 10px; padding-left: 20px;padding-right: 20px;" class="btn btn-primary">Xem thêm ➜</button>
-    </div>
-    <!-- Danh sách bác sĩ -->
-    <div class="row flex-nowrap overflow-auto">
-    @foreach (var p in doctor)
-        {
-
-            <!-- Bác sĩ 1 -->
-            <div class="col-10 col-sm-6 col-md-4 col-lg-3">
-                <div class="card border-1 shadow-sm text-center p-3">
-                <img src="~/assets//img/team/@p.Image" class="rounded-circle mx-auto" style="width: 80px; height: 80px; object-fit:cover" alt="BS">
-                <h5 class="mt-2">@p.Fullname</h5>
-                <p class="text-muted mb-1">@p.Specialization</p>
-                <p class="text-muted small">@p.PhongKham?.TenPhongKham</p>
-                <a href="#" class="btn btn-light border w-100">Đặt lịch khám →</a>
-            </div>
-        </div>
-
-        }
-    </div>
-    
-</div>
-
+<!-- Bắt đầu DoctorAppointment -->
+@await Component.InvokeAsync("DoctorAppointment")
+<!-- Kết Thúc DoctorAppointment-->
+<!-- Bắt Đầu ClinicBranch -->
+@await Component.InvokeAsync("ClinicBranch")
+<!-- Kết Thúc ClinicBranch -->
 <!-- Service Packages Start -->
 @await Component.InvokeAsync("ServicePackage", new { isIndexPage = true })
 <!-- Service Packages End -->
