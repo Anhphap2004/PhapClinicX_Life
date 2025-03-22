@@ -1007,3 +1007,31 @@
         margin-bottom: 15px;
     }
 }
+.specialty-card {
+    text-align: center;
+    padding: 15px 10px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    background-color: #fff;
+    transition: transform 0.3s, box-shadow 0.3s;
+    height: 100%;
+    cursor: pointer;
+}
+
+    .specialty-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+.specialty-icon {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 10px;
+}
+
+.specialty-name {
+    font-size: 14px;
+    margin: 0;
+    font-weight: 500;
+}
