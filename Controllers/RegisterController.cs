@@ -4,11 +4,11 @@ using BCrypt.Net;
 using PhapClinicX.Models;
 using System.Threading.Tasks;
 
-public class AuthController : Controller
+public class RegisterController : Controller
 {
     private readonly ClinicManagementContext _context;
 
-    public AuthController(ClinicManagementContext context)
+    public RegisterController(ClinicManagementContext context)
     {
         _context = context;
     }
@@ -27,13 +27,16 @@ public class AuthController : Controller
         {
             // Kiểm tra nếu email đã tồn tại trong cơ sở dữ liệu
             var existingUser = await _context.Users
-                .FirstOrDefaultAsync(u => u.Email == model.Email);
+                .Where(u => u.Email == model.Email)
+                .FirstOrDefaultAsync();
 
             if (existingUser != null)
             {
-                // Nếu đã có người dùng với email này, thông báo lỗi
-                ModelState.AddModelError("Email", "Email này đã được đăng ký.");
-                return View(model);  // Trả lại view nếu có lỗi
+                if(existingUser.Email == model.Email)
+                {
+                    TempData["Error"] = "Email đã tồn tại!";
+                }
+                return RedirectToAction("Register","Register");
             }
 
             // Mã hóa mật khẩu trước khi lưu vào cơ sở dữ liệu
@@ -50,7 +53,7 @@ public class AuthController : Controller
             // Lưu người dùng vào cơ sở dữ liệu
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
-
+            TempData["SuccessMessage"] = "Đăng ký thành công. Vui lòng đăng nhập!";
             // Sau khi lưu thành công, chuyển hướng người dùng đến trang chào mừng
             return RedirectToAction("Index", "Home");  // Chuyển hướng đến Home/Index
         }

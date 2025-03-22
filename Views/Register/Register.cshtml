@@ -338,8 +338,22 @@
                 <input type="password" required placeholder="Password" asp-for="PasswordHash" class="form-control" />
                 <span asp-validation-for="PasswordHash" class="text-danger"></span>
 
+                <!-- Hiển thị thông báo lỗi -->
+                @if (TempData["Error"] != null)
+                {
+                    <div style="    border-radius: 3px;
+        background-color: #f0ff2c;
+        padding: 5px;
+        margin-left: -205px;
+        font-size: 12px;
+        color: #dc0a0a; margin-left:-200px" class="alert alert-danger mt-3 pb-2">
+                        @TempData["Error"]
+                    </div>
+                }
+
                 <button type="submit" class="btn btn-primary">Sign Up</button>
             </form>
+
         </div>
         <div class="form-container sign-in">
             <form>
