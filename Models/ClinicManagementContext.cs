@@ -69,7 +69,7 @@ public partial class ClinicManagementContext : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
-   
+  
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -546,6 +546,9 @@ public partial class ClinicManagementContext : DbContext
             entity.HasKey(e => e.PackageId).HasName("PK__ServiceP__63846AE8E83AB9B7");
 
             entity.Property(e => e.PackageId).HasColumnName("package_id");
+            entity.Property(e => e.Image)
+                .HasMaxLength(255)
+                .HasColumnName("image");
             entity.Property(e => e.IsActive)
                 .HasDefaultValue(true)
                 .HasColumnName("is_active");
@@ -555,6 +558,9 @@ public partial class ClinicManagementContext : DbContext
             entity.Property(e => e.Price)
                 .HasColumnType("decimal(10, 2)")
                 .HasColumnName("price");
+            entity.Property(e => e.Title)
+                .HasMaxLength(255)
+                .HasColumnName("title");
         });
 
         modelBuilder.Entity<ServiceReview>(entity =>
