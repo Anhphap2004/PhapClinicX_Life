@@ -7,11 +7,13 @@ public partial class Contact
 {
     public int ContactId { get; set; }
 
-    public int? UserId { get; set; }
+    public string Fullname { get; set; } = null!;
 
-    public string? Message { get; set; }
+    public string Message { get; set; } = null!;
 
     public DateTime? CreatedAt { get; set; }
 
-    public virtual User? User { get; set; }
+    public int Phone { get; set; }
+
+    public string Email { get; set; } = null!;
 }

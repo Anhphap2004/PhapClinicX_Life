@@ -69,7 +69,7 @@ public partial class ClinicManagementContext : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
-   
+    
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -215,12 +215,14 @@ public partial class ClinicManagementContext : DbContext
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime")
                 .HasColumnName("created_at");
+            entity.Property(e => e.Email)
+                .HasMaxLength(100)
+                .HasColumnName("email");
+            entity.Property(e => e.Fullname)
+                .HasMaxLength(100)
+                .HasColumnName("fullname");
             entity.Property(e => e.Message).HasColumnName("message");
-            entity.Property(e => e.UserId).HasColumnName("user_id");
-
-            entity.HasOne(d => d.User).WithMany(p => p.Contacts)
-                .HasForeignKey(d => d.UserId)
-                .HasConstraintName("FK__Contacts__user_i__60A75C0F");
+            entity.Property(e => e.Phone).HasColumnName("phone");
         });
 
         modelBuilder.Entity<DoanhThuPhongKham>(entity =>

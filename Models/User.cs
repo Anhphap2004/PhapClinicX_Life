@@ -33,8 +33,6 @@ public partial class User
 
     public virtual ICollection<ClinicAppointment> ClinicAppointments { get; set; } = new List<ClinicAppointment>();
 
-    public virtual ICollection<Contact> Contacts { get; set; } = new List<Contact>();
-
     public virtual ICollection<DoctorAppointment> DoctorAppointmentDoctors { get; set; } = new List<DoctorAppointment>();
 
     public virtual ICollection<DoctorAppointment> DoctorAppointmentUsers { get; set; } = new List<DoctorAppointment>();
