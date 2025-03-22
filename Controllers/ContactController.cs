@@ -34,8 +34,9 @@ namespace PhapClinicX.Controllers
 
             _context.Contacts.Add(contact);
             await _context.SaveChangesAsync();
-            ViewBag.Success = "Gửi thông tin thành công!";
-            return RedirectToAction("Index");
+            TempData["SuccessMessage"] = "Gửi Liên Hệ thành công!";
+            return RedirectToAction("Index"); 
+            
         }
     }
 }
