@@ -23,42 +23,61 @@ public class RegisterController : Controller
     [HttpPost]
     public async Task<IActionResult> Register(User model)
     {
-        if (ModelState.IsValid)
+        if (!ModelState.IsValid)
         {
-            // Kiểm tra nếu email đã tồn tại trong cơ sở dữ liệu
-            var existingUser = await _context.Users
-                .Where(u => u.Email == model.Email)
-                .FirstOrDefaultAsync();
-
-            if (existingUser != null)
-            {
-                if(existingUser.Email == model.Email)
-                {
-                    TempData["Error"] = "Email đã tồn tại!";
-                }
-                return RedirectToAction("Register","Register");
-            }
-
-            // Mã hóa mật khẩu trước khi lưu vào cơ sở dữ liệu
-            var hashedPassword = BCrypt.Net.BCrypt.HashPassword(model.PasswordHash);
-
-            var user = new User
-            {
-                FullName = model.FullName,
-                Email = model.Email,
-                PasswordHash = hashedPassword,
-                RoleId = 3, // hoặc 1 tùy vào quyền người dùng
-            };
-
-            // Lưu người dùng vào cơ sở dữ liệu
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
-            TempData["SuccessMessage"] = "Đăng ký thành công. Vui lòng đăng nhập!";
-            // Sau khi lưu thành công, chuyển hướng người dùng đến trang chào mừng
-            return RedirectToAction("Index", "Home");  // Chuyển hướng đến Home/Index
+            return View(model);
         }
 
-        // Nếu ModelState không hợp lệ, trả lại view với thông báo lỗi
-        return View(model);
+        // Kiểm tra nếu email, username hoặc số điện thoại đã tồn tại
+        var existingUser = await _context.Users
+            .FirstOrDefaultAsync(u => u.Email == model.Email || u.Username == model.Username || u.Phone == model.Phone);
+
+        if (existingUser != null)
+        {
+            if (existingUser.Email == model.Email)
+            {
+                ModelState.AddModelError("Email", "⚠ Email đã được đăng ký!");
+            }
+            if (existingUser.Username == model.Username)
+            {
+                ModelState.AddModelError("Username", "⚠ Tên đăng nhập đã tồn tại!");
+            }
+            if (existingUser.Phone == model.Phone)
+            {
+                ModelState.AddModelError("Phone", "⚠ Số điện thoại đã được sử dụng!");
+            }
+
+            return View(model); // Giữ nguyên dữ liệu khi có lỗi
+        }
+
+        // Kiểm tra mật khẩu có bị null không (tránh lỗi ArgumentNullException)
+        if (string.IsNullOrWhiteSpace(model.PasswordHash))
+        {
+            ModelState.AddModelError("PasswordHash", "⚠ Mật khẩu không hợp lệ!");
+            return View(model);
+        }
+
+        // Mã hóa mật khẩu trước khi lưu vào cơ sở dữ liệu
+        var hashedPassword = BCrypt.Net.BCrypt.HashPassword(model.PasswordHash);
+
+        var user = new User
+        {
+            Username = model.Username,
+            Phone = model.Phone,
+            FullName = model.FullName,
+            Email = model.Email,
+            PasswordHash = hashedPassword,
+            RoleId = 3 // Gán quyền mặc định
+        };
+
+        // Lưu người dùng vào cơ sở dữ liệu
+        _context.Users.Add(user);
+        await _context.SaveChangesAsync();
+
+        TempData["SuccessMessage"] = "🎉 Đăng ký thành công. Vui lòng đăng nhập!";
+        return RedirectToAction("Login", "Auth");
     }
+
+
+
 }

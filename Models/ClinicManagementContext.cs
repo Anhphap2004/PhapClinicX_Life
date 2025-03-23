@@ -69,7 +69,6 @@ public partial class ClinicManagementContext : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
-    
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -617,6 +616,9 @@ public partial class ClinicManagementContext : DbContext
                 .HasMaxLength(255)
                 .HasColumnName("profile_image");
             entity.Property(e => e.RoleId).HasColumnName("role_id");
+            entity.Property(e => e.Username)
+                .HasMaxLength(50)
+                .HasColumnName("username");
 
             entity.HasOne(d => d.Role).WithMany(p => p.Users)
                 .HasForeignKey(d => d.RoleId)

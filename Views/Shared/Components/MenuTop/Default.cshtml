@@ -34,11 +34,32 @@
                             </a>
                         }
                     }
-                    
+
                     <div class="nav-btn px-3">
-                        <button class="btn-search btn btn-primary btn-md-square rounded-circle flex-shrink-0" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search"></i></button>
-                        <a href="#" class="btn btn-primary rounded-pill py-2 px-4 ms-3 flex-shrink-0"> Sức Khoẻ</a>
+                        <button class="btn-search btn btn-primary btn-md-square rounded-circle flex-shrink-0" data-bs-toggle="modal" data-bs-target="#searchModal">
+                            <i class="fas fa-search"></i>
+                        </button>
+
+                        <!-- Dropdown tài khoản -->
+                        <div class="dropdown ms-3">
+                            <a href="#" class="btn btn-primary rounded-pill py-2 px-4 flex-shrink-0 dropdown-toggle" id="accountDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                Tài Khoản
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="accountDropdown">
+                                <li id="guestOptions">
+                                    <a class="dropdown-item" asp-controller="Register" asp-action="Register">Đăng ký</a>
+                                    <a class="dropdown-item" asp-controller="Auth" asp-action="login" >Đăng nhập</a>
+                                </li>
+                                <li id="userOptions" class="d-none">
+                                    <a class="dropdown-item" href="/profile">Tài khoản</a>
+                                    <a class="dropdown-item text-danger" href="/logout">Đăng xuất</a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
+
+        
+
                 </div>
             </div>
             <div class="d-none d-xl-flex flex-shrink-0 ps-4">
