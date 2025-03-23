@@ -1,0 +1,48 @@
+﻿@model PhapClinicX.Models.User
+@{
+    ViewData["Title"] = "Đăng Nhập";
+}
+<div class="container py-4">
+    <div class="row shadow rounded overflow-hidden mx-auto" style="max-width: 1200px;">
+        <!-- Phần hình ảnh bên trái -->
+        <div class="col-md-5 d-none d-md-block p-0">
+            <img src="~/assets/img/branch/PhapLife.png" alt="Clinic Image" class="w-100 h-100 object-fit-cover">
+        </div>
+        <!-- Phần form bên phải -->
+        <div class="col-md-7 bg-white p-4">
+            <h4 class="mb-3 text-center" style="color: #1a73e8;">Đăng Nhập</h4>
+
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                        {
+                            <li>@error.ErrorMessage</li>
+                        }
+                    </ul>
+                </div>
+            }
+
+            <form asp-controller="Login" asp-action="Index" method="POST" id="loginForm" class="px-md-4">
+                @Html.AntiForgeryToken()
+                <div class="mb-3">
+                    <label for="Username" class="form-label small">Tên đăng nhập</label>
+                    <input required type="text" asp-for="Username" id="Username" name="Username" class="form-control form-control-sm" placeholder="Nhập Email hoặc Username">
+                    <span class="text-danger small">@Html.ValidationMessageFor(m => m.Username)</span>
+                </div>
+                <div class="mb-3">
+                    <label for="PasswordHash" class="form-label small">Mật khẩu</label>
+                    <input required type="password" asp-for="PasswordHash" id="PasswordHash" name="PasswordHash" class="form-control form-control-sm" placeholder="Nhập mật khẩu">
+                    <span class="text-danger small">@Html.ValidationMessageFor(m => m.PasswordHash)</span>
+                </div>
+                <div class="mb-3 form-check">
+                    <input type="checkbox" class="form-check-input" id="rememberMe" name="rememberMe" value="true">
+                    <label class="form-check-label small" for="rememberMe">Ghi nhớ đăng nhập</label>
+                </div>
+                <button type="submit" class="btn w-100 mb-3" style="background-color: #1a73e8; color: white; font-size: 0.95rem;">Đăng Nhập</button>
+                <p class="text-center mb-0 small">Bạn chưa có tài khoản? <a href="/Register" class="text-decoration-none" style="color: #1a73e8;">Đăng ký ngay</a></p>
+            </form>
+        </div>
+    </div>
+</div>

@@ -27,6 +27,7 @@ public partial class User
 
     public string? Username { get; set; }
 
+
     public virtual ICollection<BlogComment> BlogComments { get; set; } = new List<BlogComment>();
 
     public virtual ICollection<Blog> Blogs { get; set; } = new List<Blog>();

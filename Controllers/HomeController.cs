@@ -1,6 +1,8 @@
-﻿using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using PhapClinicX.Models;
+using System.Diagnostics;
+using System.Net.NetworkInformation;
+
 
 namespace PhapClinicX.Controllers
 {
