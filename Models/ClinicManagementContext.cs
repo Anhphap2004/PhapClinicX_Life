@@ -69,6 +69,7 @@ public partial class ClinicManagementContext : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
+   
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -259,6 +260,9 @@ public partial class ClinicManagementContext : DbContext
                 .HasColumnType("datetime")
                 .HasColumnName("date_time");
             entity.Property(e => e.DoctorId).HasColumnName("doctor_id");
+            entity.Property(e => e.Fullname)
+                .HasMaxLength(255)
+                .HasColumnName("fullname");
             entity.Property(e => e.Status)
                 .HasMaxLength(50)
                 .HasColumnName("status");
@@ -284,6 +288,7 @@ public partial class ClinicManagementContext : DbContext
                 .HasMaxLength(100)
                 .HasColumnName("fullname");
             entity.Property(e => e.Image).HasColumnName("image");
+            entity.Property(e => e.Introduce).HasColumnName("introduce");
             entity.Property(e => e.Isactive).HasColumnName("isactive");
             entity.Property(e => e.Phone)
                 .HasMaxLength(10)
@@ -293,6 +298,9 @@ public partial class ClinicManagementContext : DbContext
             entity.Property(e => e.Specialization)
                 .HasMaxLength(255)
                 .HasColumnName("specialization");
+            entity.Property(e => e.WorkSchedule)
+                .HasMaxLength(255)
+                .HasColumnName("workSchedule");
 
             entity.HasOne(d => d.PhongKham).WithMany(p => p.DoctorProfiles)
                 .HasForeignKey(d => d.PhongKhamId)

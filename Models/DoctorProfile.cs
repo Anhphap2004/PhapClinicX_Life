@@ -23,5 +23,9 @@ public partial class DoctorProfile
 
     public int? PhongKhamId { get; set; }
 
+    public string? Introduce { get; set; }
+
+    public string? WorkSchedule { get; set; }
+
     public virtual PhongKham? PhongKham { get; set; }
 }
