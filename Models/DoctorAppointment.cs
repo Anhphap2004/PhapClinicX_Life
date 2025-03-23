@@ -17,9 +17,7 @@ public partial class DoctorAppointment
 
     public string Fullname { get; set; } = null!;
 
-    public string? Phone { get; set; }
+    public string Phone { get; set; } = null!;
 
-    public virtual User? Doctor { get; set; }
-
-    public virtual User? User { get; set; }
+    public virtual DoctorProfile? Doctor { get; set; }
 }

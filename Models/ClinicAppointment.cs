@@ -7,13 +7,15 @@ public partial class ClinicAppointment
 {
     public int AppointmentId { get; set; }
 
-    public int? UserId { get; set; }
+    public string Fullname { get; set; } = null!;
 
-    public int? ClinicId { get; set; }
+    public string Phone { get; set; } = null!;
 
     public DateTime? DateTime { get; set; }
 
     public string? Status { get; set; }
 
-    public virtual User? User { get; set; }
+    public int? PhongKhamId { get; set; }
+
+    public virtual PhongKham? PhongKham { get; set; }
 }

@@ -27,5 +27,7 @@ public partial class DoctorProfile
 
     public string? WorkSchedule { get; set; }
 
+    public virtual ICollection<DoctorAppointment> DoctorAppointments { get; set; } = new List<DoctorAppointment>();
+
     public virtual PhongKham? PhongKham { get; set; }
 }

@@ -69,7 +69,7 @@ public partial class ClinicManagementContext : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
-   
+  
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -192,18 +192,19 @@ public partial class ClinicManagementContext : DbContext
             entity.HasKey(e => e.AppointmentId).HasName("PK__ClinicAp__A50828FC6F889F8F");
 
             entity.Property(e => e.AppointmentId).HasColumnName("appointment_id");
-            entity.Property(e => e.ClinicId).HasColumnName("clinic_id");
             entity.Property(e => e.DateTime)
                 .HasColumnType("datetime")
                 .HasColumnName("date_time");
+            entity.Property(e => e.Fullname).HasColumnName("fullname");
+            entity.Property(e => e.Phone).HasMaxLength(50);
+            entity.Property(e => e.PhongKhamId).HasColumnName("PhongKhamID");
             entity.Property(e => e.Status)
                 .HasMaxLength(50)
                 .HasColumnName("status");
-            entity.Property(e => e.UserId).HasColumnName("user_id");
 
-            entity.HasOne(d => d.User).WithMany(p => p.ClinicAppointments)
-                .HasForeignKey(d => d.UserId)
-                .HasConstraintName("FK__ClinicApp__user___6383C8BA");
+            entity.HasOne(d => d.PhongKham).WithMany(p => p.ClinicAppointments)
+                .HasForeignKey(d => d.PhongKhamId)
+                .HasConstraintName("FK_ClinicAppointments_PhongKham");
         });
 
         modelBuilder.Entity<Contact>(entity =>
@@ -263,18 +264,15 @@ public partial class ClinicManagementContext : DbContext
             entity.Property(e => e.Fullname)
                 .HasMaxLength(255)
                 .HasColumnName("fullname");
+            entity.Property(e => e.Phone).HasMaxLength(50);
             entity.Property(e => e.Status)
                 .HasMaxLength(50)
                 .HasColumnName("status");
             entity.Property(e => e.UserId).HasColumnName("user_id");
 
-            entity.HasOne(d => d.Doctor).WithMany(p => p.DoctorAppointmentDoctors)
+            entity.HasOne(d => d.Doctor).WithMany(p => p.DoctorAppointments)
                 .HasForeignKey(d => d.DoctorId)
-                .HasConstraintName("FK__DoctorApp__docto__6754599E");
-
-            entity.HasOne(d => d.User).WithMany(p => p.DoctorAppointmentUsers)
-                .HasForeignKey(d => d.UserId)
-                .HasConstraintName("FK__DoctorApp__user___66603565");
+                .HasConstraintName("FK_DoctorAppointments_DoctorProfiles");
         });
 
         modelBuilder.Entity<DoctorProfile>(entity =>

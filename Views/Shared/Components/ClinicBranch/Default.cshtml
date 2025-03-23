@@ -13,6 +13,7 @@
     <div class="row flex-nowrap overflow-auto">
         @foreach (var p in Model)
         {
+            string url = $"/booking/chi-nhanh-kham/{p.PhongKhamId}.html";
             <div class="col-10 col-sm-6 col-md-4 col-lg-3">
                 <div class="card border-1 shadow-sm text-center">
                     <!-- Hình ảnh phủ hết phần trên -->
@@ -34,7 +35,7 @@
                             </li>
                         </ul>
 
-                        <a href="#" class="btn btn-light border w-100 mt-auto">Đặt lịch khám →</a>
+                        <a href="@url" class="btn btn-light border w-100 mt-auto">Đặt lịch khám →</a>
                     </div>
 
                 </div>

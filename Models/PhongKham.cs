@@ -21,6 +21,10 @@ public partial class PhongKham
 
     public bool Isactive { get; set; }
 
+    public string? Introduce { get; set; }
+
+    public virtual ICollection<ClinicAppointment> ClinicAppointments { get; set; } = new List<ClinicAppointment>();
+
     public virtual ICollection<DoanhThuPhongKham> DoanhThuPhongKhams { get; set; } = new List<DoanhThuPhongKham>();
 
     public virtual ICollection<DoctorProfile> DoctorProfiles { get; set; } = new List<DoctorProfile>();
