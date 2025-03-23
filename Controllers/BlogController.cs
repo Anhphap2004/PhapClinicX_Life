@@ -15,5 +15,18 @@ namespace PhapClinicX.Controllers
             ViewBag.blogcategories = _context.BlogCategories.Where(p => p.IsActive == true).ToList();
             return View();
         }
+
+        [Route("/blog/{id}.html")]
+        public async Task <IActionResult> Detail(int? id)
+        {
+            if(id == null || _context.Blogs ==null)
+            {
+                return NotFound();
+            }
+            ViewBag.BlogId = id;
+            var blog = await _context.Blogs.Include(p=>p.Author).Where(p => p.IsActive == true).FirstOrDefaultAsync(m => m.BlogId == id);
+            return View(blog);
+
+        }
     }
 }

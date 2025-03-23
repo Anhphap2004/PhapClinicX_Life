@@ -17,6 +17,12 @@ namespace PhapClinicX.Controllers
             return View();
         }
 
+        [Route("kham-phong-kham")]
+        public IActionResult KhamPhongKham()
+        {
+            return View();
+        }
+
         [Route(("/booking/bacsi/{id}.html"))]
         public async Task<IActionResult> Detail_doctor(int? id)
         {

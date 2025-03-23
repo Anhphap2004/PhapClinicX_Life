@@ -1,0 +1,221 @@
+﻿@model Blog 
+    <!-- Main Content -->
+    <main class="container mt-4">
+        <div class="row">
+            <!-- Bài viết chính -->
+            <div class="col-lg-8">
+                <div style="background-color: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); padding: 30px; margin-bottom: 30px;">
+
+                    <h1 style="font-size: 32px; color: #0d6efd; font-weight: 700; margin-bottom: 15px;">@Model.Title</h1>
+
+                    <div style="color: #6c757d; margin-bottom: 20px; font-size: 14px;">
+                        <span style="margin-right: 15px;"><i class="far fa-calendar-alt"></i> @Model.CreatedAt</span>
+                        <span style="margin-right: 15px;"><i class="far fa-user"></i>@Model.Author?.FullName</span>
+                        <span style="margin-right: 15px;"><i class="far fa-folder"></i> Dịch vụ khám</span>
+                        <span><i class="far fa-eye"></i> 1.234 lượt xem</span>
+                    </div>
+
+                    <img src="~/assets/img/blogs/@Model.Image" alt="Dịch vụ khám sức khỏe toàn diện" style="width: 200px;height:200px; border-radius: 8px; margin-bottom: 25px;">
+
+                    <div style="line-height: 1.8; font-size: 16px; text-align: justify;">
+                    @Html.Raw(Model.ExtraContent)
+                    </div>
+
+                    <!-- Tags -->
+                    <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee;">
+                        <span style="font-weight: 500; margin-right: 10px;">Tags:</span>
+                        <a href="#" style="display: inline-block; background-color: #f0f2f5; color: #495057; padding: 5px 10px; border-radius: 5px; text-decoration: none; font-size: 14px; margin-right: 8px; margin-bottom: 8px;">Khám sức khỏe</a>
+                        <a href="#" style="display: inline-block; background-color: #f0f2f5; color: #495057; padding: 5px 10px; border-radius: 5px; text-decoration: none; font-size: 14px; margin-right: 8px; margin-bottom: 8px;">Sức khỏe gia đình</a>
+                        <a href="#" style="display: inline-block; background-color: #f0f2f5; color: #495057; padding: 5px 10px; border-radius: 5px; text-decoration: none; font-size: 14px; margin-right: 8px; margin-bottom: 8px;">Phòng ngừa bệnh</a>
+                        <a href="#" style="display: inline-block; background-color: #f0f2f5; color: #495057; padding: 5px 10px; border-radius: 5px; text-decoration: none; font-size: 14px; margin-right: 8px; margin-bottom: 8px;">Khám tổng quát</a>
+                    </div>
+
+                    <!-- Chia sẻ -->
+                    <div style="margin-top: 20px;">
+                        <span style="font-weight: 500; margin-right: 10px;">Chia sẻ:</span>
+                        <a href="#" style="display: inline-block; background-color: #3b5998; color: white; width: 36px; height: 36px; border-radius: 50%; text-align: center; line-height: 36px; margin-right: 8px;"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" style="display: inline-block; background-color: #1da1f2; color: white; width: 36px; height: 36px; border-radius: 50%; text-align: center; line-height: 36px; margin-right: 8px;"><i class="fab fa-twitter"></i></a>
+                        <a href="#" style="display: inline-block; background-color: #0077b5; color: white; width: 36px; height: 36px; border-radius: 50%; text-align: center; line-height: 36px; margin-right: 8px;"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" style="display: inline-block; background-color: #25D366; color: white; width: 36px; height: 36px; border-radius: 50%; text-align: center; line-height: 36px;"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+
+                    <!-- Tác giả -->
+                    <div style="margin-top: 40px; background-color: #f8f9fa; border-radius: 8px; padding: 20px; display: flex; align-items: center;">
+                        <img src="/api/placeholder/100/100" alt="TS.BS Nguyễn Văn A" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover;">
+                        <div style="margin-left: 20px;">
+                            <h4 style="margin: 0 0 5px 0; color: #0d6efd;">TS.BS Nguyễn Văn A</h4>
+                            <p style="margin: 0 0 10px 0; color: #6c757d; font-size: 14px;">Trưởng khoa Nội Tổng hợp - Phòng Khám Đa Khoa Sức Khỏe Việt</p>
+                            <p style="margin: 0; font-size: 14px;">TS.BS Nguyễn Văn A có hơn 30 năm kinh nghiệm trong lĩnh vực y khoa dự phòng và nội khoa tổng hợp, tốt nghiệp Đại học Y Hà Nội và tu nghiệp tại Pháp.</p>
+                        </div>
+                    </div>
+
+                    <!-- Bình luận -->
+                    <div style="margin-top: 40px;">
+                        <h3 style="font-size: 24px; margin-bottom: 20px;">Bình luận (3)</h3>
+
+                        <div style="margin-bottom: 30px;">
+                            <div style="display: flex; margin-bottom: 20px;">
+                                <img src="/api/placeholder/60/60" alt="Người bình luận" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;">
+                                <div style="margin-left: 15px; background-color: #f8f9fa; padding: 15px; border-radius: 8px; flex-grow: 1;">
+                                    <h5 style="margin: 0 0 5px 0;">Nguyễn Thị H</h5>
+                                    <p style="margin: 0 0 5px 0; color: #6c757d; font-size: 12px;">20/03/2025</p>
+                                    <p style="margin: 0;">Tôi đã sử dụng dịch vụ khám sức khỏe tổng quát ở đây tháng trước. Rất hài lòng với chất lượng phục vụ và đội ngũ y bác sĩ chuyên nghiệp. Sẽ giới thiệu cho người thân!</p>
+                                </div>
+                            </div>
+
+                            <div style="display: flex; margin-bottom: 20px;">
+                                <img src="/api/placeholder/60/60" alt="Người bình luận" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;">
+                                <div style="margin-left: 15px; background-color: #f8f9fa; padding: 15px; border-radius: 8px; flex-grow: 1;">
+                                    <h5 style="margin: 0 0 5px 0;">Trần Văn L</h5>
+                                    <p style="margin: 0 0 5px 0; color: #6c757d; font-size: 12px;">18/03/2025</p>
+                                    <p style="margin: 0;">Nhờ khám định kỳ ở đây mà tôi phát hiện sớm vấn đề về tim mạch và được điều trị kịp thời. Cảm ơn đội ngũ y bác sĩ tận tâm!</p>
+                                </div>
+                            </div>
+
+                            <div style="display: flex;">
+                                <img src="/api/placeholder/60/60" alt="Người bình luận" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;">
+                                <div style="margin-left: 15px; background-color: #f8f9fa; padding: 15px; border-radius: 8px; flex-grow: 1;">
+                                    <h5 style="margin: 0 0 5px 0;">Lê Thị M</h5>
+                                    <p style="margin: 0 0 5px 0; color: #6c757d; font-size: 12px;">15/03/2025</p>
+                                    <p style="margin: 0;">Tôi rất ấn tượng với cơ sở vật chất và trang thiết bị hiện đại. Thời gian chờ đợi ngắn, bác sĩ tư vấn rất tận tình. Sẽ quay lại vào năm sau.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <form>
+                            <h4 style="font-size: 20px; margin-bottom: 15px;">Để lại bình luận của bạn</h4>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <input type="text" placeholder="Họ tên" style="width: 100%; padding: 10px; border: 1px solid #ced4da; border-radius: 4px; font-size: 14px;">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <input type="email" placeholder="Email" style="width: 100%; padding: 10px; border: 1px solid #ced4da; border-radius: 4px; font-size: 14px;">
+                                </div>
+                                <div class="col-12 mb-3">
+                                    <textarea rows="5" placeholder="Nội dung bình luận" style="width: 100%; padding: 10px; border: 1px solid #ced4da; border-radius: 4px; font-size: 14px;"></textarea>
+                                </div>
+                                <div class="col-12">
+                                    <button type="submit" style="background-color: #0d6efd; color: white; border: none; padding: 10px 20px; border-radius: 4px; font-weight: 500; cursor: pointer;">Gửi bình luận</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="col-lg-4">
+                <!-- Tìm kiếm -->
+                <div style="background-color: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); padding: 20px; margin-bottom: 30px;">
+                    <h3 style="font-size: 20px; margin-bottom: 15px; color: #0d6efd;">Tìm kiếm</h3>
+                    <div style="display: flex;">
+                        <input type="text" placeholder="Nhập từ khóa..." style="flex-grow: 1; padding: 10px; border: 1px solid #ced4da; border-radius: 4px 0 0 4px; font-size: 14px; border-right: none;">
+                        <button style="background-color: #0d6efd; color: white; border: none; padding: 0 15px; border-radius: 0 4px 4px 0; cursor: pointer;"><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+
+                <!-- Đặt lịch khám -->
+                <div style="background-color: #0d6efd; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); padding: 20px; margin-bottom: 30px; color: white;">
+                    <h3 style="font-size: 20px; margin-bottom: 15px; color: white;">Đặt lịch khám ngay</h3>
+                    <p style="margin-bottom: 15px;">Nhận tư vấn miễn phí và đặt lịch khám với bác sĩ chuyên khoa</p>
+                    <form>
+                        <div style="margin-bottom: 10px;">
+                            <input type="text" placeholder="Họ tên" style="width: 100%; padding: 10px; border: none; border-radius: 4px; font-size: 14px;">
+                        </div>
+                        <div style="margin-bottom: 10px;">
+                            <input type="tel" placeholder="Số điện thoại" style="width: 100%; padding: 10px; border: none; border-radius: 4px; font-size: 14px;">
+                        </div>
+                        <div style="margin-bottom: 10px;">
+                            <select style="width: 100%; padding: 10px; border: none; border-radius: 4px; font-size: 14px;">
+                                <option value="">Chọn dịch vụ khám</option>
+                                <option value="1">Khám sức khỏe tổng quát</option>
+                                <option value="2">Khám chuyên khoa Tim mạch</option>
+                                <option value="3">Khám chuyên khoa Tiêu hóa</option>
+                                <option value="4">Khám chuyên khoa Nội tiết</option>
+                            </select>
+                        </div>
+                        <div style="margin-bottom: 15px;">
+                            <input type="date" style="width: 100%; padding: 10px; border: none; border-radius: 4px; font-size: 14px;">
+                        </div>
+                        <button type="submit" style="width: 100%; background-color: white; color: #0d6efd; border: none; padding: 12px; border-radius: 4px; font-weight: 600; cursor: pointer;">ĐẶT LỊCH NGAY</button>
+                    </form>
+                </div>
+
+                <!-- Danh mục bài viết (tiếp tục) -->
+                <div style="background-color: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); padding: 20px; margin-bottom: 30px;">
+                    <h3 style="font-size: 20px; margin-bottom: 15px; color: #0d6efd;">Danh mục bài viết</h3>
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        <li style="border-bottom: 1px solid #eee; padding: 10px 0;"><a href="#" style="text-decoration: none; color: #333; display: flex; justify-content: space-between; align-items: center;">Dịch vụ khám <span style="background-color: #f0f2f5; padding: 3px 8px; border-radius: 10px; font-size: 12px;">24</span></a></li>
+                        <li style="border-bottom: 1px solid #eee; padding: 10px 0;"><a href="#" style="text-decoration: none; color: #333; display: flex; justify-content: space-between; align-items: center;">Chuyên khoa <span style="background-color: #f0f2f5; padding: 3px 8px; border-radius: 10px; font-size: 12px;">18</span></a></li>
+                        <li style="border-bottom: 1px solid #eee; padding: 10px 0;"><a href="#" style="text-decoration: none; color: #333; display: flex; justify-content: space-between; align-items: center;">Cẩm nang sức khỏe <span style="background-color: #f0f2f5; padding: 3px 8px; border-radius: 10px; font-size: 12px;">35</span></a></li>
+                        <li style="border-bottom: 1px solid #eee; padding: 10px 0;"><a href="#" style="text-decoration: none; color: #333; display: flex; justify-content: space-between; align-items: center;">Bệnh thường gặp <span style="background-color: #f0f2f5; padding: 3px 8px; border-radius: 10px; font-size: 12px;">29</span></a></li>
+                        <li style="padding: 10px 0;"><a href="#" style="text-decoration: none; color: #333; display: flex; justify-content: space-between; align-items: center;">Đội ngũ bác sĩ <span style="background-color: #f0f2f5; padding: 3px 8px; border-radius: 10px; font-size: 12px;">12</span></a></li>
+                    </ul>
+                </div>
+
+                <!-- Bài viết liên quan -->
+                <div style="background-color: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); padding: 20px; margin-bottom: 30px;">
+                    <h3 style="font-size: 20px; margin-bottom: 20px; color: #0d6efd;">Bài viết liên quan</h3>
+
+                    <div style="display: flex; margin-bottom: 15px;">
+                        <img src="/api/placeholder/80/80" alt="Bài viết liên quan" style="width: 80px; height: 80px; object-fit: cover; border-radius: 4px;">
+                        <div style="margin-left: 15px;">
+                            <h4 style="font-size: 16px; margin: 0 0 5px 0;"><a href="#" style="text-decoration: none; color: #333;">Tầm soát ung thư sớm - Chìa khóa bảo vệ sức khỏe</a></h4>
+                            <p style="margin: 0; color: #6c757d; font-size: 12px;"><i class="far fa-calendar-alt"></i> 18/03/2025</p>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; margin-bottom: 15px;">
+                        <img src="/api/placeholder/80/80" alt="Bài viết liên quan" style="width: 80px; height: 80px; object-fit: cover; border-radius: 4px;">
+                        <div style="margin-left: 15px;">
+                            <h4 style="font-size: 16px; margin: 0 0 5px 0;"><a href="#" style="text-decoration: none; color: #333;">Những xét nghiệm cần thiết cho người trên 40 tuổi</a></h4>
+                            <p style="margin: 0; color: #6c757d; font-size: 12px;"><i class="far fa-calendar-alt"></i> 15/03/2025</p>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; margin-bottom: 15px;">
+                        <img src="/api/placeholder/80/80" alt="Bài viết liên quan" style="width: 80px; height: 80px; object-fit: cover; border-radius: 4px;">
+                        <div style="margin-left: 15px;">
+                            <h4 style="font-size: 16px; margin: 0 0 5px 0;"><a href="#" style="text-decoration: none; color: #333;">Phương pháp phòng ngừa bệnh tim mạch hiệu quả</a></h4>
+                            <p style="margin: 0; color: #6c757d; font-size: 12px;"><i class="far fa-calendar-alt"></i> 10/03/2025</p>
+                        </div>
+                    </div>
+
+                    <div style="display: flex;">
+                        <img src="/api/placeholder/80/80" alt="Bài viết liên quan" style="width: 80px; height: 80px; object-fit: cover; border-radius: 4px;">
+                        <div style="margin-left: 15px;">
+                            <h4 style="font-size: 16px; margin: 0 0 5px 0;"><a href="#" style="text-decoration: none; color: #333;">Vai trò của chế độ ăn uống trong việc phòng ngừa bệnh tật</a></h4>
+                            <p style="margin: 0; color: #6c757d; font-size: 12px;"><i class="far fa-calendar-alt"></i> 05/03/2025</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tags phổ biến -->
+                <div style="background-color: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); padding: 20px; margin-bottom: 30px;">
+                    <h3 style="font-size: 20px; margin-bottom: 15px; color: #0d6efd;">Tags phổ biến</h3>
+                    <div>
+                        <a href="#" style="display: inline-block; background-color: #f0f2f5; color: #495057; padding: 5px 10px; border-radius: 5px; text-decoration: none; font-size: 14px; margin-right: 8px; margin-bottom: 8px;">Khám sức khỏe</a>
+                        <a href="#" style="display: inline-block; background-color: #f0f2f5; color: #495057; padding: 5px 10px; border-radius: 5px; text-decoration: none; font-size: 14px; margin-right: 8px; margin-bottom: 8px;">Bệnh tim mạch</a>
+                        <a href="#" style="display: inline-block; background-color: #f0f2f5; color: #495057; padding: 5px 10px; border-radius: 5px; text-decoration: none; font-size: 14px; margin-right: 8px; margin-bottom: 8px;">Tiểu đường</a>
+                        <a href="#" style="display: inline-block; background-color: #f0f2f5; color: #495057; padding: 5px 10px; border-radius: 5px; text-decoration: none; font-size: 14px; margin-right: 8px; margin-bottom: 8px;">Phòng ngừa bệnh</a>
+                        <a href="#" style="display: inline-block; background-color: #f0f2f5; color: #495057; padding: 5px 10px; border-radius: 5px; text-decoration: none; font-size: 14px; margin-right: 8px; margin-bottom: 8px;">Dinh dưỡng</a>
+                        <a href="#" style="display: inline-block; background-color: #f0f2f5; color: #495057; padding: 5px 10px; border-radius: 5px; text-decoration: none; font-size: 14px; margin-right: 8px; margin-bottom: 8px;">Thể thao</a>
+                        <a href="#" style="display: inline-block; background-color: #f0f2f5; color: #495057; padding: 5px 10px; border-radius: 5px; text-decoration: none; font-size: 14px; margin-right: 8px; margin-bottom: 8px;">Sức khỏe người cao tuổi</a>
+                        <a href="#" style="display: inline-block; background-color: #f0f2f5; color: #495057; padding: 5px 10px; border-radius: 5px; text-decoration: none; font-size: 14px; margin-right: 8px; margin-bottom: 8px;">Sức khỏe phụ nữ</a>
+                    </div>
+                </div>
+
+                <!-- Banner khuyến mãi -->
+                <div style="background-color: #e9f8ff; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); padding: 20px; margin-bottom: 30px; text-align: center; border: 2px dashed #0d6efd;">
+                    <h3 style="font-size: 20px; margin-bottom: 15px; color: #0d6efd;">Ưu đãi đặc biệt</h3>
+                    <img src="/api/placeholder/300/200" alt="Khuyến mãi đặc biệt" style="width: 100%; border-radius: 8px; margin-bottom: 15px;">
+                    <h4 style="font-size: 18px; margin-bottom: 10px; color: #333;">Giảm 30% gói khám sức khỏe gia đình</h4>
+                    <p style="margin-bottom: 15px; font-size: 14px;">Áp dụng từ 01/03 đến 31/03/2025. Đặt lịch ngay hôm nay!</p>
+                    <a href="#" style="display: inline-block; background-color: #0d6efd; color: white; padding: 10px 20px; border-radius: 5px; text-decoration: none; font-weight: 500; font-size: 16px;">Xem chi tiết</a>
+                </div>
+            </div>
+        </div>
+        
+    </main>
+
+

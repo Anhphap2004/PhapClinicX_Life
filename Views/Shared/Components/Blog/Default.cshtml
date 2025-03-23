@@ -3,6 +3,7 @@
      class="card-list">
     @foreach (var p in Model)
     {
+        string url = $"/blog/{p.BlogId}.html";
         <div style="background-color: white; border-radius: 12px; overflow: hidden; transition: transform 0.3s ease, box-shadow 0.3s ease; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06); height: 100%; display: flex; flex-direction: column;"
              class="card">
             <div style="height: 180px; overflow: hidden;">
@@ -10,9 +11,9 @@
                      src="~/assets/img/blogs/@p.Image" alt="Thuốc 1">
             </div>
             <div style="padding: 16px; flex-grow: 1; display: flex; flex-direction: column;">
-                <h4 style="font-weight: 600; font-size: 16px; margin-bottom: 10px; line-height: 1.4; color: #202124;">
+                <a href="@url" style="font-weight: 600; font-size: 16px; margin-bottom: 10px; line-height: 1.4; color: #202124;">
                     @p.Title
-                </h4>
+                </a>
                 
                 <div style="display: flex; justify-content: space-between">
                 <div style="font-size: 13px; color: #5f6368; margin-top: auto; display: flex; align-items: center; gap: 6px;">
