@@ -1,4 +1,8 @@
 ﻿@model Blog 
+@{
+    List<BlogCategory> blogCategories = ViewBag.blogCategories;
+    List<Blog> relatedBlogs = ViewBag.relatedBlogs;
+}
     <!-- Main Content -->
     <main class="container mt-4">
         <div class="row">
@@ -145,52 +149,33 @@
                 <div style="background-color: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); padding: 20px; margin-bottom: 30px;">
                     <h3 style="font-size: 20px; margin-bottom: 15px; color: #0d6efd;">Danh mục bài viết</h3>
                     <ul style="list-style: none; padding: 0; margin: 0;">
-                        <li style="border-bottom: 1px solid #eee; padding: 10px 0;"><a href="#" style="text-decoration: none; color: #333; display: flex; justify-content: space-between; align-items: center;">Dịch vụ khám <span style="background-color: #f0f2f5; padding: 3px 8px; border-radius: 10px; font-size: 12px;">24</span></a></li>
-                        <li style="border-bottom: 1px solid #eee; padding: 10px 0;"><a href="#" style="text-decoration: none; color: #333; display: flex; justify-content: space-between; align-items: center;">Chuyên khoa <span style="background-color: #f0f2f5; padding: 3px 8px; border-radius: 10px; font-size: 12px;">18</span></a></li>
-                        <li style="border-bottom: 1px solid #eee; padding: 10px 0;"><a href="#" style="text-decoration: none; color: #333; display: flex; justify-content: space-between; align-items: center;">Cẩm nang sức khỏe <span style="background-color: #f0f2f5; padding: 3px 8px; border-radius: 10px; font-size: 12px;">35</span></a></li>
-                        <li style="border-bottom: 1px solid #eee; padding: 10px 0;"><a href="#" style="text-decoration: none; color: #333; display: flex; justify-content: space-between; align-items: center;">Bệnh thường gặp <span style="background-color: #f0f2f5; padding: 3px 8px; border-radius: 10px; font-size: 12px;">29</span></a></li>
-                        <li style="padding: 10px 0;"><a href="#" style="text-decoration: none; color: #333; display: flex; justify-content: space-between; align-items: center;">Đội ngũ bác sĩ <span style="background-color: #f0f2f5; padding: 3px 8px; border-radius: 10px; font-size: 12px;">12</span></a></li>
+                    @foreach (var p in blogCategories)
+                    {
+                        <li style="border-bottom: 1px solid #eee; padding: 10px 0;"><a href="#" style="text-decoration: none; color: #333; display: flex; justify-content: space-between; align-items: center;">@p.CategoryName <span style="background-color: #f0f2f5; padding: 3px 8px; border-radius: 10px; font-size: 12px;">20</span></a></li>
+
+                    }
+                       
                     </ul>
                 </div>
 
                 <!-- Bài viết liên quan -->
                 <div style="background-color: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); padding: 20px; margin-bottom: 30px;">
                     <h3 style="font-size: 20px; margin-bottom: 20px; color: #0d6efd;">Bài viết liên quan</h3>
-
-                    <div style="display: flex; margin-bottom: 15px;">
-                        <img src="/api/placeholder/80/80" alt="Bài viết liên quan" style="width: 80px; height: 80px; object-fit: cover; border-radius: 4px;">
+                @foreach (var p in relatedBlogs)
+                {
+                    string url = $"/blog/{p.BlogId}.html";
+                      <div style="display: flex; margin-bottom: 15px;">
+                        <img src="~/assets/img/blogs/@p.Image" alt="Bài viết liên quan" style="width: 80px; height: 80px; object-fit: cover; border-radius: 4px;">
                         <div style="margin-left: 15px;">
-                            <h4 style="font-size: 16px; margin: 0 0 5px 0;"><a href="#" style="text-decoration: none; color: #333;">Tầm soát ung thư sớm - Chìa khóa bảo vệ sức khỏe</a></h4>
-                            <p style="margin: 0; color: #6c757d; font-size: 12px;"><i class="far fa-calendar-alt"></i> 18/03/2025</p>
+                            <h4 style="font-size: 16px; margin: 0 0 5px 0;"><a href="@url" style="text-decoration: none; color: #333;">@p.Title</a></h4>
+                            <p style="margin: 0; color: #6c757d; font-size: 12px;"><i class="far fa-calendar-alt"></i> @p.CreatedAt</p>
                         </div>
                     </div>
+                 
+                }
+            </div>
 
-                    <div style="display: flex; margin-bottom: 15px;">
-                        <img src="/api/placeholder/80/80" alt="Bài viết liên quan" style="width: 80px; height: 80px; object-fit: cover; border-radius: 4px;">
-                        <div style="margin-left: 15px;">
-                            <h4 style="font-size: 16px; margin: 0 0 5px 0;"><a href="#" style="text-decoration: none; color: #333;">Những xét nghiệm cần thiết cho người trên 40 tuổi</a></h4>
-                            <p style="margin: 0; color: #6c757d; font-size: 12px;"><i class="far fa-calendar-alt"></i> 15/03/2025</p>
-                        </div>
-                    </div>
-
-                    <div style="display: flex; margin-bottom: 15px;">
-                        <img src="/api/placeholder/80/80" alt="Bài viết liên quan" style="width: 80px; height: 80px; object-fit: cover; border-radius: 4px;">
-                        <div style="margin-left: 15px;">
-                            <h4 style="font-size: 16px; margin: 0 0 5px 0;"><a href="#" style="text-decoration: none; color: #333;">Phương pháp phòng ngừa bệnh tim mạch hiệu quả</a></h4>
-                            <p style="margin: 0; color: #6c757d; font-size: 12px;"><i class="far fa-calendar-alt"></i> 10/03/2025</p>
-                        </div>
-                    </div>
-
-                    <div style="display: flex;">
-                        <img src="/api/placeholder/80/80" alt="Bài viết liên quan" style="width: 80px; height: 80px; object-fit: cover; border-radius: 4px;">
-                        <div style="margin-left: 15px;">
-                            <h4 style="font-size: 16px; margin: 0 0 5px 0;"><a href="#" style="text-decoration: none; color: #333;">Vai trò của chế độ ăn uống trong việc phòng ngừa bệnh tật</a></h4>
-                            <p style="margin: 0; color: #6c757d; font-size: 12px;"><i class="far fa-calendar-alt"></i> 05/03/2025</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Tags phổ biến -->
+            <!-- Tags phổ biến -->
                 <div style="background-color: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); padding: 20px; margin-bottom: 30px;">
                     <h3 style="font-size: 20px; margin-bottom: 15px; color: #0d6efd;">Tags phổ biến</h3>
                     <div>

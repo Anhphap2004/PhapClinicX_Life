@@ -23,8 +23,16 @@ namespace PhapClinicX.Controllers
             {
                 return NotFound();
             }
-            ViewBag.BlogId = id;
+           
             var blog = await _context.Blogs.Include(p=>p.Author).Where(p => p.IsActive == true).FirstOrDefaultAsync(m => m.BlogId == id);
+
+            if (blog == null)
+            {
+                return NotFound(); // Nếu không tìm thấy bài viết
+            }
+            ViewBag.RelatedBlogs = _context.Blogs.Include(p=>p.Category).Where(p => p.IsActive == true && p.BlogId != id && p.CategoryId == blog.CategoryId).OrderByDescending(p => p.CreatedAt).Take(4).ToList();
+            ViewBag.BlogCategories = _context.BlogCategories.Where(p => p.IsActive == true).ToList();
+            ViewBag.BlogId = id;
             return View(blog);
 
         }
