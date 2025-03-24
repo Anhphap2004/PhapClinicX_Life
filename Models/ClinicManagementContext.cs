@@ -29,6 +29,8 @@ public partial class ClinicManagementContext : DbContext
 
     public virtual DbSet<Contact> Contacts { get; set; }
 
+    public virtual DbSet<Discount> Discounts { get; set; }
+
     public virtual DbSet<DoanhThuPhongKham> DoanhThuPhongKhams { get; set; }
 
     public virtual DbSet<DoanhThuTong> DoanhThuTongs { get; set; }
@@ -69,7 +71,7 @@ public partial class ClinicManagementContext : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
-  
+    
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -226,6 +228,18 @@ public partial class ClinicManagementContext : DbContext
                 .HasColumnName("fullname");
             entity.Property(e => e.Message).HasColumnName("message");
             entity.Property(e => e.Phone).HasColumnName("phone");
+        });
+
+        modelBuilder.Entity<Discount>(entity =>
+        {
+            entity.HasKey(e => e.DiscountId).HasName("PK__Discount__E43F6D9693B170A7");
+
+            entity.Property(e => e.DiscountName).HasMaxLength(255);
+            entity.Property(e => e.DiscountPercent).HasColumnType("decimal(5, 2)");
+            entity.Property(e => e.EndDate).HasColumnType("datetime");
+            entity.Property(e => e.Image).HasMaxLength(255);
+            entity.Property(e => e.IsActive).HasDefaultValue(true);
+            entity.Property(e => e.StartDate).HasColumnType("datetime");
         });
 
         modelBuilder.Entity<DoanhThuPhongKham>(entity =>
@@ -557,6 +571,7 @@ public partial class ClinicManagementContext : DbContext
             entity.HasKey(e => e.PackageId).HasName("PK__ServiceP__63846AE8E83AB9B7");
 
             entity.Property(e => e.PackageId).HasColumnName("package_id");
+            entity.Property(e => e.Date).HasColumnName("date");
             entity.Property(e => e.Image)
                 .HasMaxLength(255)
                 .HasColumnName("image");

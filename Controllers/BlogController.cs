@@ -35,14 +35,25 @@ namespace PhapClinicX.Controllers
             await _context.SaveChangesAsync();
             ViewBag.RelatedBlogs = _context.Blogs.Include(p=>p.Category).Where(p => p.IsActive == true && p.BlogId != id && p.CategoryId == blog.CategoryId).OrderByDescending(p => p.CreatedAt).Take(4).ToList();
             ViewBag.BlogCategories = _context.BlogCategories
-    .Select(c => new CategoryWithCountViewModel
-    {
+             .Select(c => new CategoryWithCountViewModel
+             {
         CategoryId = c.CategoryId,
         CategoryName = c.CategoryName,
         BlogCount = _context.Blogs.Count(b => b.CategoryId == c.CategoryId && b.IsActive == true)
     })
     .ToList() ?? new List<CategoryWithCountViewModel>(); // Tránh null
-
+            var RandomDiscount = await _context.Discounts
+                .Where(d => d.IsActive == true && d.StartDate <= DateTime.Now && d.EndDate >= DateTime.Now)
+                .OrderBy(r => Guid.NewGuid()) // Random
+                .FirstOrDefaultAsync();
+            if (RandomDiscount == null)
+            {
+                ViewBag.Discount = 0;
+            }
+            else
+            {
+                ViewBag.Discount = RandomDiscount;
+            }
 
 
             ViewBag.BlogId = id;

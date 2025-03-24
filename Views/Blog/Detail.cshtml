@@ -2,6 +2,8 @@
 @{
     var BlogCategories = ViewBag.BlogCategories as List<CategoryWithCountViewModel>;
     List<Blog> relatedBlogs = ViewBag.relatedBlogs;
+    var discount = ViewBag.Discount as PhapClinicX.Models.Discount;
+
 }
     <!-- Main Content -->
     <main class="container mt-4">
@@ -15,7 +17,7 @@
                     <div style="color: #6c757d; margin-bottom: 20px; font-size: 14px;">
                         <span style="margin-right: 15px;"><i class="far fa-calendar-alt"></i> @Model.CreatedAt</span>
                         <span style="margin-right: 15px;"><i class="far fa-user"></i>@Model.Author?.FullName</span>
-                        <span style="margin-right: 15px;"><i class="far fa-folder"></i> Dịch vụ khám</span>
+                        <span style="margin-right: 15px;"><i class="far fa-folder"></i> @Model.Category?.CategoryName</span>
                         <span><i class="far fa-eye"></i> @Model.Viewcount lượt xem</span>
                     </div>
 
@@ -45,11 +47,11 @@
 
                     <!-- Tác giả -->
                     <div style="margin-top: 40px; background-color: #f8f9fa; border-radius: 8px; padding: 20px; display: flex; align-items: center;">
-                        <img src="/api/placeholder/100/100" alt="TS.BS Nguyễn Văn A" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover;">
+                        <img src="~/assets/img/team/hongquan.png" alt="TS.BS Nguyễn Văn A" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover;">
                         <div style="margin-left: 20px;">
-                            <h4 style="margin: 0 0 5px 0; color: #0d6efd;">TS.BS Nguyễn Văn A</h4>
+                            <h4 style="margin: 0 0 5px 0; color: #0d6efd;">TS.BS Hồng Quân</h4>
                             <p style="margin: 0 0 10px 0; color: #6c757d; font-size: 14px;">Trưởng khoa Nội Tổng hợp - Phòng Khám Đa Khoa Sức Khỏe Việt</p>
-                            <p style="margin: 0; font-size: 14px;">TS.BS Nguyễn Văn A có hơn 30 năm kinh nghiệm trong lĩnh vực y khoa dự phòng và nội khoa tổng hợp, tốt nghiệp Đại học Y Hà Nội và tu nghiệp tại Pháp.</p>
+                            <p style="margin: 0; font-size: 14px;">TS.BS Hồng Quân có hơn 30 năm kinh nghiệm trong lĩnh vực y khoa dự phòng và nội khoa tổng hợp, tốt nghiệp Đại học Y Hà Nội và tu nghiệp tại Pháp.</p>
                         </div>
                     </div>
 
@@ -203,13 +205,17 @@
                 </div>
 
                 <!-- Banner khuyến mãi -->
+             @if(discount != null)
+            {
                 <div style="background-color: #e9f8ff; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); padding: 20px; margin-bottom: 30px; text-align: center; border: 2px dashed #0d6efd;">
-                    <h3 style="font-size: 20px; margin-bottom: 15px; color: #0d6efd;">Ưu đãi đặc biệt</h3>
-                    <img src="/api/placeholder/300/200" alt="Khuyến mãi đặc biệt" style="width: 100%; border-radius: 8px; margin-bottom: 15px;">
-                    <h4 style="font-size: 18px; margin-bottom: 10px; color: #333;">Giảm 30% gói khám sức khỏe gia đình</h4>
-                    <p style="margin-bottom: 15px; font-size: 14px;">Áp dụng từ 01/03 đến 31/03/2025. Đặt lịch ngay hôm nay!</p>
-                    <a href="#" style="display: inline-block; background-color: #0d6efd; color: white; padding: 10px 20px; border-radius: 5px; text-decoration: none; font-weight: 500; font-size: 16px;">Xem chi tiết</a>
+                    <h3 style="font-size: 20px; margin-bottom: 15px; color: #0d6efd;">🔥 ƯU ĐÃI ĐẶC BIỆT 🔥</h3>
+                    <img src="~/assets/img/service_sale/@discount.Image" alt="Khuyến mãi đặc biệt" style="width: 100%; border-radius: 8px; margin-bottom: 15px;">
+                    <h4 style="font-size: 18px; margin-bottom: 10px; color: #333;">Giảm @discount.DiscountPercent.ToString("0")% gói @discount.DiscountName</h4>
+                    <p style="margin-bottom: 15px; font-size: 14px;">Áp dụng từ @discount.StartDate đến @discount.EndDate</p>
+                    <a asp-controller="Home" asp-action="Index" style="display: inline-block; background-color: #0d6efd; color: white; padding: 10px 20px; border-radius: 5px; text-decoration: none; font-weight: 500; font-size: 16px;">Đặt Lịch Khám Ngay!</a>
                 </div>
+            }
+            
             </div>
         </div>
         

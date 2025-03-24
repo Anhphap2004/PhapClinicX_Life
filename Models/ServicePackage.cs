@@ -16,4 +16,6 @@ public partial class ServicePackage
     public string? Image { get; set; }
 
     public string? Title { get; set; }
+
+    public DateOnly? Date { get; set; }
 }
