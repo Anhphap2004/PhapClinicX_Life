@@ -65,5 +65,37 @@ namespace PhapClinicX.Controllers
             return View(blog);
 
         }
+
+
+        [HttpPost]
+        public async Task<IActionResult> Comment(int BlogId, string Comment)
+        {
+            var userId = HttpContext.Session.GetInt32("UserId");
+            if (userId == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+
+            // Kiểm tra BlogId có hợp lệ không
+            var blogExists = await _context.Blogs.AnyAsync(b => b.BlogId == BlogId);
+            if (!blogExists)
+            {
+                return BadRequest("Bài viết không tồn tại."); // Tránh lỗi khóa ngoại
+            }
+
+            var newComment = new BlogComment
+            {
+                BlogId = BlogId,
+                UserId = userId.Value,  // Đảm bảo UserId không null
+                Comment = Comment,
+                CreatedAt = DateTime.Now
+            };
+
+            _context.BlogComments.Add(newComment);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Detail", "Blog", new { id = BlogId });
+        }
+
     }
 }

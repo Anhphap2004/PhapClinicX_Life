@@ -75,7 +75,7 @@ public class RegisterController : Controller
         await _context.SaveChangesAsync();
 
         TempData["SuccessMessage"] = "🎉 Đăng ký thành công. Vui lòng đăng nhập!";
-        return RedirectToAction("Login", "Auth");
+        return RedirectToAction("Index", "Login");
     }
 
 
