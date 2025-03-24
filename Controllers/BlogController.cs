@@ -34,7 +34,17 @@ namespace PhapClinicX.Controllers
             _context.Update(blog);
             await _context.SaveChangesAsync();
             ViewBag.RelatedBlogs = _context.Blogs.Include(p=>p.Category).Where(p => p.IsActive == true && p.BlogId != id && p.CategoryId == blog.CategoryId).OrderByDescending(p => p.CreatedAt).Take(4).ToList();
-            ViewBag.BlogCategories = _context.BlogCategories.Where(p => p.IsActive == true).ToList();
+            ViewBag.BlogCategories = _context.BlogCategories
+    .Select(c => new CategoryWithCountViewModel
+    {
+        CategoryId = c.CategoryId,
+        CategoryName = c.CategoryName,
+        BlogCount = _context.Blogs.Count(b => b.CategoryId == c.CategoryId && b.IsActive == true)
+    })
+    .ToList() ?? new List<CategoryWithCountViewModel>(); // Tránh null
+
+
+
             ViewBag.BlogId = id;
             return View(blog);
 

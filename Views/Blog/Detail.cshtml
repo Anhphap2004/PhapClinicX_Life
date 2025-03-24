@@ -1,6 +1,6 @@
 ﻿@model Blog 
 @{
-    List<BlogCategory> blogCategories = ViewBag.blogCategories;
+    var BlogCategories = ViewBag.BlogCategories as List<CategoryWithCountViewModel>;
     List<Blog> relatedBlogs = ViewBag.relatedBlogs;
 }
     <!-- Main Content -->
@@ -145,18 +145,30 @@
                     </form>
                 </div>
 
-                <!-- Danh mục bài viết (tiếp tục) -->
-                <div style="background-color: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); padding: 20px; margin-bottom: 30px;">
-                    <h3 style="font-size: 20px; margin-bottom: 15px; color: #0d6efd;">Danh mục bài viết</h3>
-                    <ul style="list-style: none; padding: 0; margin: 0;">
-                    @foreach (var p in blogCategories)
-                    {
-                        <li style="border-bottom: 1px solid #eee; padding: 10px 0;"><a href="#" style="text-decoration: none; color: #333; display: flex; justify-content: space-between; align-items: center;">@p.CategoryName <span style="background-color: #f0f2f5; padding: 3px 8px; border-radius: 10px; font-size: 12px;">20</span></a></li>
+            <!-- Danh mục bài viết -->
+            <div style="background-color: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); padding: 20px; margin-bottom: 30px;">
+                <h3 style="font-size: 20px; margin-bottom: 15px; color: #0d6efd;">Danh mục bài viết</h3>
 
-                    }
-                       
+                @if (BlogCategories != null && BlogCategories.Any())
+                {
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        @foreach (var p in BlogCategories)
+                        {
+                            <li style="border-bottom: 1px solid #eee; padding: 10px 0;">
+                                <a href="#" style="text-decoration: none; color: #333; display: flex; justify-content: space-between; align-items: center;">
+                                    @p.CategoryName
+                                    <span style="background-color: #f0f2f5; padding: 3px 8px; border-radius: 10px; font-size: 12px;">@p.BlogCount</span>
+                                </a>
+                            </li>
+                        }
                     </ul>
-                </div>
+                }
+                else
+                {
+                    <p>Không có danh mục nào.</p>
+                }
+            </div>
+
 
                 <!-- Bài viết liên quan -->
                 <div style="background-color: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); padding: 20px; margin-bottom: 30px;">
