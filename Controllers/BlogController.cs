@@ -54,6 +54,11 @@ namespace PhapClinicX.Controllers
             {
                 ViewBag.Discount = RandomDiscount;
             }
+            ViewBag.blogComments = await _context.BlogComments
+      .Include(p => p.User) // Lấy thông tin User
+      .Where(p => p.BlogId == id)
+      .OrderBy(p => p.CreatedAt)
+      .ToListAsync();
 
 
             ViewBag.BlogId = id;
