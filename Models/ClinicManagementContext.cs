@@ -118,6 +118,7 @@ public partial class ClinicManagementContext : DbContext
             entity.Property(e => e.Title)
                 .HasMaxLength(255)
                 .HasColumnName("title");
+            entity.Property(e => e.Viewcount).HasColumnName("viewcount");
 
             entity.HasOne(d => d.Author).WithMany(p => p.Blogs)
                 .HasForeignKey(d => d.AuthorId)
@@ -204,6 +205,7 @@ public partial class ClinicManagementContext : DbContext
 
             entity.HasOne(d => d.PhongKham).WithMany(p => p.ClinicAppointments)
                 .HasForeignKey(d => d.PhongKhamId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_ClinicAppointments_PhongKham");
         });
 

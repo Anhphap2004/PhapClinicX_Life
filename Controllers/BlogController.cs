@@ -30,6 +30,9 @@ namespace PhapClinicX.Controllers
             {
                 return NotFound(); // Nếu không tìm thấy bài viết
             }
+            blog.Viewcount++;
+            _context.Update(blog);
+            await _context.SaveChangesAsync();
             ViewBag.RelatedBlogs = _context.Blogs.Include(p=>p.Category).Where(p => p.IsActive == true && p.BlogId != id && p.CategoryId == blog.CategoryId).OrderByDescending(p => p.CreatedAt).Take(4).ToList();
             ViewBag.BlogCategories = _context.BlogCategories.Where(p => p.IsActive == true).ToList();
             ViewBag.BlogId = id;

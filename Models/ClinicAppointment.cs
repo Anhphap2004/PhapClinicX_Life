@@ -15,7 +15,7 @@ public partial class ClinicAppointment
 
     public string? Status { get; set; }
 
-    public int? PhongKhamId { get; set; }
+    public int PhongKhamId { get; set; }
 
-    public virtual PhongKham? PhongKham { get; set; }
+    public virtual PhongKham PhongKham { get; set; } = null!;
 }

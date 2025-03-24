@@ -23,6 +23,8 @@ public partial class Blog
 
     public bool? IsActive { get; set; }
 
+    public int? Viewcount { get; set; }
+
     public virtual User? Author { get; set; }
 
     public virtual ICollection<BlogComment> BlogComments { get; set; } = new List<BlogComment>();
