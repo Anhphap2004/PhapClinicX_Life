@@ -15,7 +15,7 @@ public partial class Menu
 
     public int? ParentId { get; set; }
 
-    public bool? IsActive { get; set; }
+    public bool IsActive { get; set; }
 
     public virtual ICollection<Menu> InverseParent { get; set; } = new List<Menu>();
 
