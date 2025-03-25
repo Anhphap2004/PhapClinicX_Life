@@ -86,7 +86,7 @@ namespace PhapClinicX.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ContactId,Fullname,Message,CreatedAt,Phone,Email")] Contact contact)
+        public async Task<IActionResult> Edit(int id, [Bind("ContactId,Fullname,Message,CreatedAt,Phone,Email,Status")] Contact contact)
         {
             if (id != contact.ContactId)
             {

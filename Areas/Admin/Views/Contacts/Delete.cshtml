@@ -1,52 +1,43 @@
 ﻿@model PhapClinicX.Models.Contact
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Xóa Liên Hệ";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Delete</h1>
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="card shadow-lg rounded-3">
+                <div class="card-header bg-danger text-white text-center">
+                    <h4>❌ Xóa Liên Hệ</h4>
+                </div>
+                <div class="card-body">
+                    <p class="text-center text-muted">Bạn có chắc chắn muốn xóa liên hệ này?</p>
+                    <dl class="row">
+                        <dt class="col-sm-4 fw-bold text-end">Họ và tên:</dt>
+                        <dd class="col-sm-8">@Html.DisplayFor(model => model.Fullname)</dd>
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>Contact</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Fullname)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Fullname)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Message)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Message)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CreatedAt)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CreatedAt)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Phone)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Phone)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-    </dl>
-    
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="ContactId" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
-    </form>
+                        <dt class="col-sm-4 fw-bold text-end">Nội dung:</dt>
+                        <dd class="col-sm-8">@Html.DisplayFor(model => model.Message)</dd>
+
+                        <dt class="col-sm-4 fw-bold text-end">Ngày tạo:</dt>
+                        <dd class="col-sm-8">@Html.DisplayFor(model => model.CreatedAt)</dd>
+
+                        <dt class="col-sm-4 fw-bold text-end">Số điện thoại:</dt>
+                        <dd class="col-sm-8">@Html.DisplayFor(model => model.Phone)</dd>
+
+                        <dt class="col-sm-4 fw-bold text-end">Email:</dt>
+                        <dd class="col-sm-8">@Html.DisplayFor(model => model.Email)</dd>
+                    </dl>
+
+                    <form asp-action="Delete" class="text-center">
+                        <input type="hidden" asp-for="ContactId" />
+                        <button type="submit" class="btn btn-danger px-4">🗑 Xóa</button>
+                        <a asp-action="Index" class="btn btn-secondary px-4">🔙 Quay lại</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

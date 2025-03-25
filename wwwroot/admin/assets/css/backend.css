@@ -4473,8 +4473,9 @@ button.bg-warning:focus {
   background-color: #ff723d !important; }
 
 .bg-danger {
-  color: #561835 !important;
-  background-color: #E08DB4 !important; }
+    color: #cc1515 !important;
+    background-color: #E08DB4 !important;
+}
 
 a.bg-danger:hover, a.bg-danger:focus,
 button.bg-danger:hover,
@@ -11005,8 +11006,9 @@ button.badge-warning:focus {
   background-color: #ff723d !important; }
 
 .bg-danger {
-  color: #fff !important;
-  background-color: #E08DB4 !important; }
+    color: #fff !important;
+    background-color: #cc1515 !important;
+}
 
 a.bg-danger:hover, a.bg-danger:focus,
 button.bg-danger:hover,

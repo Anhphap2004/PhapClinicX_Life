@@ -16,4 +16,6 @@ public partial class Contact
     public int Phone { get; set; }
 
     public string Email { get; set; } = null!;
+
+    public bool Status { get; set; }
 }

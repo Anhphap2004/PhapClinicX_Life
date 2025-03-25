@@ -228,6 +228,7 @@ public partial class ClinicManagementContext : DbContext
                 .HasColumnName("fullname");
             entity.Property(e => e.Message).HasColumnName("message");
             entity.Property(e => e.Phone).HasColumnName("phone");
+            entity.Property(e => e.Status).HasColumnName("status");
         });
 
         modelBuilder.Entity<Discount>(entity =>
