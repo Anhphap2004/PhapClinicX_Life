@@ -26,31 +26,24 @@ namespace PhapClinicX.Areas.Admin.Controllers
             return View(await clinicManagementContext.ToListAsync());
         }
 
-        // GET: Admin/Menus/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var menu = await _context.Menus
-                .Include(m => m.Parent)
-                .FirstOrDefaultAsync(m => m.MenuId == id);
-            if (menu == null)
-            {
-                return NotFound();
-            }
-
-            return View(menu);
-        }
-
+        // GET: Admin/Menus/Create
         // GET: Admin/Menus/Create
         public IActionResult Create()
         {
-            ViewData["ParentId"] = new SelectList(_context.Menus, "MenuId", "MenuId");
+            var menus = _context.Menus
+                .Select(m => new SelectListItem { Value = m.MenuId.ToString(), Text = m.MenuName })
+                .ToList();
+
+            // Thêm lựa chọn mặc định "Không có menu cha" với giá trị 0
+            menus.Insert(0, new SelectListItem { Value = "0", Text = "Không có menu cha", Selected = true });
+
+            ViewBag.ParentId = new SelectList(menus, "Value", "Text");
+
             return View();
         }
+
+
+
 
         // POST: Admin/Menus/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -59,15 +52,27 @@ namespace PhapClinicX.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("MenuId,MenuName,Url,Position,ParentId,IsActive")] Menu menu)
         {
+            if (menu.ParentId == 0) // Nếu chọn "Không có menu cha"
+            {
+                menu.ParentId = null;
+            }
+
             if (ModelState.IsValid)
             {
                 _context.Add(menu);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ParentId"] = new SelectList(_context.Menus, "MenuId", "MenuId", menu.ParentId);
+
+            var menuList = _context.Menus
+                .Select(m => new { m.MenuId, m.MenuName })
+                .ToList();
+
+            ViewData["ParentId"] = new SelectList(menuList, "MenuId", "MenuName", menu.ParentId);
+
             return View(menu);
         }
+
 
         // GET: Admin/Menus/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -82,7 +87,15 @@ namespace PhapClinicX.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            ViewData["ParentId"] = new SelectList(_context.Menus, "MenuId", "MenuId", menu.ParentId);
+            var menus = _context.Menus
+               .Select(m => new SelectListItem { Value = m.MenuId.ToString(), Text = m.MenuName })
+               .ToList();
+
+            // Thêm lựa chọn mặc định "Không có menu cha" với giá trị 0
+            menus.Insert(0, new SelectListItem { Value = "0", Text = "Không có menu cha", Selected = true });
+
+            ViewBag.ParentId = new SelectList(menus, "Value", "Text");
+
             return View(menu);
         }
 
@@ -96,6 +109,10 @@ namespace PhapClinicX.Areas.Admin.Controllers
             if (id != menu.MenuId)
             {
                 return NotFound();
+            }
+            if (menu.ParentId == 0)
+            {
+                menu.ParentId = null;
             }
 
             if (ModelState.IsValid)
@@ -118,7 +135,13 @@ namespace PhapClinicX.Areas.Admin.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ParentId"] = new SelectList(_context.Menus, "MenuId", "MenuId", menu.ParentId);
+
+            var menuList = _context.Menus
+    .Select(m => new { m.MenuId, m.MenuName })
+    .ToList();
+
+            ViewData["ParentId"] = new SelectList(menuList, "MenuId", "MenuName", menu.ParentId);
+           
             return View(menu);
         }
 
