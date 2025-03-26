@@ -5,69 +5,99 @@
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Details</h1>
+<h1>Chi tiết Blog</h1>
 
 <div>
-    <h4>Blog</h4>
+    <h4>Thông tin Blog</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Title)
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Title)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.Title)</dd>
+
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Content)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.Content)</dd>
+
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Image)</dt>
+        <dd class="col-sm-10">
+            <img src="@Url.Content(Model.Image != null ? $"/assets/img/blogs/{Model.Image}" : "~/assets/img/default.jpg")"
+                 class="img-fluid border rounded" style="max-width: 300px;" />
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Content)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Content)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Image)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Image)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ExtraContent)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ExtraContent)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CreatedAt)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CreatedAt)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IsActive)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsActive)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Viewcount)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Viewcount)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Author)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Author.UserId)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Category)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Category.CategoryId)
-        </dd>
+
+        @if (!string.IsNullOrEmpty(Model.ExtraContent))
+        {
+            <dt class="col-sm-2">@Html.DisplayNameFor(model => model.ExtraContent)</dt>
+            <dd class="col-sm-10">@Html.DisplayFor(model => model.ExtraContent)</dd>
+        }
+
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.CreatedAt)</dt>
+        <dd class="col-sm-10">@Model.CreatedAt?.ToString("dd/MM/yyyy HH:mm")</dd>
+
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.IsActive)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.IsActive)</dd>
+
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Viewcount)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.Viewcount)</dd>
+
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Author)</dt>
+        <dd class="col-sm-10">@Model.Author?.FullName</dd>
+
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Category)</dt>
+        <dd class="col-sm-10">@Model.Category?.CategoryName</dd>
     </dl>
 </div>
+
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.BlogId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model?.BlogId" class="btn btn-warning">
+        <i class="fas fa-edit"></i> Chỉnh sửa
+    </a>
+    <a asp-action="Index" class="btn btn-secondary">
+        <i class="fas fa-list"></i> Quay lại danh sách
+    </a>
 </div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-lite.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#summernoteEditor').summernote({
+                placeholder: 'Nhập nội dung...',
+                tabsize: 2,
+                height: 300,
+                toolbar: [
+                    ['style', ['style']],
+                    ['font', ['bold', 'underline', 'clear']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['table', ['table']],
+                    ['insert', ['link', 'picture', 'video']],
+                    ['view', ['fullscreen', 'codeview', 'help']]
+                ]
+            });
+        });
+    </script>
+    <script>
+        document.getElementById("imageUpload").addEventListener("change", function (event) {
+            let file = event.target.files[0];
+            if (file) {
+                let reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById("imagePreview").src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+
+                let formData = new FormData();
+                formData.append("file", file);
+
+                fetch("/Admin/Blogs/UploadImage", {
+                    method: "POST",
+                    body: formData
+                })
+                .then(response => response.text())
+                .then(imagePath => {
+                    document.getElementById("ImagePath").value = imagePath;
+                })
+                .catch(error => console.error("Lỗi upload ảnh:", error));
+            }
+        });
+    </script>
+}
