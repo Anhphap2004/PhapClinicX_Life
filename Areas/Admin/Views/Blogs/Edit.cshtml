@@ -29,11 +29,23 @@
                 <input asp-for="Content" class="form-control" />
                 <span asp-validation-for="Content" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Image" class="control-label"></label>
-                <input asp-for="Image" class="form-control" />
+            <div class="mb-3">
+                <label class="form-label fw-bold">
+                    <i class="fas fa-image"></i> Ảnh
+                </label>
+                <input type="file" id="imageUpload" class="form-control" accept="image/*" />
+                <input type="hidden" asp-for="Image" id="ImagePath" />
                 <span asp-validation-for="Image" class="text-danger"></span>
+
+                <!-- Hiển thị ảnh trước đó -->
+                <div class="mt-3">
+                    <img id="imagePreview" src="@Url.Content(Model.Image != null ? $"/assets/img/blogs/{Model.Image}" : "~/assets/img/default.jpg")"
+                         class="img-fluid border rounded" style="max-width: 200px;" />
+                </div>
+
+
             </div>
+
             <div class="form-group">
                 <label asp-for="AuthorId" class="control-label"></label>
                 <select asp-for="AuthorId" class="form-control" asp-items="ViewBag.AuthorId"></select>
@@ -71,5 +83,52 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <!-- Summernote JS -->
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-lite.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#summernoteEditor').summernote({
+                placeholder: 'Nhập nội dung...',
+                tabsize: 2,
+                height: 300,
+                toolbar: [
+                    ['style', ['style']],
+                    ['font', ['bold', 'underline', 'clear']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['table', ['table']],
+                    ['insert', ['link', 'picture', 'video']],
+                    ['view', ['fullscreen', 'codeview', 'help']]
+                ]
+            });
+        });
+    </script>
+    <script>
+        document.getElementById("imageUpload").addEventListener("change", function (event) {
+            let file = event.target.files[0];
+            if (file) {
+                let reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById("imagePreview").src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+
+                // Gửi ảnh lên server
+                let formData = new FormData();
+                formData.append("file", file);
+
+                fetch("/Admin/Blogs/UploadImage", {
+                    method: "POST",
+                    body: formData
+                })
+                .then(response => response.text())
+                .then(imagePath => {
+                    document.getElementById("ImagePath").value = imagePath; // Gán đường dẫn ảnh vào input ẩn
+                })
+                .catch(error => console.error("Lỗi upload ảnh:", error));
+            }
+        });
+    </script>
+
+
 }

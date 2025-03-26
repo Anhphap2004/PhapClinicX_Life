@@ -45,12 +45,41 @@ namespace PhapClinicX.Areas.Admin.Controllers
 
             return View(blog);
         }
+        [HttpPost]
+        public async Task<IActionResult> UploadImage(IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+            {
+                return BadRequest("Vui lòng chọn ảnh hợp lệ!");
+            }
+
+            // Tạo thư mục nếu chưa tồn tại
+            string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/assets/img/blogs");
+            if (!Directory.Exists(uploadsFolder))
+            {
+                Directory.CreateDirectory(uploadsFolder);
+            }
+
+            // Tạo tên file duy nhất
+            string uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+            string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+            // Lưu file vào thư mục
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await file.CopyToAsync(stream);
+            }
+
+            // Trả về đường dẫn ảnh để lưu vào database
+            string imagePath = uniqueFileName;
+            return Ok(imagePath);
+        }
 
         // GET: Admin/Blogs/Create
         public IActionResult Create()
         {
-            ViewData["AuthorId"] = new SelectList(_context.Users, "UserId", "UserId");
-            ViewData["CategoryId"] = new SelectList(_context.BlogCategories, "CategoryId", "CategoryId");
+            ViewData["AuthorId"] = new SelectList(_context.Users, "UserId", "FullName");
+            ViewData["CategoryId"] = new SelectList(_context.BlogCategories, "CategoryId", "CategoryName");
             return View();
         }
 
@@ -63,14 +92,25 @@ namespace PhapClinicX.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                blog.CreatedAt = DateTime.Now;
+
+                // Ảnh đã được upload trước đó → chỉ lấy đường dẫn từ input
+                if (string.IsNullOrEmpty(blog.Image))
+                {
+                    blog.Image = "/assets/img/default.jpg"; // Ảnh mặc định nếu không chọn ảnh
+                }
+                blog.IsActive = true;
                 _context.Add(blog);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AuthorId"] = new SelectList(_context.Users, "UserId", "UserId", blog.AuthorId);
-            ViewData["CategoryId"] = new SelectList(_context.BlogCategories, "CategoryId", "CategoryId", blog.CategoryId);
+
+            ViewData["AuthorId"] = new SelectList(_context.Users, "UserId", "FullName", blog.AuthorId);
+            ViewData["CategoryId"] = new SelectList(_context.BlogCategories, "CategoryId", "CategoryName", blog.CategoryId);
             return View(blog);
         }
+
+
 
         // GET: Admin/Blogs/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -85,8 +125,8 @@ namespace PhapClinicX.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            ViewData["AuthorId"] = new SelectList(_context.Users, "UserId", "UserId", blog.AuthorId);
-            ViewData["CategoryId"] = new SelectList(_context.BlogCategories, "CategoryId", "CategoryId", blog.CategoryId);
+            ViewData["AuthorId"] = new SelectList(_context.Users, "UserId", "FullName", blog.AuthorId);
+            ViewData["CategoryId"] = new SelectList(_context.BlogCategories, "CategoryId", "CategoryName", blog.CategoryId);
             return View(blog);
         }
 
@@ -122,8 +162,8 @@ namespace PhapClinicX.Areas.Admin.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AuthorId"] = new SelectList(_context.Users, "UserId", "UserId", blog.AuthorId);
-            ViewData["CategoryId"] = new SelectList(_context.BlogCategories, "CategoryId", "CategoryId", blog.CategoryId);
+            ViewData["AuthorId"] = new SelectList(_context.Users, "UserId", "FullName", blog.AuthorId);
+            ViewData["CategoryId"] = new SelectList(_context.BlogCategories, "CategoryId", "CategoryName", blog.CategoryId);
             return View(blog);
         }
 
