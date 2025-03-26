@@ -1,0 +1,61 @@
+﻿@model IEnumerable<PhapClinicX.Models.DoctorAppointment>
+
+@{
+    ViewData["Title"] = "Danh sách cuộc hẹn";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Danh sách Lịch Đặt Khám</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-success">Tạo lịch khám mới</a>
+</p>
+
+<table class="table table-bordered table-hover">
+    <thead class="table-dark">
+        <tr>
+            <th>STT</th>
+            <th>Bác Sĩ</th>
+            <th>Ngày/Giờ Đặt</th>
+            <th>Trạng Thái</th>
+            <th>Người đặt</th>
+            <th>Số điện thoại</th>
+            <th>Hành động</th>
+        </tr>
+    </thead>
+    @{
+        int p = 1;
+    }
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@(p++)</td>
+                <td>
+                    @if (item.Doctor != null)
+                    {
+                        @Html.DisplayFor(modelItem => item.Doctor.Fullname)
+                    }
+                </td>
+                <td>@Html.DisplayFor(modelItem => item.DateTime)</td>
+                <td>
+                    @if (item.Status)
+                    {
+                        <span class="badge bg-success">Đã xác nhận</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-warning">Chờ xác nhận</span>
+                    }
+                </td>
+                <td>@Html.DisplayFor(modelItem => item.Fullname)</td>
+                <td>@Html.DisplayFor(modelItem => item.Phone)</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.AppointmentId" class="btn btn-primary btn-sm">Sửa</a>
+                    <a asp-action="Details" asp-route-id="@item.AppointmentId" class="btn btn-info btn-sm">Chi tiết</a>
+                    <a asp-action="Delete" asp-route-id="@item.AppointmentId" class="btn btn-danger btn-sm">Xóa</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

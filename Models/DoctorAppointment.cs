@@ -13,7 +13,7 @@ public partial class DoctorAppointment
 
     public DateTime? DateTime { get; set; }
 
-    public string? Status { get; set; }
+    public bool Status { get; set; }
 
     public string Fullname { get; set; } = null!;
 

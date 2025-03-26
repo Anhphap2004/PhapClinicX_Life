@@ -71,7 +71,7 @@ public partial class ClinicManagementContext : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
-   
+  
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -282,9 +282,7 @@ public partial class ClinicManagementContext : DbContext
                 .HasMaxLength(255)
                 .HasColumnName("fullname");
             entity.Property(e => e.Phone).HasMaxLength(50);
-            entity.Property(e => e.Status)
-                .HasMaxLength(50)
-                .HasColumnName("status");
+            entity.Property(e => e.Status).HasColumnName("status");
             entity.Property(e => e.UserId).HasColumnName("user_id");
 
             entity.HasOne(d => d.Doctor).WithMany(p => p.DoctorAppointments)
