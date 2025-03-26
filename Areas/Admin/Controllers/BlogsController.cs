@@ -146,6 +146,14 @@ namespace PhapClinicX.Areas.Admin.Controllers
             {
                 try
                 {
+                    var existingBlog = await _context.Blogs.AsNoTracking().FirstOrDefaultAsync(b => b.BlogId == id);
+                    if (existingBlog == null) return NotFound(); // Nếu không tìm thấy bài viết, trả về lỗi 404
+
+                    // Nếu CreatedAt bị null thì giữ giá trị cũ
+                    blog.CreatedAt ??= existingBlog.CreatedAt;
+
+                    // Nếu Viewcount bị null thì giữ giá trị cũ
+                    blog.Viewcount ??= existingBlog.Viewcount;
                     _context.Update(blog);
                     await _context.SaveChangesAsync();
                 }
