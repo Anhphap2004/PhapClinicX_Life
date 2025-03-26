@@ -1,58 +1,65 @@
 ﻿@model PhapClinicX.Models.DoctorAppointment
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Tạo Cuộc Hẹn";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Create</h1>
+<h1 class="text-primary">Tạo Cuộc Hẹn Mới</h1>
 
-<h4>DoctorAppointment</h4>
+<h4>Thông tin cuộc hẹn</h4>
 <hr />
+
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-6">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="UserId" class="control-label"></label>
-                <input asp-for="UserId" class="form-control" />
-                <span asp-validation-for="UserId" class="text-danger"></span>
+
+            <!-- Chọn Bác Sĩ -->
+            <div class="mb-3">
+                <label asp-for="DoctorId" class="form-label fw-bold">Bác Sĩ</label>
+                <select asp-for="DoctorId" class="form-control" asp-items="ViewBag.DoctorId"></select>
             </div>
-            <div class="form-group">
-                <label asp-for="DoctorId" class="control-label"></label>
-                <select asp-for="DoctorId" class ="form-control" asp-items="ViewBag.DoctorId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="DateTime" class="control-label"></label>
-                <input asp-for="DateTime" class="form-control" />
+
+            <!-- Ngày/Giờ Đặt -->
+            <div class="mb-3">
+                <label asp-for="DateTime" class="form-label fw-bold">Ngày/Giờ Đặt</label>
+                <input asp-for="DateTime" type="datetime-local" class="form-control" />
                 <span asp-validation-for="DateTime" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Status" class="control-label"></label>
-                <input asp-for="Status" class="form-control" />
-                <span asp-validation-for="Status" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Fullname" class="control-label"></label>
+
+           
+
+            <!-- Tên Người Đặt -->
+            <div class="mb-3">
+                <label asp-for="Fullname" class="form-label fw-bold">Tên Người Đặt</label>
                 <input asp-for="Fullname" class="form-control" />
                 <span asp-validation-for="Fullname" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Phone" class="control-label"></label>
+
+            <!-- Số Điện Thoại -->
+            <div class="mb-3">
+                <label asp-for="Phone" class="form-label fw-bold">Số Điện Thoại</label>
                 <input asp-for="Phone" class="form-control" />
                 <span asp-validation-for="Phone" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+            <!-- Trạng Thái -->
+            <div class="mb-3 form-check">
+                <input asp-for="Status" class="form-check-input" type="checkbox" />
+                <label asp-for="Status" class="form-check-label fw-bold">Xác nhận cuộc hẹn</label>
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
+            <!-- Nút thao tác -->
+            <div class="d-flex gap-2">
+                <input type="submit" value="Tạo Cuộc Hẹn" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary">Quay lại danh sách</a>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

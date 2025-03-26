@@ -1,55 +1,37 @@
 ﻿@model PhapClinicX.Models.DoctorAppointment
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Chi tiết lịch hẹn";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Details</h1>
+<div class="d-flex justify-content-center">
+    <div class="card shadow-lg p-4" style="max-width: 600px; width: 100%;">
+        <h1 class="mb-3 text-center">Chi tiết lịch hẹn</h1>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-5 fw-bold">Ngày & Giờ</dt>
+            <dd class="col-sm-7">@Html.DisplayFor(model => model.DateTime)</dd>
 
-<div>
-    <h4>DoctorAppointment</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UserId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UserId)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DateTime)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DateTime)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Status)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Status)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Fullname)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Fullname)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Phone)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Phone)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Doctor)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Doctor.DoctorId)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.AppointmentId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+            <dt class="col-sm-5 fw-bold">Trạng thái</dt>
+            <dd class="col-sm-7">
+                @(Model.Status ? "✅ Đã xác nhận" : "❌ Chưa xác nhận")
+            </dd>
+
+            <dt class="col-sm-5 fw-bold">Họ và tên</dt>
+            <dd class="col-sm-7">@Html.DisplayFor(model => model.Fullname)</dd>
+
+            <dt class="col-sm-5 fw-bold">Số điện thoại</dt>
+            <dd class="col-sm-7">@Html.DisplayFor(model => model.Phone)</dd>
+
+            <dt class="col-sm-5 fw-bold">Bác sĩ</dt>
+            <dd class="col-sm-7">@(Model.Doctor != null ? Model.Doctor.Fullname : "Chưa có bác sĩ")</dd>
+
+        </dl>
+
+        <div class="text-center mt-3">
+            <a asp-action="Edit" asp-route-id="@Model?.AppointmentId" class="btn btn-warning mx-2">📝 Chỉnh sửa</a>
+            <a asp-action="Index" class="btn btn-secondary mx-2">📋 Quay lại danh sách</a>
+        </div>
+    </div>
 </div>

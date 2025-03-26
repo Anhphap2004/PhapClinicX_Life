@@ -48,7 +48,7 @@ namespace PhapClinicX.Areas.Admin.Controllers
         // GET: Admin/DoctorAppointments/Create
         public IActionResult Create()
         {
-            ViewData["DoctorId"] = new SelectList(_context.DoctorProfiles, "DoctorId", "DoctorId");
+            ViewData["DoctorId"] = new SelectList(_context.DoctorProfiles, "DoctorId", "Fullname");
             return View();
         }
 
@@ -65,7 +65,7 @@ namespace PhapClinicX.Areas.Admin.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["DoctorId"] = new SelectList(_context.DoctorProfiles, "DoctorId", "DoctorId", doctorAppointment.DoctorId);
+            ViewData["DoctorId"] = new SelectList(_context.DoctorProfiles, "DoctorId", "Fullname", doctorAppointment.DoctorId);
             return View(doctorAppointment);
         }
 
@@ -82,7 +82,7 @@ namespace PhapClinicX.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            ViewData["DoctorId"] = new SelectList(_context.DoctorProfiles, "DoctorId", "DoctorId", doctorAppointment.DoctorId);
+            ViewData["DoctorId"] = new SelectList(_context.DoctorProfiles, "DoctorId", "Fullname", doctorAppointment.DoctorId);
             return View(doctorAppointment);
         }
 
@@ -118,7 +118,7 @@ namespace PhapClinicX.Areas.Admin.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["DoctorId"] = new SelectList(_context.DoctorProfiles, "DoctorId", "DoctorId", doctorAppointment.DoctorId);
+            ViewData["DoctorId"] = new SelectList(_context.DoctorProfiles, "DoctorId", "Fullname", doctorAppointment.DoctorId);
             return View(doctorAppointment);
         }
 
