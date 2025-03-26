@@ -1,0 +1,41 @@
+﻿@model PhapClinicX.Models.BlogCategory
+
+@{
+    ViewData["Title"] = "Xóa Danh Mục";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="mb-4 text-danger"><i class="fas fa-trash-alt"></i> Xóa Danh Mục</h1>
+
+<div class="alert alert-warning">
+    <h4 class="text-danger"><i class="fas fa-exclamation-triangle"></i> Bạn có chắc chắn muốn xóa danh mục này không?</h4>
+    <p>Hành động này <strong>không thể hoàn tác</strong>. Hãy chắc chắn trước khi thực hiện!</p>
+</div>
+
+<div class="card shadow-lg p-4">
+    <h5 class="fw-bold text-primary"><i class="fas fa-folder"></i> Thông Tin Danh Mục</h5>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-3">Tên Danh Mục:</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.CategoryName)</dd>
+
+        <dt class="col-sm-3">Trạng Thái:</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.IsActive)</dd>
+
+        <dt class="col-sm-3">Alias:</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.Alias)</dd>
+    </dl>
+</div>
+
+<form asp-action="Delete" class="mt-4">
+    <input type="hidden" asp-for="CategoryId" />
+
+    <div class="d-flex">
+        <button type="submit" class="btn btn-danger me-2">
+            <i class="fas fa-trash"></i> Xóa Ngay
+        </button>
+        <a asp-action="Index" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Quay Lại
+        </a>
+    </div>
+</form>

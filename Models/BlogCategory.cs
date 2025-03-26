@@ -9,7 +9,7 @@ public partial class BlogCategory
 
     public string? CategoryName { get; set; }
 
-    public bool? IsActive { get; set; }
+    public bool IsActive { get; set; }
 
     public string? Alias { get; set; }
 
