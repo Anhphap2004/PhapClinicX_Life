@@ -13,7 +13,7 @@ public partial class ClinicAppointment
 
     public DateTime? DateTime { get; set; }
 
-    public string? Status { get; set; }
+    public bool Status { get; set; }
 
     public int PhongKhamId { get; set; }
 
