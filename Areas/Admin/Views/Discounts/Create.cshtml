@@ -1,0 +1,61 @@
+﻿@model PhapClinicX.Models.Discount
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="text-primary">Tạo Mã Giảm Giá</h1>
+
+<div class="card shadow p-4">
+    <h4 class="text-secondary">Thông tin mã giảm giá</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-6">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="mb-3">
+                    <label asp-for="DiscountName" class="form-label fw-bold">Tên mã giảm giá</label>
+                    <input asp-for="DiscountName" class="form-control" placeholder="Nhập tên mã giảm giá" />
+                    <span asp-validation-for="DiscountName" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="DiscountPercent" class="form-label fw-bold">Phần trăm giảm</label>
+                    <input asp-for="DiscountPercent" type="number" step="0.01" class="form-control" placeholder="Nhập phần trăm giảm (VD: 10.5)" />
+                    <span asp-validation-for="DiscountPercent" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Image" class="form-label fw-bold">Hình ảnh</label>
+                    <input asp-for="Image" type="file" class="form-control" accept="image/*" />
+                    <span asp-validation-for="Image" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="StartDate" class="form-label fw-bold">Ngày bắt đầu</label>
+                    <input asp-for="StartDate" type="datetime-local" class="form-control" />
+                    <span asp-validation-for="StartDate" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="EndDate" class="form-label fw-bold">Ngày kết thúc</label>
+                    <input asp-for="EndDate" type="datetime-local" class="form-control" />
+                    <span asp-validation-for="EndDate" class="text-danger"></span>
+                </div>
+
+                <div class="d-flex justify-content-between mt-3">
+                    <a asp-action="Index" class="btn btn-secondary">⬅ Quay lại</a>
+                    <button type="submit" class="btn btn-primary">✅ Tạo mới</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

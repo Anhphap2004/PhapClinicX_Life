@@ -17,5 +17,5 @@ public partial class Discount
 
     public DateTime EndDate { get; set; }
 
-    public bool? IsActive { get; set; }
+    public bool IsActive { get; set; }
 }

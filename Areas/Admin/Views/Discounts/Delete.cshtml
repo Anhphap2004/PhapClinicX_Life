@@ -1,0 +1,60 @@
+﻿@model PhapClinicX.Models.Discount
+
+@{
+    ViewData["Title"] = "Xóa mã giảm giá";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="text-danger">Xóa mã giảm giá</h1>
+
+<h3 class="text-warning">Bạn có chắc chắn muốn xóa mã giảm giá này?</h3>
+
+<div class="card shadow p-4">
+    <h4 class="text-secondary">Thông tin mã giảm giá</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-3 fw-bold">Tên mã giảm giá:</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.DiscountName)</dd>
+
+        <dt class="col-sm-3 fw-bold">Phần trăm giảm:</dt>
+        <dd class="col-sm-9">@Model.DiscountPercent %</dd>
+
+        <dt class="col-sm-3 fw-bold">Hình ảnh:</dt>
+        <dd class="col-sm-9">
+            @if (!string.IsNullOrEmpty(Model.Image))
+            {
+                <img src="@Model.Image" class="img-thumbnail" width="150" />
+            }
+            else
+            {
+                <span class="text-muted">Chưa có ảnh</span>
+            }
+        </dd>
+
+        <dt class="col-sm-3 fw-bold">Ngày bắt đầu:</dt>
+        <dd class="col-sm-9">@Model.StartDate.ToString("dd/MM/yyyy HH:mm")</dd>
+
+        <dt class="col-sm-3 fw-bold">Ngày kết thúc:</dt>
+        <dd class="col-sm-9">@Model.EndDate.ToString("dd/MM/yyyy HH:mm")</dd>
+
+        <dt class="col-sm-3 fw-bold">Trạng thái:</dt>
+        <dd class="col-sm-9">
+            @if (Model.IsActive)
+            {
+                <span class="badge bg-success">Đang áp dụng</span>
+            }
+            else
+            {
+                <span class="badge bg-danger">Ngừng áp dụng</span>
+            }
+        </dd>
+    </dl>
+</div>
+
+<form asp-action="Delete" class="mt-3">
+    <input type="hidden" asp-for="DiscountId" />
+    <div class="d-flex gap-5">
+        <a asp-action="Index" class="btn btn-secondary">⬅ Quay lại</a>
+        <button type="submit" class="btn btn-danger">🗑 Xóa ngay</button>
+    </div>
+</form>
