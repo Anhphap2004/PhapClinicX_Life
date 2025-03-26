@@ -20206,3 +20206,8 @@ i {
     border: 0 !important; }
   .card-item-right .style-text {
     margin-left: 10px; } }
+
+
+a{
+    text-decoration:none !important;
+}
