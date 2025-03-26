@@ -1,0 +1,46 @@
+﻿@model PhapClinicX.Models.About
+
+@{
+    ViewData["Title"] = "Chi Tiết About";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="mb-4 text-primary">Chi Tiết About</h1>
+
+<div class="card shadow-lg p-4">
+    <div class="card-body">
+        <h4 class="card-title text-center text-uppercase fw-bold text-success">Thông Tin Chi Tiết</h4>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-3 text-secondary">Tiêu Đề:</dt>
+            <dd class="col-sm-9 fw-bold">@Model.Title</dd>
+
+            <dt class="col-sm-3 text-secondary">Nội Dung:</dt>
+            <dd class="col-sm-9">
+                <div class="border p-3 bg-light rounded">
+                    @Html.Raw(Model.Content)
+                </div>
+            </dd>
+
+            <dt class="col-sm-3 text-secondary">Ngày Tạo:</dt>
+            <dd class="col-sm-9">@Model.CreatedAt?.ToString("dd/MM/yyyy HH:mm")</dd>
+
+            <dt class="col-sm-3 text-secondary">Trạng Thái:</dt>
+            <dd class="col-sm-9">
+                @if (Model.IsActive)
+                {
+                    <span class="badge bg-success">Đang Hoạt Động</span>
+                }
+                else
+                {
+                    <span class="badge bg-danger">Ngừng Hoạt Động</span>
+                }
+            </dd>
+        </dl>
+    </div>
+</div>
+
+<div class="mt-4 d-flex justify-content-between">
+    <a asp-action="Edit" asp-route-id="@Model.AboutId" class="btn btn-warning"><i class="fas fa-edit"></i> Chỉnh Sửa</a>
+    <a asp-action="Index" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Quay Lại</a>
+</div>

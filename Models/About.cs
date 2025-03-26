@@ -15,5 +15,5 @@ public partial class About
 
     public DateTime? CreatedAt { get; set; }
 
-    public bool? IsActive { get; set; }
+    public bool IsActive { get; set; }
 }
