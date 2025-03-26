@@ -21,6 +21,7 @@ namespace PhapClinicX.Controllers
         {
             ViewBag.blogcategories = _context.BlogCategories.Where(p=>p.IsActive==true).ToList();
             ViewBag.Faqs = _context.Faqs.ToList();
+            ViewBag.discount = _context.Discounts.Where(p => p.IsActive == true).OrderBy(p=>p.StartDate).ToList();
             return View();
         }
 
