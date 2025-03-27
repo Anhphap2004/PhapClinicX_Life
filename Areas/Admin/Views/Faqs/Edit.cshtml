@@ -1,0 +1,50 @@
+﻿@model PhapClinicX.Models.Faq
+
+@{
+    ViewData["Title"] = "Chỉnh sửa Câu Hỏi";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="mb-4 text-primary"><i class="bi bi-pencil-square"></i> Chỉnh sửa Câu Hỏi</h1>
+
+<div class="card shadow p-4">
+    <h4 class="mb-3 text-secondary">Thông tin câu hỏi</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-6">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+                <input type="hidden" asp-for="Id" />
+
+                <div class="mb-3">
+                    <label asp-for="Question" class="form-label fw-bold text-dark"></label>
+                    <input asp-for="Question" class="form-control border-primary shadow-sm" placeholder="Nhập câu hỏi" />
+                    <span asp-validation-for="Question" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Answer" class="form-label fw-bold text-dark"></label>
+                    <textarea asp-for="Answer" class="form-control border-success shadow-sm" rows="4" placeholder="Nhập câu trả lời"></textarea>
+                    <span asp-validation-for="Answer" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="CreatedAt" class="form-label fw-bold text-dark"></label>
+                    <input asp-for="CreatedAt" class="form-control border-secondary shadow-sm" readonly />
+                    <span asp-validation-for="CreatedAt" class="text-danger"></span>
+                </div>
+
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-success"><i class="bi bi-save"></i> Lưu thay đổi</button>
+                    <a asp-action="Index" class="btn btn-outline-secondary"><i class="bi bi-arrow-left"></i> Quay lại</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

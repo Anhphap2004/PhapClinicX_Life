@@ -1,0 +1,35 @@
+﻿@model PhapClinicX.Models.Faq
+
+@{
+    ViewData["Title"] = "Xóa Câu Hỏi";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="mb-4 text-danger"><i class="bi bi-trash"></i> Xóa Câu Hỏi</h1>
+
+<div class="card shadow p-4 border-danger">
+    <h4 class="mb-3 text-dark">Bạn có chắc chắn muốn xóa câu hỏi này?</h4>
+    <div class="alert alert-warning">
+        <i class="bi bi-exclamation-triangle-fill"></i> Hành động này không thể hoàn tác!
+    </div>
+
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-3 fw-bold text-dark">Câu hỏi:</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.Question)</dd>
+
+        <dt class="col-sm-3 fw-bold text-dark">Câu trả lời:</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.Answer)</dd>
+
+        <dt class="col-sm-3 fw-bold text-dark">Ngày tạo:</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.CreatedAt)</dd>
+    </dl>
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-danger"><i class="bi bi-trash-fill"></i> Xóa</button>
+            <a asp-action="Index" class="btn btn-outline-secondary"><i class="bi bi-arrow-left"></i> Quay lại</a>
+        </div>
+    </form>
+</div>

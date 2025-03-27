@@ -1,0 +1,28 @@
+﻿@model PhapClinicX.Models.Faq
+
+@{
+    ViewData["Title"] = "Chi Tiết Câu Hỏi";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="mb-4 text-primary"><i class="bi bi-info-circle"></i> Chi Tiết Câu Hỏi</h1>
+
+<div class="card shadow p-4 border-primary">
+    <h4 class="mb-3 text-dark">Thông tin chi tiết</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-3 fw-bold text-dark">Câu hỏi:</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.Question)</dd>
+
+        <dt class="col-sm-3 fw-bold text-dark">Câu trả lời:</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.Answer)</dd>
+
+        <dt class="col-sm-3 fw-bold text-dark">Ngày tạo:</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.CreatedAt)</dd>
+    </dl>
+
+    <div class="d-flex gap-2 mt-3">
+        <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-warning"><i class="bi bi-pencil-square"></i> Chỉnh sửa</a>
+        <a asp-action="Index" class="btn btn-outline-secondary"><i class="bi bi-arrow-left"></i> Quay lại</a>
+    </div>
+</div>
