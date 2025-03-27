@@ -1,0 +1,73 @@
+﻿@model IEnumerable<PhapClinicX.Models.DoctorProfile>
+
+@{
+    ViewData["Title"] = "Danh sách Bác Sĩ";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="text-center text-primary">👨‍⚕️ Quản Lý Bác Sĩ</h1>
+
+<p class="text-end">
+    <a asp-action="Create" class="btn btn-success">
+        <i class="bi bi-plus-circle"></i> Thêm Bác Sĩ
+    </a>
+</p>
+
+<table class="table table-bordered table-hover shadow-sm text-center align-middle">
+    <thead class="table-dark">
+        <tr>
+            <th>STT</th>
+            <th>Họ Tên</th>
+            <th>Số Điện Thoại</th>
+            <th>Chuyên Ngành</th>
+            <th>Kinh Nghiệm</th>
+            <th>Ảnh</th>
+            <th>Phòng Khám</th>
+            <th>Lịch Làm Việc</th>
+            <th>Trạng Thái</th>
+            <th>Hành Động</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            int p = 1;
+        }
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@(p++)</td>
+                <td>@Html.DisplayFor(modelItem => item.Fullname)</td>
+                <td>@Html.DisplayFor(modelItem => item.Phone)</td>
+                <td>@Html.DisplayFor(modelItem => item.Specialization)</td>
+                <td>@Html.DisplayFor(modelItem => item.Experience) năm</td>
+
+                <td>
+                    <img src="~/assets/img/team/@item.Image" class="rounded border shadow-sm" style="max-width: 80px; height: auto;" />
+                </td>
+                <td>@(item.PhongKham?.TenPhongKham ?? "Chưa cập nhật" )</td>
+                <td>@Html.DisplayFor(modelItem => item.WorkSchedule)</td>
+                <td>
+                    @if (item.Isactive)
+                    {
+                        <span class="badge bg-success">Hoạt động</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger">Tạm nghỉ</span>
+                    }
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.DoctorId" class="btn btn-warning btn-sm">
+                        <i class="bi bi-pencil-square"></i> Sửa
+                    </a>
+                    <a asp-action="Details" asp-route-id="@item.DoctorId" class="btn btn-info btn-sm">
+                        <i class="bi bi-info-circle"></i> Chi tiết
+                    </a>
+                    <a asp-action="Delete" asp-route-id="@item.DoctorId" class="btn btn-danger btn-sm">
+                        <i class="bi bi-trash"></i> Xóa
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

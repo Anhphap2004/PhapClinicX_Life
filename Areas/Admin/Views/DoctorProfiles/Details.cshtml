@@ -1,0 +1,79 @@
+﻿@model PhapClinicX.Models.DoctorProfile
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>DoctorProfile</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Specialization)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Specialization)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Experience)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Experience)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Education)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Education)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Image)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Image)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Isactive)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Isactive)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Fullname)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Fullname)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Phone)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Phone)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Introduce)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Introduce)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WorkSchedule)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WorkSchedule)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PhongKham)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PhongKham.PhongKhamId)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.DoctorId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
