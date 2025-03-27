@@ -79,18 +79,18 @@
                             </ul>
                         </li>
                         <li class=" ">
-                            <a href="#category" class="collapsed" data-toggle="collapse" aria-expanded="false">
+                            <a href="#content" class="collapsed" data-toggle="collapse" aria-expanded="false">
                                 <svg class="svg-icon" id="p-dash3" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
                                     <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
                                 </svg>
-                                <span class="ml-4">Danh Mục</span>
+                                <span class="ml-4">Nội Dung</span>
                                 <svg class="svg-icon iq-arrow-right arrow-active" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <polyline points="10 15 15 20 20 15"></polyline>
                                     <path d="M4 4h7a4 4 0 0 1 4 4v12"></path>
                                 </svg>
                             </a>
-                            <ul id="category" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                            <ul id="content" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                                 <li class="">
                                     <a asp-controller="Menus" asp-action="Index">
                                         <i class="las la-minus"></i><span>Menu Điều Hướng</span>
@@ -99,6 +99,16 @@
                                 <li class="">
                                     <a asp-controller="BlogCategories" asp-action="Index">
                                         <i class="las la-minus"></i><span>Danh Mục Bài Viết</span>
+                                    </a>
+                                </li>
+                                <li class="">
+                                    <a asp-controller="Blogs" asp-action="Index">
+                                        <i class="las la-minus"></i><span>Bài Viết</span>
+                                    </a>
+                                </li>
+                                <li class="">
+                                    <a asp-controller="BlogComments" asp-action="Index">
+                                        <i class="las la-minus"></i><span>Bình Luận Bài Viết</span>
                                     </a>
                                 </li>
                                 <li class="">
@@ -115,7 +125,7 @@
                                     <path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path>
                                     <path d="M22 12A10 10 0 0 0 12 2v10z"></path>
                                 </svg>
-                                <span class="ml-4">Sale</span>
+                                <span class="ml-4">Dịch Vụ Y Tế</span>
                                 <svg class="svg-icon iq-arrow-right arrow-active" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <polyline points="10 15 15 20 20 15"></polyline>
                                     <path d="M4 4h7a4 4 0 0 1 4 4v12"></path>
@@ -123,38 +133,48 @@
                             </a>
                             <ul id="sale" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                                 <li class="">
-                                    <a href="../backend/page-list-sale.html">
-                                        <i class="las la-minus"></i><span>List Sale</span>
+                                    <a asp-controller="DoctorProfiles" asp-action="Index">
+                                        <i class="las la-minus"></i><span>Bác Sĩ</span>
                                     </a>
                                 </li>
                                 <li class="">
-                                    <a href="../backend/page-add-sale.html">
-                                        <i class="las la-minus"></i><span>Add Sale</span>
+                                    <a asp-controller="Services" asp-action="Index">
+                                        <i class="las la-minus"></i><span>Dịch Vụ</span>
+                                    </a>
+                                </li>
+                                <li class="">
+                                    <a asp-controller="Discounts" asp-action="Index">
+                                        <i class="las la-minus"></i><span>Voucher</span>
                                     </a>
                                 </li>
                             </ul>
                         </li>
                         <li class=" ">
-                            <a href="#purchase" class="collapsed" data-toggle="collapse" aria-expanded="false">
+                            <a href="#book" class="collapsed" data-toggle="collapse" aria-expanded="false">
                                 <svg class="svg-icon" id="p-dash5" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
                                     <line x1="1" y1="10" x2="23" y2="10"></line>
                                 </svg>
-                                <span class="ml-4">Purchases</span>
+                                <span class="ml-4">Đặt Lịch / Liên Hệ</span>
                                 <svg class="svg-icon iq-arrow-right arrow-active" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <polyline points="10 15 15 20 20 15"></polyline>
                                     <path d="M4 4h7a4 4 0 0 1 4 4v12"></path>
                                 </svg>
                             </a>
-                            <ul id="purchase" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                            <ul id="book" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                                 <li class="">
-                                    <a href="../backend/page-list-purchase.html">
-                                        <i class="las la-minus"></i><span>List Purchases</span>
+                                    <a asp-controller="Contacts" asp-action="Index">
+                                        <i class="las la-minus"></i><span>Liên Hệ</span>
                                     </a>
                                 </li>
                                 <li class="">
-                                    <a href="../backend/page-add-purchase.html">
-                                        <i class="las la-minus"></i><span>Add purchase</span>
+                                    <a asp-controller="DoctorAppointments" asp-action="Index">
+                                        <i class="las la-minus"></i><span>Đặt Lịch Bác Sĩ</span>
+                                    </a>
+                                </li>
+                                <li class="">
+                                    <a asp-controller="ClinicAppointments" asp-action="Index">
+                                        <i class="las la-minus"></i><span>Đặt Lịch Chi Nhánh</span>
                                     </a>
                                 </li>
                             </ul>
