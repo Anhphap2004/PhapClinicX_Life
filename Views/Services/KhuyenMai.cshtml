@@ -1,0 +1,68 @@
+﻿@{
+    List<Discount> voucher = ViewBag.voucher;
+    List<Discount> AllVoucher = ViewBag.AllVoucher;
+}
+<div class="container my-4">
+    <h3 class="fw-bold">Khuyến mãi</h3>
+
+    <div class="row">
+        <!-- Phần trái: Tin tức -->
+        <div class="col-lg-8">
+            <div class="row">
+                <div class="col-md-12 mb-3">
+                    @foreach (var p in voucher)
+                    {
+                        <div class="card border-0 shadow-sm d-flex flex-row align-items-center p-3">
+                            <!-- Ảnh bên trái -->
+                            <img src="~/assets/img/voucher/@p.Image" style="width:450px; height:auto" class="img-fluid rounded" alt="Khuyến mãi">
+
+                            <!-- Nội dung bên phải -->
+                            <div class="card-body flex-grow-1 ps-3">
+                                <h5 class="fw-bold text-primary">@(p.DiscountName.Length > 50 ? p.DiscountName.Substring(0, 50) + "..." : p.DiscountName)</h5>
+                                <p class="text-muted">Khởi đầu năm mới, NhaKhoaHub xin được dành tặng cho tất cả mọi người voucher siêu hời...</p>
+                                <p class="text-secondary fw-bold mb-1">📅 14/02/2025</p>
+                                <a href="#" class="btn btn-info text-white btn-sm">Xem chi tiết</a>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+            @if (AllVoucher != null && AllVoucher.Any())
+            {
+                <div class="container">
+                    <div class="row mt-3">
+                        @foreach (var p in AllVoucher)
+                        {
+                            <div class="col-md-4 mb-3">
+                                <div class="card border-0 shadow-sm">
+                                    <img src="~/assets/img/voucher/@p.Image" class="card-img-top" alt="Voucher">
+                                    <div class="card-body">
+                                        <h6 class="fw-bold">@p.DiscountName</h6>
+                                        <p class="text-muted">@(p.Detail?.Length > 20 ? p.Detail.Substring(0, 20) + "..." : p.Detail)</p>
+                                        <p class="text-muted small">📅 Bắt đầu: <strong>@p.StartDate.ToString("dd/MM/yyyy")</strong></p>
+                                        <p class="text-muted small">⏳ Hết hạn: <strong>@p.EndDate.ToString("dd/MM/yyyy")</strong></p>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+            else
+            {
+                <p class="text-muted text-center">Không có voucher nào!</p>
+            }
+        </div>
+
+        <!-- Phần phải: Banner dài + ô tìm kiếm -->
+        <div class="col-lg-4">
+            <div class="mb-3">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Tìm kiếm bài viết">
+                    <button class="btn btn-primary"><i class="bi bi-search"></i></button>
+                </div>
+            </div>
+            <img src="https://nhakhoahub.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fnhakhoahub-tang-ngan-voucher.2ca892ba.webp&w=750&q=75" class="img-fluid rounded h-100" style="object-fit: cover;" alt="Banner lớn">
+        </div>
+    </div>
+</div>
