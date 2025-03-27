@@ -1,79 +1,59 @@
 ﻿@model PhapClinicX.Models.DoctorProfile
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Chi Tiết Bác Sĩ";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Details</h1>
+<h1 class="text-center text-primary">Chi Tiết Bác Sĩ</h1>
 
-<div>
-    <h4>DoctorProfile</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Specialization)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Specialization)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Experience)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Experience)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Education)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Education)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Image)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Image)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Isactive)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Isactive)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Fullname)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Fullname)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Phone)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Phone)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Introduce)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Introduce)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WorkSchedule)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WorkSchedule)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PhongKham)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PhongKham.PhongKhamId)
-        </dd>
-    </dl>
+<div class="container mt-4">
+    <div class="card shadow-sm p-4">
+        <h4 class="text-secondary">Thông Tin Bác Sĩ</h4>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2 fw-bold">Họ và Tên</dt>
+            <dd class="col-sm-10">@Html.DisplayFor(model => model.Fullname)</dd>
+
+            <dt class="col-sm-2 fw-bold">Chuyên Môn</dt>
+            <dd class="col-sm-10">@Html.DisplayFor(model => model.Specialization)</dd>
+
+            <dt class="col-sm-2 fw-bold">Kinh Nghiệm</dt>
+            <dd class="col-sm-10">@Html.DisplayFor(model => model.Experience) năm</dd>
+
+            <dt class="col-sm-2 fw-bold">Học Vấn</dt>
+            <dd class="col-sm-10">@Html.DisplayFor(model => model.Education)</dd>
+
+            <dt class="col-sm-2 fw-bold">Số Điện Thoại</dt>
+            <dd class="col-sm-10">@Html.DisplayFor(model => model.Phone)</dd>
+
+            <dt class="col-sm-2 fw-bold">Giới Thiệu</dt>
+            <dd class="col-sm-10 text-justify">@Html.Raw(Model.Introduce)</dd>
+
+            <dt class="col-sm-2 fw-bold">Lịch Làm Việc</dt>
+            <dd class="col-sm-10">@Html.DisplayFor(model => model.WorkSchedule)</dd>
+
+            <dt class="col-sm-2 fw-bold">Phòng Khám</dt>
+            <dd class="col-sm-10">@Model.PhongKham?.TenPhongKham</dd>
+
+            <dt class="col-sm-2 fw-bold">Hình Ảnh</dt>
+            <dd class="col-sm-10 text-center">
+                <img src="@Url.Content(Model.Image != null ? $"/assets/img/team/{Model.Image}" : "~/assets/img/default.jpg")"
+                     class="img-fluid border rounded" style="max-width: 300px; display: block; margin: 0 auto;" />
+            </dd>
+
+            <dt class="col-sm-2 fw-bold">Trạng Thái</dt>
+            <dd class="col-sm-10">@(Model.Isactive ? "Đang hoạt động" : "Ngừng hoạt động")</dd>
+        </dl>
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.DoctorId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+
+<!-- Nút hành động -->
+<div class="text-center mt-4">
+    <a asp-action="Edit" asp-route-id="@Model?.DoctorId" class="btn btn-warning px-4">
+        <i class="fas fa-edit"></i> Chỉnh sửa
+    </a>
+    <a asp-action="Index" class="btn btn-secondary px-4">
+        <i class="fas fa-list"></i> Quay lại danh sách
+    </a>
 </div>

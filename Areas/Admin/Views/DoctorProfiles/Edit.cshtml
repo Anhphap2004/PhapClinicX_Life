@@ -5,76 +5,138 @@
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Edit</h1>
+<h1 class="text-center text-primary">Chỉnh Sửa Thông Tin Bác Sĩ</h1>
 
-<h4>DoctorProfile</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
+<div class="container mt-4">
+    <div class="card shadow-sm p-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="DoctorId" />
-            <div class="form-group">
-                <label asp-for="Specialization" class="control-label"></label>
-                <input asp-for="Specialization" class="form-control" />
-                <span asp-validation-for="Specialization" class="text-danger"></span>
+
+            <!-- Chia layout thành 2 cột ở các phần ít chữ -->
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="Fullname" class="fw-bold">Họ Tên</label>
+                        <input asp-for="Fullname" class="form-control" placeholder="Nhập họ tên" />
+                        <span asp-validation-for="Fullname" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mt-3">
+                        <label asp-for="Phone" class="fw-bold">Số Điện Thoại</label>
+                        <input asp-for="Phone" class="form-control" placeholder="Nhập số điện thoại" />
+                        <span asp-validation-for="Phone" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="Specialization" class="fw-bold">Chuyên Ngành</label>
+                        <input asp-for="Specialization" class="form-control" placeholder="VD: Nội Khoa, Ngoại Khoa..." />
+                        <span asp-validation-for="Specialization" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mt-3">
+                        <label asp-for="Education" class="fw-bold">Trình Độ</label>
+                        <input asp-for="Education" class="form-control" placeholder="VD: Bác sĩ chuyên khoa I, II..." />
+                        <span asp-validation-for="Education" class="text-danger"></span>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Experience" class="control-label"></label>
-                <input asp-for="Experience" class="form-control" />
-                <span asp-validation-for="Experience" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Education" class="control-label"></label>
-                <input asp-for="Education" class="form-control" />
-                <span asp-validation-for="Education" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Image" class="control-label"></label>
-                <input asp-for="Image" class="form-control" />
-                <span asp-validation-for="Image" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Isactive" /> @Html.DisplayNameFor(model => model.Isactive)
-                </label>
-            </div>
-            <div class="form-group">
-                <label asp-for="Fullname" class="control-label"></label>
-                <input asp-for="Fullname" class="form-control" />
-                <span asp-validation-for="Fullname" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Phone" class="control-label"></label>
-                <input asp-for="Phone" class="form-control" />
-                <span asp-validation-for="Phone" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PhongKhamId" class="control-label"></label>
-                <select asp-for="PhongKhamId" class="form-control" asp-items="ViewBag.PhongKhamId"></select>
-                <span asp-validation-for="PhongKhamId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Introduce" class="control-label"></label>
-                <input asp-for="Introduce" class="form-control" />
+
+            <!-- Các phần có nhiều chữ để 1 cột -->
+            <div class="form-group mt-3">
+                <label asp-for="Introduce" class="fw-bold">Giới Thiệu</label>
+                <textarea asp-for="Introduce" id="summernoteEditor" class="form-control" rows="5" placeholder="Giới thiệu về bác sĩ"></textarea>
                 <span asp-validation-for="Introduce" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="WorkSchedule" class="control-label"></label>
-                <input asp-for="WorkSchedule" class="form-control" />
+
+            <div class="form-group mt-3">
+                <label asp-for="WorkSchedule" class="fw-bold">Lịch Làm Việc</label>
+                <input asp-for="WorkSchedule" class="form-control" placeholder="VD: Thứ 2 - Thứ 6, 8h - 17h" />
                 <span asp-validation-for="WorkSchedule" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+
+            <!-- Phòng khám và ảnh -->
+            <div class="row mt-3">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="PhongKhamId" class="fw-bold">Phòng Khám</label>
+                        <select asp-for="PhongKhamId" class="form-control" asp-items="ViewBag.PhongKhamId">
+                            <option value="">-- Chọn phòng khám --</option>
+                        </select>
+                        <span asp-validation-for="PhongKhamId" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="fw-bold">Ảnh</label>
+                        <input type="file" id="imageUpload" class="form-control" accept="image/*" />
+                        <input type="hidden" asp-for="Image" id="ImagePath" />
+                        <span asp-validation-for="Image" class="text-danger"></span>
+                        <div class="mt-3 text-center">
+                            <img id="imagePreview" src="@Url.Content(Model.Image != null ? $"/assets/img/team/{Model.Image}" : "không có")" class="img-thumbnail" style="max-width: 200px;" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group mt-3">
+                <div class="form-check">
+                    <input class="form-check-input" asp-for="Isactive" />
+                    <label class="form-check-label" asp-for="Isactive">Đang hoạt động</label>
+                </div>
+            </div>
+
+            <!-- Nút hành động -->
+            <div class="form-group text-center mt-4">
+                <button type="submit" class="btn btn-success px-4">Lưu</button>
+                <a asp-action="Index" class="btn btn-warning px-4">Quay Lại</a>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-lite.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#summernoteEditor').summernote({
+                placeholder: 'Nhập nội dung...',
+                tabsize: 2,
+                height: 300,
+                toolbar: [
+                    ['style', ['style']],
+                    ['font', ['bold', 'underline', 'clear']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['table', ['table']],
+                    ['insert', ['link', 'picture', 'video']],
+                    ['view', ['fullscreen', 'codeview', 'help']]
+                ]
+            });
+        });
+    </script>
+    <script>
+        document.getElementById("imageUpload").addEventListener("change", function (event) {
+            let file = event.target.files[0];
+            if (file) {
+                let reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById("imagePreview").src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+
+                let formData = new FormData();
+                formData.append("file", file);
+
+                fetch("/Admin/DoctorProfiles/UploadImage", {
+                    method: "POST",
+                    body: formData
+                })
+                .then(response => response.text())
+                .then(imagePath => {
+                    document.getElementById("ImagePath").value = imagePath;
+                })
+                .catch(error => console.error("Lỗi upload ảnh:", error));
+            }
+        });
+    </script>
 }
