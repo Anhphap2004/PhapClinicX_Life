@@ -1,0 +1,89 @@
+﻿@model PhapClinicX.Models.Service
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="text-center text-primary mb-4">➕ Thêm Dịch Vụ Mới</h1>
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-lg">
+            <div class="card-body">
+                <h4 class="card-title text-center text-secondary">📌 Nhập Thông Tin Dịch Vụ</h4>
+                <hr />
+                <form asp-action="Create" enctype="multipart/form-data">
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="ServiceName" class="form-label fw-bold">Tên Dịch Vụ</label>
+                        <input asp-for="ServiceName" class="form-control" placeholder="Nhập tên dịch vụ..." />
+                        <span asp-validation-for="ServiceName" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">
+                            <i class="bi bi-image"></i> Ảnh Dịch Vụ
+                        </label>
+                        <input type="file" id="imageUpload" class="form-control" accept="image/*" />
+                        <input type="hidden" asp-for="Image" id="ImagePath" />
+                        <span asp-validation-for="Image" class="text-danger"></span>
+
+                        <!-- Hiển thị ảnh xem trước -->
+                        <div class="mt-3 text-center">
+                            <img id="imagePreview" src="~/assets/img/default.jpg" class="rounded shadow-sm" style="max-width: 200px;" />
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Detail" class="form-label fw-bold">Mô Tả Chi Tiết</label>
+                        <textarea asp-for="Detail" class="form-control" rows="3" placeholder="Nhập mô tả chi tiết..."></textarea>
+                        <span asp-validation-for="Detail" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-check mb-3">
+                        <input asp-for="IsActive" class="form-check-input" />
+                        <label asp-for="IsActive" class="form-check-label fw-bold">Dịch Vụ Hoạt Động</label>
+                    </div>
+
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-success px-4"><i class="bi bi-check-lg"></i> Tạo Mới</button>
+                        <a asp-action="Index" class="btn btn-secondary px-4"><i class="bi bi-arrow-left"></i> Quay Lại</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script>
+        document.getElementById("imageUpload").addEventListener("change", function (event) {
+            let file = event.target.files[0];
+            if (file) {
+                let reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById("imagePreview").src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+
+                // Gửi ảnh lên server
+                let formData = new FormData();
+                formData.append("file", file);
+
+                fetch("/Admin/Services/UploadImage", {
+                    method: "POST",
+                    body: formData
+                })
+                .then(response => response.text())
+                .then(imagePath => {
+                    document.getElementById("ImagePath").value = imagePath; // Gán đường dẫn ảnh vào input ẩn
+                })
+                .catch(error => console.error("Lỗi upload ảnh:", error));
+            }
+        });
+    </script>
+
+}

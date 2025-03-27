@@ -14,16 +14,21 @@
 <table class="table table-striped table-bordered table-hover">
     <thead class="table-dark">
         <tr>
-            <th>@Html.DisplayNameFor(model => model.Question)</th>
-            <th>@Html.DisplayNameFor(model => model.Answer)</th>
-            <th>@Html.DisplayNameFor(model => model.CreatedAt)</th>
+           <th>STT</th>
+            <th>Câu hỏi</th>
+            <th>Trả lời</th>
+            <th>Ngày tạo</th>
             <th class="text-center">Hành động</th>
         </tr>
     </thead>
+    @{
+        int p = 1;
+    }
     <tbody>
         @foreach (var item in Model)
         {
             <tr>
+                <td>@(p++)</td>
                 <td>@Html.DisplayFor(modelItem => item.Question)</td>
                 <td>@Html.DisplayFor(modelItem => item.Answer)</td>
                 <td>@Html.DisplayFor(modelItem => item.CreatedAt)</td>

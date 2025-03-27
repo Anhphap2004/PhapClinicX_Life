@@ -1,0 +1,61 @@
+﻿@model PhapClinicX.Models.Service
+
+@{
+    ViewData["Title"] = "Xóa Dịch Vụ";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="text-center text-danger mb-4">⚠️ Xác Nhận Xóa Dịch Vụ</h1>
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-lg border-danger">
+            <div class="card-body">
+                <h4 class="card-title text-center text-secondary">📄 Thông Tin Dịch Vụ</h4>
+                <hr />
+
+                <dl class="row">
+                    <dt class="col-sm-4 fw-bold">Tên Dịch Vụ:</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.ServiceName)</dd>
+
+                 
+                    <dt class="col-sm-4 fw-bold">Trạng Thái:</dt>
+                    <dd class="col-sm-8">
+                        @if (Model.IsActive)
+                        {
+                            <span class="badge bg-success">Hoạt động</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-danger">Ngừng hoạt động</span>
+                        }
+                    </dd>
+
+                    <dt class="col-sm-4 fw-bold">Ảnh Dịch Vụ:</dt>
+                    <dd class="col-sm-8">
+                        <img src="~/assets/img/services/@Model.Image" class="rounded border shadow-sm" style="max-width: 200px;" />
+                    </dd>
+
+                    <dt class="col-sm-4 fw-bold">Mô Tả:</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.Detail)</dd>
+                </dl>
+
+                <div class="alert alert-danger text-center">
+                    <i class="bi bi-exclamation-triangle-fill"></i> Hành động này không thể hoàn tác! Bạn có chắc chắn muốn xóa dịch vụ này không?
+                </div>
+
+                <form asp-action="Delete">
+                    <input type="hidden" asp-for="ServiceId" />
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-danger px-4">
+                            <i class="bi bi-trash"></i> Xóa
+                        </button>
+                        <a asp-action="Index" class="btn btn-secondary px-4">
+                            <i class="bi bi-arrow-left"></i> Quay Lại
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
