@@ -1,0 +1,63 @@
+﻿@model PhapClinicX.Models.ServicePackage
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="text-center text-danger mb-4">Xóa Gói Dịch Vụ</h1>
+
+<div class="alert alert-warning text-center">
+    <h4 class="fw-bold">Bạn có chắc chắn muốn xóa gói dịch vụ này?</h4>
+    <p class="mb-0 text-danger">Hành động này không thể hoàn tác!</p>
+</div>
+
+<div class="card shadow p-4">
+    <h4 class="text-primary">Thông Tin Gói Dịch Vụ</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-3 fw-bold">Tên Gói</dt>
+        <dd class="col-sm-9">@Model.PackageName</dd>
+
+        <dt class="col-sm-3 fw-bold">Giá</dt>
+        <dd class="col-sm-9">@Model.Price?.ToString("N0") VNĐ</dd>
+
+        <dt class="col-sm-3 fw-bold">Trạng Thái</dt>
+        <dd class="col-sm-9">
+            @if (Model.IsActive)
+            {
+                <span class="badge bg-success">Hoạt động</span>
+            }
+            else
+            {
+                <span class="badge bg-danger">Ngừng</span>
+            }
+        </dd>
+
+        <dt class="col-sm-3 fw-bold">Hình Ảnh</dt>
+        <dd class="col-sm-9">
+            @if (!string.IsNullOrEmpty(Model.Image))
+            {
+                <img src="~/assets/img/ServicePackages/@Model.Image" alt="Ảnh gói dịch vụ" class="border rounded" style="max-width: 150px;" />
+            }
+            else
+            {
+                <span>Không có ảnh</span>
+            }
+        </dd>
+
+        <dt class="col-sm-3 fw-bold">Tiêu Đề</dt>
+        <dd class="col-sm-9">@Model.Title</dd>
+
+        <dt class="col-sm-3 fw-bold">Ngày Tạo</dt>
+        <dd class="col-sm-9">@Model.Date?.ToString("dd/MM/yyyy")</dd>
+    </dl>
+</div>
+
+<div class="text-center mt-4">
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="PackageId" />
+        <button type="submit" class="btn btn-danger px-4 fw-bold">Xóa</button>
+        <a asp-action="Index" class="btn btn-secondary px-4 ms-2">Hủy</a>
+    </form>
+</div>
