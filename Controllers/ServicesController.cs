@@ -17,7 +17,7 @@ namespace PhapClinicX.Controllers
         }
 
 
-        //[Route("khuyen-mai")]
+        [Route("khuyen-mai")]
         public async Task<IActionResult> KhuyenMai()
         {
             var firstVoucher = await _context.Discounts

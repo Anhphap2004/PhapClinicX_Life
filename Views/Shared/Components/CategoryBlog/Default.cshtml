@@ -1,0 +1,63 @@
+﻿@model IEnumerable<PhapClinicX.Models.BlogCategory>
+
+<!-- Blog Start -->
+<div style="padding: 30px 0 15px; color: rgb(0, 0, 0); margin-bottom: 20px; text-align: center;">
+    <h1 style="font-size: 32px; font-weight: 700; margin-bottom: 5px; letter-spacing: 0.5px;">Tin Y Tế</h1>
+    <p style="font-size: 16px; opacity: 0.9; font-weight: 400; margin: 0;">Chính thống - Minh bạch - Trung lập</p>
+</div>
+
+<div style="display: flex; justify-content: center; margin-top: -25px;">
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 20px; background-color: #e0e0e0; padding: 12px 25px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08); width: 80%; max-width: 900px;">
+        <div style="display: flex; gap: 10px;" class="nav-tabs">
+            <button class="btn btn-primary btn-all" onclick="filterBlogs('all')">Tất cả</button>
+
+            @foreach (var p in Model)
+            {
+              
+                <button class="nav-tab btn btn-outline-primary"
+                        data-tab="@p.Alias"
+                        onclick="filterBlogs('@p.Alias')">
+                    @p.CategoryName
+                </button>
+
+            }
+        </div>
+        <div style="position: relative; flex-grow: 1; max-width: 300px;">
+            <input style="padding: 12px 15px; border: 1px solid #e0e0e0; border-radius: 20px; outline: none; width: 100%; transition: all 0.3s ease; font-size: 14px;"
+                   type="text" placeholder="Nhập từ khóa tìm kiếm..." id="searchInput">
+        </div>
+    </div>
+</div>
+<script>
+    function filterBlogs(category) {
+        let blogs = document.querySelectorAll('.blog-item');
+        let buttons = document.querySelectorAll('.nav-tab, .btn-all');
+
+        // Lọc bài viết theo danh mục
+        blogs.forEach(blog => {
+            if (category === 'all' || blog.getAttribute('data-category') === category) {
+                blog.style.display = 'block';
+            } else {
+                blog.style.display = 'none';
+            }
+        });
+
+        // Xóa class active của tất cả nút
+        buttons.forEach(btn => {
+            btn.classList.remove('btn-primary');
+            btn.classList.add('btn-outline-primary');
+        });
+
+        // Thêm class active vào nút đang được chọn
+        let activeBtn = document.querySelector(`[data-tab="${category}"]`);
+        if (activeBtn) {
+            activeBtn.classList.add('btn-primary');
+            activeBtn.classList.remove('btn-outline-primary');
+        } else {
+            // Nếu chọn "Tất cả", thì nút "Tất cả" active
+            document.querySelector('.btn-all').classList.add('btn-primary');
+            document.querySelector('.btn-all').classList.remove('btn-outline-primary');
+        }
+    }
+</script>
+
