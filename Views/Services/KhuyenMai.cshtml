@@ -2,7 +2,7 @@
     List<Discount> voucher = ViewBag.voucher;
     List<Discount> AllVoucher = ViewBag.AllVoucher;
 }
-<div class="container my-4">
+<div class="container my-4 mb-5">
     <h3 class="fw-bold">Khuyến mãi</h3>
 
     <div class="row">
@@ -12,6 +12,7 @@
                 <div class="col-md-12 mb-3">
                     @foreach (var p in voucher)
                     {
+                        string url = $"/khuyen-mai/{p.DiscountId}";
                         <div class="card border-0 shadow-sm d-flex flex-row align-items-center p-3">
                             <!-- Ảnh bên trái -->
                             <img src="~/assets/img/voucher/@p.Image" style="width:450px; height:auto" class="img-fluid rounded" alt="Khuyến mãi">
@@ -21,7 +22,7 @@
                                 <h5 class="fw-bold text-primary">@(p.DiscountName.Length > 50 ? p.DiscountName.Substring(0, 50) + "..." : p.DiscountName)</h5>
                                 <p class="text-muted">Khởi đầu năm mới, NhaKhoaHub xin được dành tặng cho tất cả mọi người voucher siêu hời...</p>
                                 <p class="text-secondary fw-bold mb-1">📅 14/02/2025</p>
-                                <a href="#" class="btn btn-info text-white btn-sm">Xem chi tiết</a>
+                                <a href="@url" class="btn btn-info text-white btn-sm">Xem chi tiết</a>
                             </div>
                         </div>
                     }
@@ -33,11 +34,12 @@
                     <div class="row mt-3">
                         @foreach (var p in AllVoucher)
                         {
+                            string url = $"/khuyen-mai/{p.DiscountId}";
                             <div class="col-md-4 mb-3">
                                 <div class="card border-0 shadow-sm">
                                     <img src="~/assets/img/voucher/@p.Image" class="card-img-top" alt="Voucher">
                                     <div class="card-body">
-                                        <h6 class="fw-bold">@p.DiscountName</h6>
+                                        <a href="@url"><h6 class="fw-bold">@p.DiscountName</h6></a>
                                         <p class="text-muted">@(p.Detail?.Length > 20 ? p.Detail.Substring(0, 20) + "..." : p.Detail)</p>
                                         <p class="text-muted small">📅 Bắt đầu: <strong>@p.StartDate.ToString("dd/MM/yyyy")</strong></p>
                                         <p class="text-muted small">⏳ Hết hạn: <strong>@p.EndDate.ToString("dd/MM/yyyy")</strong></p>

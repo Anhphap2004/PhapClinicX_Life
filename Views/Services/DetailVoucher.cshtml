@@ -1,0 +1,110 @@
+﻿@model Discount
+@{
+    List<Discount> voucher = ViewBag.voucher;
+}
+@section Styles {
+    <style>
+        .voucher-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .voucher-card {
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .voucher-detail {
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+    </style>
+}
+
+    <div class="container mt-5">
+        <!-- Tiêu đề -->
+        <div class="text-center mb-4">
+            <h2 class="text-primary fw-bold">@Model.DiscountName</h2>
+            <p class="text-muted">Mã Voucher: <strong>@Model.Code</strong></p>
+        </div>
+
+        <!-- Hình ảnh Voucher -->
+        <div class="text-center">
+            <img src="~/assets/img/voucher/@Model.Image" class="voucher-image" alt="Voucher Image">
+        </div>
+
+        <div class="row mt-5">
+            <!-- Thông tin Voucher -->
+            <div class="col-md-6">
+                <div class="card voucher-card p-4">
+                    <h4 class="text-success fw-bold">Ưu đãi hấp dẫn 🎉</h4>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><strong>Giảm giá:</strong> @Model.DiscountPercent.ToString("N0")%</li>
+                        <li class="list-group-item"><strong>Thời gian áp dụng:</strong> @Model.StartDate.ToString("dd/MM/yyyy") - @Model.EndDate.ToString("dd/MM/yyyy")</li>
+                        <li class="list-group-item"><strong>Trạng thái:</strong> <span class="badge @(Model.IsActive ? "bg-success" : "bg-danger")">@(Model.IsActive ? "Đang áp dụng" : "Hết hạn")</span></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Form Đăng Ký Nhận Voucher -->
+            <div class="col-md-6">
+                <div class="card voucher-card p-4">
+                    <h4 class="text-primary fw-bold">Nhận ngay ưu đãi 🎁</h4>
+                    <form>
+                        <div class="mb-3">
+                            <label class="form-label">Họ và tên</label>
+                            <input type="text" class="form-control" placeholder="Nhập họ tên của bạn">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Số điện thoại</label>
+                            <input type="tel" class="form-control" placeholder="Nhập số điện thoại">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" placeholder="Nhập email của bạn">
+                        </div>
+                        <button type="submit" class="btn btn-success w-100">Đăng Ký Nhận Voucher</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chi tiết Voucher (HTML từ SQL) -->
+        <div class="mt-5 voucher-detail">
+            <h4 class="text-dark fw-bold">📌 Thông tin chi tiết</h4>
+            <div>
+                @Html.Raw(Model.Detail) <!-- Hiển thị nội dung HTML từ SQL -->
+            </div>
+        </div>
+
+        <!-- Danh sách voucher khác -->
+        <div class="mt-5">
+            <h4 class="text-dark fw-bold">🔹 Các voucher khác</h4>
+            <div class="row">
+                @foreach (var p in voucher)
+                {
+                    string url = $"/khuyen-mai/{p.DiscountId}";
+                    <div class="col-md-4 col-sm-6 mt-3">
+                        <div class="card voucher-card p-3">
+                            <img src="~/assets/img/voucher/@p.Image" class="voucher-image" alt="@p.DiscountName">
+                            <div class="mt-2">
+                                <a href="@url"><h5 class="fw-bold">@p.DiscountName</h5></a>
+                                <p class="text-danger">Giảm @p.DiscountPercent.ToString("N0")%</p>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- Nút quay lại -->
+        <div class="text-center mt-5">
+            <a asp-controller="Services" asp-action="KhuyenMai" class="btn btn-outline-primary px-4 py-2 fw-bold">🔙 Quay lại danh sách</a>
+        </div>
+    </div>
+
+

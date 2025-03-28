@@ -71,7 +71,7 @@ public partial class ClinicManagementContext : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
-    
+   
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -233,6 +233,7 @@ public partial class ClinicManagementContext : DbContext
         {
             entity.HasKey(e => e.DiscountId).HasName("PK__Discount__E43F6D9693B170A7");
 
+            entity.Property(e => e.Code).HasMaxLength(50);
             entity.Property(e => e.DiscountName).HasMaxLength(255);
             entity.Property(e => e.DiscountPercent).HasColumnType("decimal(5, 2)");
             entity.Property(e => e.EndDate).HasColumnType("datetime");

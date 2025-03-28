@@ -20,4 +20,6 @@ public partial class Discount
     public bool IsActive { get; set; }
 
     public string? Detail { get; set; }
+
+    public string? Code { get; set; }
 }
