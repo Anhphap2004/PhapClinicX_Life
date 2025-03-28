@@ -1,0 +1,202 @@
+﻿@model IEnumerable<PhapClinicX.Models.PhongKham>
+<style>
+    .clinic-card {
+        border: 1px solid #e0e0e0;
+        margin-bottom: 20px;
+        border-radius: 10px;
+        overflow: hidden;
+        transition: transform 0.2s ease-in-out;
+    }
+
+        .clinic-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+    .clinic-header {
+        display: flex;
+        align-items: center;
+        padding: 15px;
+        background-color: #f8f9fa;
+    }
+
+    .clinic-logo {
+        width: 65px;
+        height: 65px;
+        margin-right: 15px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
+    .promotion-badge {
+        background-color: #dc3545;
+        color: white;
+        padding: 4px 10px;
+        border-radius: 4px;
+        font-size: 12px;
+        font-weight: bold;
+        display: inline-block;
+        margin-bottom: 5px;
+    }
+
+    .rating {
+        color: #ffc107;
+        font-weight: bold;
+    }
+
+    .booking-buttons {
+        display: flex;
+        gap: 10px;
+        margin-top: 10px;
+        justify-content: flex-end;
+    }
+
+    .btn-booking {
+        flex: 1;
+        font-size: 14px;
+        padding: 8px 12px;
+    }
+
+    .clinic-info small {
+        display: block;
+        max-width: 250px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .card-footer {
+        text-align: center;
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+    /* Căn chỉnh bộ lọc */
+    .filter-section {
+        padding: 15px;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+    }
+
+    .form-control, .form-select {
+        border: 1px solid #ccc !important;
+    }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #999 !important;
+            box-shadow: none !important;
+        }
+
+</style>
+
+<div class="container mt-4">
+    <div class="row">
+        <!-- Bộ Lọc -->
+        <div class="col-md-4">
+            <div class="filter-section bg-light">
+                <h5 class="text-center">🔍 Bộ Lọc</h5>
+                <hr class="border-secondary-subtle">
+
+                <div class="mb-3">
+                    <h6 class="mb-2">📌 Dịch Vụ</h6>
+                    <select class="form-select">
+                        <option selected>Chọn dịch vụ</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <h6 class="mb-2">💰 Giá Tiền</h6>
+                    <div class="row g-2">
+                        <div class="col">
+                            <input type="text" class="form-control" placeholder="Từ">
+                        </div>
+                        <div class="col">
+                            <input type="text" class="form-control" placeholder="Đến">
+                        </div>
+                    </div>
+                    <div class="mt-2 d-flex flex-wrap gap-2">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="under1">
+                            <label class="form-check-label" for="under1">Dưới 1 triệu</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="1to3">
+                            <label class="form-check-label" for="1to3">1-3 triệu</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <h6 class="mb-2">📅 Ngày Khám Trong Tuần</h6>
+                    <div class="btn-group d-flex flex-wrap">
+                        <input type="checkbox" class="btn-check" id="mon">
+                        <label class="btn btn-outline-success px-3" for="mon">Thứ 2</label>
+
+                        <input type="checkbox" class="btn-check" id="tue">
+                        <label class="btn btn-outline-success px-3" for="tue">Thứ 3</label>
+
+                        <input type="checkbox" class="btn-check" id="wed">
+                        <label class="btn btn-outline-success px-3" for="wed">Thứ 4</label>
+                    </div>
+                </div>
+
+                <div class="text-center mt-4">
+                    <button class="btn btn-primary w-100 py-2 rounded-3">✅ Áp Dụng</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Danh sách phòng khám -->
+        <div class="col-md-8">
+            @foreach (var p in Model)
+            {
+                string url = $"/booking/chi-nhanh-kham/{p.PhongKhamId}.html";
+                <div class="clinic-card card">
+                    <div class="clinic-header">
+                        <img src="~/assets/img/clinicbranch/@p.Image" alt="Clinic Logo" class="clinic-logo">
+                        <div class="flex-grow-1">
+                            <div>
+                                <span class="promotion-badge">Khuyến Mãi</span>
+                                <strong style="color:#1677ff">@p.TenPhongKham</strong>
+                            </div>
+                            <div>
+                                <span class="rating">★ 4.9</span> (21 Đánh giá)
+                            </div>
+                            <div class="clinic-info">
+                                <small style="color:#1677ff">🏠 @p.DiaChi</small>
+                                <small style="color:#1677ff">☎️ @p.SoDienThoai</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="row text-center">
+                            <div class="col">
+                                <strong>Niềng Răng</strong>
+                                <p>35 - 140 triệu</p>
+                            </div>
+                            <div class="col">
+                                <strong>Trồng Răng Implant</strong>
+                                <p>200 nghìn - 1 triệu</p>
+                            </div>
+                            <div class="col">
+                                <strong>Bọc Răng Sứ</strong>
+                                <p>6 - 28 triệu</p>
+                            </div>
+                        </div>
+
+                        <div class="booking-buttons">
+                            <a href="@url" class="btn btn-info btn-booking">Đặt Lịch</a>
+                            <button class="btn btn-danger btn-booking">Nhận Tư Vấn</button>
+                        </div>
+                    </div>
+
+                    <div class="card-footer text-muted">
+                        <small>✓ Xuất hóa đơn ✓ Bảo hiểm ✓ Khám và tư vấn miễn phí</small>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+

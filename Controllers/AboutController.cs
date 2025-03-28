@@ -16,5 +16,10 @@ namespace PhapClinicX.Controllers
             ViewBag.Faqs = _context.Faqs.ToList();
             return View();
         }
+        [Route("Chi-Nhanh")]
+        public IActionResult Branch()
+        {
+            return View();
+        }
     }
 }

@@ -11,7 +11,7 @@
     <div class="card shadow p-4 w-50">
         <h4 class="mb-3">📋 Cập nhật thông tin</h4>
         <hr />
-        <form asp-action="Edit">
+        <form asp-controller="ClinicAppointments" asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="AppointmentId" />
 
@@ -33,9 +33,10 @@
                 <span asp-validation-for="DateTime" class="text-danger"></span>
             </div>
 
-            <div class="mb-3 form-check">
+            <div class="form-group mb-3 form-check">
                 <input asp-for="Status" class="form-check-input" type="checkbox" />
-                <label class="form-check-label fw-bold">✅ Đã xác nhận</label>
+                <label asp-for="Status" class="form-check-label fw-bold">Đã xác nhận</label>
+                <span asp-validation-for="Status" class="text-danger"></span>
             </div>
 
             <div class="mb-3">
@@ -52,8 +53,3 @@
     </div>
 </div>
 
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-}

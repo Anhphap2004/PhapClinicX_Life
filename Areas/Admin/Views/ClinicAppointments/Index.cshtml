@@ -33,7 +33,7 @@
                 <td>@(p++)</td>
                 <td>@item.Fullname</td>
                 <td>@item.Phone</td>
-                <td>@item.DateTime?.ToString("dd/MM/yyyy HH:mm")</td>
+                <td>@Html.DisplayFor(modelItem => item.DateTime)</td>
                 <td class="text-center">
                     @(item.Status ? "✅ Đã xác nhận" : "❌ Chưa xác nhận")
                 </td>
