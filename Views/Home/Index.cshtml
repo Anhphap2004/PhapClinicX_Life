@@ -8,18 +8,28 @@
 }
 @using Microsoft.AspNetCore.Http
 
-@* <!-- Bắt đầu Carousel --> *@
-@* <div class="header-carousel owl-carousel"> *@
-@*     @if (discount != null && discount.Any()) *@
-@*     { *@
-@*         @foreach (var p in discount) *@
-@*         { *@
-@*             <div class="header-carousel-item"> *@
-@*                 <img src="~/assets/img/voucher/@p.Image" class="img-fluid" style="width:100%; height:auto; object-fit:cover" alt="PhapLife Banner"> *@
-@*             </div> *@
-@*         } *@
-@*     } *@
-@* </div> *@
+<!-- Bắt đầu Slider -->
+@if (discount != null && discount.Any())
+{
+    <div class="image-slider">
+        <div class="image-track">
+            @foreach (var p in discount)
+            {
+                <img src="~/assets/img/voucher/@p.Image"
+                     class="slide-img"
+                     alt="PhapLife Banner">
+            }
+            @* Lặp lại ảnh để tạo hiệu ứng trượt vô tận *@
+            @foreach (var p in discount)
+            {
+                <img src="~/assets/img/voucher/@p.Image"
+                     class="slide-img"
+                     alt="PhapLife Banner">
+            }
+        </div>
+    </div>
+}
+
 
 <!-- Kết thúc Carousel -->
 <!-- Bắt đầu DoctorAppointment -->
@@ -46,7 +56,7 @@
             <div class="col-xl-6 wow fadeInLeft" data-wow-delay="0.2s">
                 <div class="h-100">
                     <div class="mb-5">
-                        <h4 class="text-primary">Một số câu hỏi quan trọng</h4>
+                        <h4 class="text-danger">Một số câu hỏi quan trọng</h4>
                         <h1 class="display-4 mb-0">Câu hỏi thường gặp</h1>
                     </div>
                     <div class="accordion" id="accordionExample">
@@ -95,7 +105,7 @@
 <div class="container-fluid testimonial pb-5">
     <div class="container pb-5">
         <div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.2s" style="max-width: 800px;">
-            <h4 class="text-primary">Testimonial</h4>
+            <h4 class="text-danger">Testimonial</h4>
             <h1 class="display-4 mb-4">What Our Customers Are Saying</h1>
             <p class="mb-0">
                 Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tenetur adipisci facilis cupiditate recusandae aperiam temporibus corporis itaque quis facere, numquam, ad culpa deserunt sint dolorem autem obcaecati, ipsam mollitia hic.
@@ -113,7 +123,7 @@
                         <div class="d-flex flex-column my-auto text-start p-4">
                             <h4 class="text-dark mb-0">Client Name</h4>
                             <p class="mb-3">Profession</p>
-                            <div class="d-flex text-primary mb-3">
+                            <div class="d-flex text-danger mb-3">
                                 <i class="fas fa-star"></i>
                                 <i class="fas fa-star"></i>
                                 <i class="fas fa-star"></i>
@@ -138,7 +148,7 @@
                         <div class="d-flex flex-column my-auto text-start p-4">
                             <h4 class="text-dark mb-0">Client Name</h4>
                             <p class="mb-3">Profession</p>
-                            <div class="d-flex text-primary mb-3">
+                            <div class="d-flex text-danger mb-3">
                                 <i class="fas fa-star"></i>
                                 <i class="fas fa-star"></i>
                                 <i class="fas fa-star"></i>
@@ -163,7 +173,7 @@
                         <div class="d-flex flex-column my-auto text-start p-4">
                             <h4 class="text-dark mb-0">Client Name</h4>
                             <p class="mb-3">Profession</p>
-                            <div class="d-flex text-primary mb-3">
+                            <div class="d-flex text-danger mb-3">
                                 <i class="fas fa-star"></i>
                                 <i class="fas fa-star"></i>
                                 <i class="fas fa-star"></i>

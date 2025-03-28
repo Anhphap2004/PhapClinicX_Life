@@ -1,8 +1,5 @@
-
+﻿
 /*** Spinner Start ***/
-body {
-    font-family: 'Playball', cursive;
-}
 
 #spinner {
     opacity: 0;
@@ -1157,5 +1154,35 @@ body {
         color: #495057;
         margin-bottom: 0.5rem;
     }
+.image-slider {
+    overflow: hidden;
+    width: 100%;
+    height: 200px; /* Định chiều cao */
+    position: relative;
+    white-space: nowrap;
+}
 
-  
+.image-track {
+    display: flex;
+    width: max-content;
+    animation: slide 15s linear infinite;
+}
+
+.slide-img {
+    width: 100%; /* Ảnh hiển thị đúng kích thước */
+    height: 200px;
+    object-fit: cover;
+    margin-right: 10px; /* Khoảng cách giữa ảnh */
+}
+
+/* Animation cho ảnh trượt ngang */
+@keyframes slide {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-50%);
+    }
+    /* Dịch chuyển nửa danh sách ảnh */
+}
