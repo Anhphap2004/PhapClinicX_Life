@@ -1,5 +1,9 @@
 
 /*** Spinner Start ***/
+body {
+    font-family: 'Playball', cursive;
+}
+
 #spinner {
     opacity: 0;
     visibility: hidden;
@@ -1154,3 +1158,4 @@
         margin-bottom: 0.5rem;
     }
 
+  

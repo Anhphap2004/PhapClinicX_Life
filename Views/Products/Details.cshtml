@@ -1,0 +1,277 @@
+﻿@model PhapClinicX.Models.Product
+@{
+    List<Product> RelatedProducts = ViewBag.RelatedProducts;
+    List<ProductCategory> Category = ViewBag.Category;
+}
+<style>
+
+    /* Khu vực chi tiết sản phẩm */
+    .product-detail-section {
+        margin-top: 50px;
+    }
+
+    .product-detail-content {
+        display: flex;
+        justify-content: space-between;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        flex-wrap: wrap; /* Đảm bảo các phần sẽ xuống dòng nếu không đủ không gian */
+    }
+
+    /* Hình ảnh sản phẩm */
+    .product-image-gallery {
+        flex: 1;
+        margin-right: 20px;
+    }
+
+        .product-image-gallery .main-image img {
+            width: 100%;
+            border-radius: 10px;
+        }
+
+    .image-thumbnails {
+        display: flex;
+        margin-top: 10px;
+    }
+
+        .image-thumbnails img {
+            width: 80px;
+            height: 80px;
+            margin-right: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+            .image-thumbnails img:hover {
+                transform: scale(1.05);
+            }
+
+    /* Thông tin sản phẩm */
+    .product-info {
+        flex: 1;
+        margin-top: 20px;
+    }
+
+    .product-title {
+        font-size: 28px;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 10px;
+    }
+
+    .price-section {
+        margin-bottom: 20px;
+    }
+
+    .new-price {
+        color: red;
+        font-size: 24px;
+        font-weight: bold;
+    }
+
+    .old-price {
+        text-decoration: line-through;
+        color: #aaa;
+        font-size: 18px;
+        margin-left: 10px;
+    }
+
+    /* Đánh giá và nhận xét */
+    .rating-review {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .rating {
+        color: gold;
+        margin-right: 10px;
+    }
+
+        .rating i {
+            margin-right: 3px;
+        }
+
+    /* Mô tả sản phẩm */
+    .description {
+        margin-bottom: 20px;
+        line-height: 1.6;
+    }
+
+    /* Chọn số lượng và nút thêm vào giỏ */
+    .quantity-cart {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+        .quantity-cart label {
+            margin-right: 10px;
+        }
+
+        .quantity-cart input {
+            width: 60px;
+            padding: 5px;
+            text-align: center;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-right: 20px;
+        }
+
+    .add-to-cart {
+        background-color: #28a745;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+    }
+
+        .add-to-cart:hover {
+            background-color: #218838;
+        }
+
+    /* Danh mục và thẻ sản phẩm */
+    .product-category,
+    .product-tags {
+        margin-bottom: 15px;
+    }
+
+        .product-category span,
+        .product-tags span {
+            font-weight: bold;
+        }
+
+        .product-category a,
+        .product-tags a {
+            color: #007bff;
+            text-decoration: none;
+            margin-right: 5px;
+            transition: color 0.3s;
+        }
+
+            .product-category a:hover,
+            .product-tags a:hover {
+                color: #0056b3;
+            }
+
+    /* Chia sẻ trên mạng xã hội */
+    .social-share {
+        display: flex;
+        align-items: center;
+    }
+
+        .social-share span {
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        .social-share a {
+            color: #333;
+            margin-right: 10px;
+            font-size: 20px;
+            transition: color 0.3s;
+        }
+
+            .social-share a:hover {
+                color: #007bff;
+            }
+
+
+    
+</style>
+<!-- Chi tiết món ăn -->
+<div class="product-detail-section">
+    <div class="container">
+        <div class="product-detail-content">
+            <div class="product-image-gallery">
+                <!-- Hình ảnh chính của món ăn -->
+                <div class="main-image">
+                    <img src="~/assets/img/product/@Model.Image" style="height:400px" alt="Hình Ảnh Món Ăn">
+                </div>
+                <!-- Thumbnail ảnh món ăn -->
+                <div class="image-thumbnails">
+                    @foreach (var p in RelatedProducts)
+                    {
+                        <img src="~/assets/img/product/@p.Image" alt="Hình Ảnh Món Ăn">
+                    }
+                </div>
+            </div>
+            @* ViewBag.MenuCategories chứa một danh sách các danh mục menu (List<TbMenuCategory> *@
+            @*     ) mà controller đã truyền đến view. *@
+            @*     Dữ liệu từ ViewBag được ép kiểu (cast) về đúng kiểu dữ liệu List<TbMenuCategory> *@   
+            <div class="product-info">
+                <!-- Tên món ăn -->
+                <h2 style="font-family:'Playball', cursive !important" class="product-title">@Model.ProductName</h2>
+
+                <!-- Giá món ăn -->
+                <div class="price-section">
+                    <span class="new-price">@string.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:C0}", Model.PriceSale)</span>
+                    <span class="old-price">@string.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:C0}", Model.Price)</span>
+                </div>
+
+                <!-- Đánh giá món ăn -->
+                <div class="rating-review">
+                    <div class="rating">
+                        @for (var i = 0; i < Model.Star; i++)
+                        {
+                            <i class="fas fa-star"></i>
+
+                        }
+
+                    </div>
+                    @* <span>(@MenuReview.Count() đánh giá của khách hàng)</span> *@
+                </div>
+
+                <!-- Mô tả món ăn -->
+                <div class="description">
+                    <p>
+                        @Model.Description
+                    </p>
+                </div>
+
+                <!-- Chọn số lượng và nút mua hàng -->
+                <div class="quantity-cart">
+                    <label for="quantity">Số lượng:</label>
+                    <input type="number" id="quantity" value="1" min="1" max="@Model.ProductImport">
+                    <button class="add-to-cart">Thêm vào giỏ hàng</button>
+                </div>
+
+
+                <!-- Danh mục món ăn -->
+                @foreach (var p in Category)
+                {
+                   
+                    <div class="product-category">
+                        <span>Danh Mục: </span>
+                        <a href="#">@p.CategoryName</a>
+                    </div>
+
+                }
+
+
+                <!-- Thẻ sản phẩm -->
+                <div class="product-tags">
+                    <span>Thẻ: </span>
+                    <a href="#">Đồ Ăn</a>, <a href="#">Ẩm Thực</a>, <a href="#">Món chính</a>
+                </div>
+
+                <!-- Chia sẻ trên mạng xã hội -->
+                <div class="social-share">
+                    <span>Chia sẻ: </span>
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-pinterest-p"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div>
+    @Html.Raw(Model.Detail)
+</div>
