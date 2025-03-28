@@ -57,14 +57,6 @@
         padding: 8px 12px;
     }
 
-    .clinic-info small {
-        display: block;
-        max-width: 250px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
     .card-footer {
         text-align: center;
         font-size: 14px;
@@ -151,20 +143,21 @@
             @foreach (var p in Model)
             {
                 string url = $"/booking/chi-nhanh-kham/{p.PhongKhamId}.html";
-                <div class="clinic-card card">
+                <div style="position:relative" class="clinic-card card">
                     <div class="clinic-header">
                         <img src="~/assets/img/clinicbranch/@p.Image" alt="Clinic Logo" class="clinic-logo">
                         <div class="flex-grow-1">
                             <div>
-                                <span class="promotion-badge">Khuyến Mãi</span>
+                                <span style="position:absolute; top:0; right:0" class="promotion-badge">Khuyến Mãi</span>
                                 <strong style="color:#1677ff">@p.TenPhongKham</strong>
                             </div>
-                            <div>
+                            <div class="mb-2">
                                 <span class="rating">★ 4.9</span> (21 Đánh giá)
                             </div>
                             <div class="clinic-info">
-                                <small style="color:#1677ff">🏠 @p.DiaChi</small>
-                                <small style="color:#1677ff">☎️ @p.SoDienThoai</small>
+                                <small class="mb-2" style="color:#1677ff">🏠 @p.DiaChi</small>
+                                <br />
+                                <small class="mb-2" style="color:#1677ff">☎️ @p.SoDienThoai</small>
                             </div>
                         </div>
                     </div>

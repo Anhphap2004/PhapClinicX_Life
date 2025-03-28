@@ -71,7 +71,7 @@ public partial class ClinicManagementContext : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
-   
+    
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -473,7 +473,9 @@ public partial class ClinicManagementContext : DbContext
             entity.HasKey(e => e.ProductId).HasName("PK__Products__47027DF521AFC1FB");
 
             entity.Property(e => e.ProductId).HasColumnName("product_id");
+            entity.Property(e => e.Alias).HasMaxLength(250);
             entity.Property(e => e.CategoryId).HasColumnName("category_id");
+            entity.Property(e => e.CreatedDate).HasColumnType("datetime");
             entity.Property(e => e.Description).HasColumnName("description");
             entity.Property(e => e.Image)
                 .HasMaxLength(255)
@@ -482,12 +484,16 @@ public partial class ClinicManagementContext : DbContext
                 .HasDefaultValue(true)
                 .HasColumnName("is_active");
             entity.Property(e => e.Price)
-                .HasColumnType("decimal(10, 2)")
+                .HasColumnType("decimal(18, 2)")
                 .HasColumnName("price");
+            entity.Property(e => e.PriceSale)
+                .HasColumnType("decimal(18, 2)")
+                .HasColumnName("price_sale");
+            entity.Property(e => e.ProductImport).HasColumnName("product_import");
             entity.Property(e => e.ProductName)
                 .HasMaxLength(255)
                 .HasColumnName("product_name");
-            entity.Property(e => e.Specifications).HasColumnName("specifications");
+            entity.Property(e => e.ProductSold).HasColumnName("product_sold");
             entity.Property(e => e.Warranty)
                 .HasMaxLength(255)
                 .HasColumnName("warranty");
