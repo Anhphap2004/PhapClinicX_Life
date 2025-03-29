@@ -1,5 +1,8 @@
 ﻿@model PhapClinicX.Models.Product
+@using Microsoft.AspNetCore.Http
+
 @{
+    var discount = ViewBag.Discount as PhapClinicX.Models.Discount;
     List<Product> RelatedProducts = ViewBag.RelatedProducts;
     List<ProductCategory> Category = ViewBag.Category;
     List<ProductComment> ProductComments = ViewBag.ProductComments;
@@ -279,53 +282,358 @@
 <div>
     @Html.Raw(Model.Detail)
 </div>
+<div class="container mt-4">
+<div class="row">
+    <div class="col-lg-8 mt-5">
+        <h2 class="text-center mb-4 text-primary fw-bold">
+            💬 Khách Hàng Đánh Giá
+        </h2>
 
-<div class="container mt-5">
-    <h2 class="text-center mb-4 text-primary">
-        💬 Khách Hàng Đánh Giá
-    </h2>
-    <div class="row justify-content-center">
-        @foreach (var p in ProductComments)
-        {
-            <div class="col-12">
-                <div class="card shadow-sm border-0 mb-3 p-3 d-flex flex-row align-items-center">
-                    <!-- Ảnh đại diện -->
-                    <img src="~/assets/img/team/@p.User?.ProfileImage" alt="Reviewer Avatar"
-                         class="rounded-circle flex-shrink-0"
-                         style="width: 60px; height: 60px; object-fit: cover; border: 3px solid #ddd; margin-right: 15px;">
+        <div class="row justify-content-center">
+            @foreach (var p in ProductComments)
+            {
+                <div class="col-12">
+                    <div class="card shadow-sm border-0 mb-4 p-4 d-flex flex-row align-items-center transition-all hover-shadow">
+                        <!-- Ảnh đại diện với hiệu ứng border -->
+                        <img src="~/assets/img/team/@p.User?.ProfileImage" alt="Reviewer Avatar"
+                             class="rounded-circle flex-shrink-0"
+                             style="width: 70px; height: 70px; object-fit: cover; border: 3px solid #e6e6e6; box-shadow: 0 0 10px rgba(0,0,0,0.05); margin-right: 20px; transition: all 0.3s ease;">
 
-                    <!-- Nội dung bình luận -->
-                    <div class="d-flex justify-content-between w-100 align-items-center gap-3">
-                        <div>
-                            <h5 class="mb-1">@p.User?.FullName</h5>
-                            <small class="text-muted">@p.CreatedAt?.ToString("dd/MM/yyyy")</small>
+                        <!-- Nội dung bình luận -->
+                        <div class="d-flex justify-content-between w-100 align-items-center gap-4">
+                            <div>
+                                <h5 class="mb-1 fw-bold">@p.User?.FullName</h5>
+                                <small class="text-muted d-flex align-items-center">
+                                    <i class="far fa-calendar-alt me-1"></i> @p.CreatedAt?.ToString("dd/MM/yyyy")
+                                </small>
 
-                            <!-- Đánh giá sao -->
-                            <div class="my-1">
-                                @for (var i = 0; i < p.Star; i++)
-                                {
-                                    <i class="fas fa-star text-warning"></i>
-                                }
+                                <!-- Đánh giá sao cải thiện -->
+                                <div class="my-2">
+                                    @for (var i = 0; i < p.Star; i++)
+                                    {
+                                        <i class="fas fa-star text-warning" style="font-size: 18px;"></i>
+                                    }
+                                    @for (var i = p.Star; i < 5; i++)
+                                    {
+                                        <i class="far fa-star text-warning" style="font-size: 18px;"></i>
+                                    }
+                                </div>
+
+                                <!-- Bình luận -->
+                                <p class="text-muted mb-1 mt-2">@p.Comment</p>
                             </div>
 
-                            <!-- Bình luận -->
-                            <p class="text-muted mb-1">@p.Comment</p>
+                            <!-- Ảnh bình luận (nếu có) -->
+                            @if (!string.IsNullOrEmpty(p.Image))
+                            {
+                                <img src="~/assets/img/comment/@p.Image" alt="Hình ảnh bình luận"
+                                     class="img-fluid rounded shadow-sm flex-shrink-0"
+                                     style="width: 130px; height: 130px; object-fit: cover; border-radius: 12px; transition: transform 0.3s ease;"
+                                     onmouseover="this.style.transform='scale(1.05)'"
+                                     onmouseout="this.style.transform='scale(1)'">
+                            }
                         </div>
-
-                        <!-- Ảnh bình luận (nếu có) -->
-                        @if (!string.IsNullOrEmpty(p.Image))
-                        {
-                            <img src="~/assets/img/comment/@p.Image" alt="Hình ảnh bình luận"
-                                 class="img-fluid rounded shadow-sm flex-shrink-0"
-                                 style="width: 120px; height: 120px; object-fit: cover; border-radius: 10px;">
-                        }
                     </div>
+                </div>
+            }
+        </div>
+
+        <!-- Nút phân trang -->
+        <div class="d-flex justify-content-center mt-4">
+            <nav aria-label="Phân trang đánh giá">
+                <ul class="pagination">
+                    <li class="page-item"><a class="page-link" href="#"><i class="fas fa-chevron-left"></i></a></li>
+                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item"><a class="page-link" href="#"><i class="fas fa-chevron-right"></i></a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="col-lg-4 mt-5">
+        <!-- Tìm kiếm -->
+        <div class="card shadow-sm border-0 mb-4 p-4">
+            <h3 class="fs-5 mb-3 text-primary fw-bold"><i class="fas fa-search me-2"></i>Tìm kiếm</h3>
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Nhập từ khóa tìm kiếm..."
+                       style="border-right: none; transition: all 0.3s ease;">
+                <button class="btn btn-primary" style="transition: all 0.3s ease;">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Đặt lịch khám -->
+        <div class="card shadow-sm border-0 mb-4 p-0 overflow-hidden">
+            <div class="card-body p-4 bg-primary text-white">
+                <h3 class="fs-5 mb-3 text-white fw-bold">
+                    <i class="fas fa-calendar-check me-2"></i>Đặt lịch khám ngay
+                </h3>
+                <p class="mb-3">Nhận tư vấn miễn phí và đặt lịch khám với bác sĩ chuyên khoa</p>
+                <ul class="mb-4 ps-3">
+                    <li class="mb-2">✓ Không chờ đợi</li>
+                    <li class="mb-2">✓ Bác sĩ chuyên khoa</li>
+                    <li>✓ Chăm sóc 24/7</li>
+                </ul>
+
+                <a asp-controller="Home" asp-action="Index"
+                   class="btn btn-light text-primary w-100 py-3 fw-bold"
+                   style="transition: all 0.3s ease;"
+                   onmouseover="this.classList.add('shadow')"
+                   onmouseout="this.classList.remove('shadow')">
+                    <i class="fas fa-calendar-plus me-2"></i>ĐẶT LỊCH NGAY
+                </a>
+            </div>
+        </div>
+
+        <!-- Bài viết liên quan -->
+        <div class="card shadow-sm border-0 mb-4 p-4">
+            <h3 class="fs-5 mb-3 text-primary fw-bold">
+                <i class="fas fa-newspaper me-2"></i>Bài viết liên quan
+            </h3>
+
+            @foreach (var p in RelatedProducts)
+            {
+                string url = $"/san-pham/{p.Alias}-{p.ProductId}.html";
+                <div class="d-flex mb-3 pb-3" style="border-bottom: 1px solid #f0f0f0; transition: all 0.3s ease;">
+                    <img src="~/assets/img/product/@p.Image" alt="Bài viết liên quan"
+                         class="flex-shrink-0 rounded shadow-sm"
+                         style="width: 85px; height: 85px; object-fit: cover;">
+
+                    <div class="ms-3">
+                        <h4 class="fs-6 mb-2">
+                            <a href="@url" class="text-decoration-none text-dark fw-medium">
+                                @p.ProductName
+                            </a>
+                        </h4>
+                        <p>Số lượng còn: @p.ProductImport</p>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <!-- Tags phổ biến -->
+        <div class="card shadow-sm border-0 mb-4 p-4">
+            <h3 class="fs-5 mb-3 text-primary fw-bold">
+                <i class="fas fa-tags me-2"></i>Tags phổ biến
+            </h3>
+            <div class="d-flex flex-wrap">
+                <a href="#" class="tag-link me-2 mb-2 py-2 px-3 rounded-pill bg-light text-secondary small"
+                   style="text-decoration: none; transition: all 0.3s ease;">
+                    Khám sức khỏe
+                </a>
+                <a href="#" class="tag-link me-2 mb-2 py-2 px-3 rounded-pill bg-light text-secondary small"
+                   style="text-decoration: none; transition: all 0.3s ease;">
+                    Bệnh tim mạch
+                </a>
+                <a href="#" class="tag-link me-2 mb-2 py-2 px-3 rounded-pill bg-light text-secondary small"
+                   style="text-decoration: none; transition: all 0.3s ease;">
+                    Tiểu đường
+                </a>
+                <a href="#" class="tag-link me-2 mb-2 py-2 px-3 rounded-pill bg-light text-secondary small"
+                   style="text-decoration: none; transition: all 0.3s ease;">
+                    Phòng ngừa bệnh
+                </a>
+                <a href="#" class="tag-link me-2 mb-2 py-2 px-3 rounded-pill bg-light text-secondary small"
+                   style="text-decoration: none; transition: all 0.3s ease;">
+                    Dinh dưỡng
+                </a>
+                <a href="#" class="tag-link me-2 mb-2 py-2 px-3 rounded-pill bg-light text-secondary small"
+                   style="text-decoration: none; transition: all 0.3s ease;">
+                    Thể thao
+                </a>
+                <a href="#" class="tag-link me-2 mb-2 py-2 px-3 rounded-pill bg-light text-secondary small"
+                   style="text-decoration: none; transition: all 0.3s ease;">
+                    Sức khỏe người cao tuổi
+                </a>
+                <a href="#" class="tag-link me-2 mb-2 py-2 px-3 rounded-pill bg-light text-secondary small"
+                   style="text-decoration: none; transition: all 0.3s ease;">
+                    Sức khỏe phụ nữ
+                </a>
+            </div>
+        </div>
+
+        <!-- Banner khuyến mãi -->
+        @if (discount != null)
+        {
+            <div class="card shadow-sm border-0 mb-4 p-0 overflow-hidden position-relative">
+                <div class="position-absolute" style="top: -5px; right: -5px; z-index: 1;">
+                    <div class="bg-danger text-white py-2 px-4 rounded-pill fw-bold animate-pulse">
+                        Giảm @discount.DiscountPercent.ToString("0")%
+                    </div>
+                </div>
+
+                <div class="card-body p-4 bg-light border-2 border-dashed border-primary rounded-3">
+                    <h3 class="fs-5 mb-3 text-primary fw-bold text-center">
+                        🔥 ƯU ĐÃI ĐẶC BIỆT 🔥
+                    </h3>
+
+                    <img src="~/assets/img/banner/@discount.Image" alt="Khuyến mãi đặc biệt"
+                         class="w-100 rounded-3 mb-3 shadow-sm">
+
+                    <h4 class="fs-6 mb-2 text-center fw-bold">
+                        Gói khám @discount.DiscountName
+                    </h4>
+
+                    <p class="mb-3 text-center small">
+                        <i class="far fa-calendar-alt me-1"></i>
+                        Áp dụng từ @discount.StartDate đến @discount.EndDate
+                    </p>
+
+                    <a asp-controller="Home" asp-action="Index"
+                       class="btn btn-primary w-100 py-3 fw-bold"
+                       style="transition: all 0.3s ease;"
+                       onmouseover="this.classList.add('shadow')"
+                       onmouseout="this.classList.remove('shadow')">
+                        <i class="fas fa-bolt me-2"></i>Đặt Lịch Khám Ngay!
+                    </a>
                 </div>
             </div>
         }
     </div>
 </div>
+</div>
+<style>
+   
 
+    /* Hover effect for tag links */
+    .tag-link:hover {
+        background-color: #0d6efd !important;
+        color: white !important;
+    }
+
+    /* Card hover effect */
+    .hover-shadow:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+    }
+
+    /* Transition for all elements */
+    .transition-all {
+        transition: all 0.3s ease;
+    }
+</style>
+
+
+<div class="card bg-light border-0 shadow-sm rounded-3 mx-auto" style="max-width: 700px;">
+    <div class="card-body p-4">
+        <h5 class="card-title mb-3 fw-bold text-center text-primary">
+            <i class="bi bi-chat-dots me-2"></i>Để lại bình luận của bạn
+        </h5>
+
+        <form method="post" asp-action="Comment" class="comment-form">
+            <input type="hidden" name="ProductId" value="@Model.ProductId" />
+
+            @if (Context.Session.GetInt32("UserId") == null)
+            {
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="fullName" name="FullName" placeholder="Họ tên" required>
+                            <label for="fullName"><i class="bi bi-person-fill me-1 text-muted"></i>Họ tên</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <input type="email" class="form-control" id="email" name="Email" placeholder="Email" required>
+                            <label for="email"><i class="bi bi-envelope-fill me-1 text-muted"></i>Email</label>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <div class="form-floating mb-3">
+                <textarea class="form-control" id="comment" name="Comment" style="height: 120px" placeholder="Nội dung bình luận" required></textarea>
+                <label for="comment"><i class="bi bi-chat-text-fill me-1 text-muted"></i>Nội dung bình luận</label>
+            </div>
+
+            <!-- Đánh giá sao -->
+            <div class="mb-3 text-center">
+                <p class="mb-2 fw-medium">Đánh giá của bạn</p>
+                <div class="star-rating">
+                    <input type="radio" id="star5" name="Star" value="5" class="d-none" />
+                    <label for="star5" class="star fs-3"><i class="bi bi-star-fill text-warning"></i></label>
+
+                    <input type="radio" id="star4" name="Star" value="4" class="d-none" />
+                    <label for="star4" class="star fs-3"><i class="bi bi-star-fill text-warning"></i></label>
+
+                    <input type="radio" id="star3" name="Star" value="3" class="d-none" checked />
+                    <label for="star3" class="star fs-3"><i class="bi bi-star-fill text-warning"></i></label>
+
+                    <input type="radio" id="star2" name="Star" value="2" class="d-none" />
+                    <label for="star2" class="star fs-3"><i class="bi bi-star-fill text-warning"></i></label>
+
+                    <input type="radio" id="star1" name="Star" value="1" class="d-none" />
+                    <label for="star1" class="star fs-3"><i class="bi bi-star-fill text-warning"></i></label>
+                </div>
+            </div>
+
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary py-2 px-4">
+                    <i class="bi bi-send me-2"></i>Gửi bình luận
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    /* Star rating styles */
+    .star-rating {
+        display: inline-flex;
+        flex-direction: row-reverse;
+        justify-content: center;
+    }
+
+        .star-rating .star {
+            cursor: pointer;
+            margin: 0 3px;
+            transition: transform 0.2s ease;
+        }
+
+            .star-rating .star:hover,
+            .star-rating .star:hover ~ .star {
+                transform: scale(1.2);
+            }
+
+        .star-rating input:checked ~ label i {
+            color: #ffc107 !important;
+        }
+
+        .star-rating input:not(:checked) ~ label i {
+            color: #e4e5e9 !important;
+        }
+
+    /* Form input focus style */
+    .form-control:focus {
+        border-color: #86b7fe;
+        box-shadow: 0 0 0 0.15rem rgba(13, 110, 253, 0.25);
+    }
+
+    /* Button hover effect */
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize star rating
+        const stars = document.querySelectorAll('.star');
+
+        stars.forEach(star => {
+            star.addEventListener('click', function() {
+                const radioInput = document.getElementById(this.getAttribute('for'));
+                radioInput.checked = true;
+            });
+        });
+    });
+</script>
 
 
 @using System.Globalization
