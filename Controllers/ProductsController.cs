@@ -20,7 +20,6 @@ namespace PhapClinicX.Controllers
             var Products = _context.Products.Where(p => p.IsActive == true).ToList();
             return View(Products);
         }
-
         [Route("/san-pham/{alias}-{id}.html")]
         public async Task<IActionResult> Details(string alias, int id)
         {

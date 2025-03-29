@@ -524,7 +524,7 @@
             <i class="bi bi-chat-dots me-2"></i>Để lại bình luận của bạn
         </h5>
 
-        <form method="post" asp-action="Comment" class="comment-form">
+        <form method="post" asp-action="Comment" class="comment-form" enctype="multipart/form-data">
             <input type="hidden" name="ProductId" value="@Model.ProductId" />
 
             @if (Context.Session.GetInt32("UserId") == null)
@@ -544,7 +544,6 @@
                     </div>
                 </div>
             }
-
             <div class="form-floating mb-3">
                 <textarea class="form-control" id="comment" name="Comment" style="height: 120px" placeholder="Nội dung bình luận" required></textarea>
                 <label for="comment"><i class="bi bi-chat-text-fill me-1 text-muted"></i>Nội dung bình luận</label>
