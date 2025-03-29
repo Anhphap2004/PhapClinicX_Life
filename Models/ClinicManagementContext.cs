@@ -71,8 +71,7 @@ public partial class ClinicManagementContext : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
-    
-
+   
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<About>(entity =>
@@ -526,7 +525,11 @@ public partial class ClinicManagementContext : DbContext
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime")
                 .HasColumnName("created_at");
+            entity.Property(e => e.Image)
+                .HasMaxLength(250)
+                .HasColumnName("image");
             entity.Property(e => e.ProductId).HasColumnName("product_id");
+            entity.Property(e => e.Star).HasColumnName("star");
             entity.Property(e => e.UserId).HasColumnName("user_id");
 
             entity.HasOne(d => d.Product).WithMany(p => p.ProductComments)

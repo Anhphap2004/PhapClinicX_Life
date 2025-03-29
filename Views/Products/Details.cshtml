@@ -2,6 +2,7 @@
 @{
     List<Product> RelatedProducts = ViewBag.RelatedProducts;
     List<ProductCategory> Category = ViewBag.Category;
+    List<ProductComment> ProductComments = ViewBag.ProductComments;
 }
 <style>
 
@@ -190,8 +191,11 @@
         <div class="product-detail-content">
             <div class="product-image-gallery">
                 <!-- Hình ảnh chính của món ăn -->
-                <div class="main-image">
+                <div style="position:relative" class="main-image">
                     <img src="~/assets/img/product/@Model.Image" style="height:400px" alt="Hình Ảnh Món Ăn">
+                    <div style="position: absolute; top:-10px; left:-20px">
+                        <img style="width: 100px; height:auto" src="~/assets/img/logo/phaplife.png" alt="Alternate Text" />
+                    </div>
                 </div>
                 <!-- Thumbnail ảnh món ăn -->
                 <div class="image-thumbnails">
@@ -224,7 +228,7 @@
                         }
 
                     </div>
-                    @* <span>(@MenuReview.Count() đánh giá của khách hàng)</span> *@
+                    <span>(@ProductComments.Count() đánh giá của khách hàng)</span>
                 </div>
 
                 <!-- Mô tả món ăn -->
@@ -275,3 +279,124 @@
 <div>
     @Html.Raw(Model.Detail)
 </div>
+
+<div style="max-width: 900px; margin: auto; padding: 20px; text-align: center; font-family: Arial, sans-serif;">
+    <h2 style="margin-bottom: 20px; font-size: 24px; font-weight: bold;">Khách Hàng Đánh Giá</h2>
+    <div style="display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 20px; padding-bottom: 10px;">
+        <!-- Một review -->
+        @foreach (var p in ProductComments)
+        {
+            <div style="min-width: calc(33.33% - 20px); max-width: calc(33.33% - 20px); scroll-snap-align: center; background: #f9f9f9; border: 1px solid #ddd; border-radius: 10px; padding: 15px; flex-shrink: 0; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); text-align: center;">
+                <div>
+                    <img src="~/assets/img/team/@p.User?.ProfileImage" alt="Reviewer Avatar"
+                         style="width: 80px; height: 80px; object-fit: cover; border-radius: 50%; display: block; margin: auto; margin-bottom: 10px;">
+                  
+                    <h4 style="margin-bottom: 10px; font-size: 18px; font-weight: bold;">@p.User?.FullName</h4>
+                </div>
+                <div>
+                    <span style="display: block; color: #007bff; margin-bottom: 10px;">@p.CreatedAt</span>
+                    <div style="margin-bottom: 10px;">
+                        @for (var i = 0; i < p.Star; i++)
+                        {
+                            <i class="fas fa-star" style="color: #ffc107; font-size: 16px;"></i>
+                        }
+                    </div>
+                    <p style="color: #dc3545; font-size: 14px;">@p.Comment</p>
+                </div>
+            </div>
+        }
+    </div>
+
+
+</div>
+@using System.Globalization
+@{
+    var culture = new CultureInfo("vi-VN");
+}
+<div style="border-radius:20px; padding:50px; background-color:#ededed" class="container mt-4">
+    <h2 class="mb-3 text-center text-uppercase fw-bold text-danger">
+        <i class="fas fa-fire"></i> Hotdeal Tháng 8 <i class="fas fa-fire"></i>
+    </h2>
+    <div class="row g-4">
+        <div class="row row-cols-1 row-cols-md-5 g-4">
+            @foreach (var p in RelatedProducts)
+            {
+                string url = $"/san-pham/{p.Alias}-{p.ProductId}.html";
+                <div class="col">
+                    <div class="card h-100 shadow-sm border-0 rounded-3 product-card">
+                        <img src="~/assets/img/product/@p.Image" class="card-img-top"
+                             style="width: 100%; height: 200px; object-fit: cover; border-radius: 10px 10px 0 0;"
+                             alt="@p.ProductName">
+                        <div class="card-body text-center">
+                            <a href="@url"> <h5 class="card-title">@p.ProductName</h5></a>
+
+                            <p class="small text-success warranty-text">
+                                <i class="fas fa-shield-alt"></i> Bảo hành: <strong>@p.Warranty</strong> tháng
+                            </p>
+
+                            <!-- Hiển thị số lượng đã bán -->
+                            <p class="small text-secondary">
+                                <i class="fas fa-shopping-bag"></i> Đã bán: <strong>@p.ProductSold</strong> sản phẩm
+                            </p>
+
+                            @if (p.PriceSale.HasValue && p.PriceSale.Value < p.Price)
+                            {
+                                <div class="position-absolute top-0 start-0 bg-danger text-white px-3 py-1 rounded-end">
+                                    <i class="fas fa-tags"></i> Giảm @(Math.Round((1 - (p.PriceSale.Value / p.Price)) * 100))%
+                                </div>
+                                <div style="position: absolute; top:-10px; right:-15px">
+                                    <img style="width: 70px; height:auto" src="~/assets/img/logo/phaplife.png" alt="Alternate Text" />
+                                </div>
+                            }
+
+                            <p class="text-danger fw-bold">
+                                <i class="fas fa-dollar-sign"></i> @p.Price.ToString("N0", culture)đ
+                                @if (p.PriceSale.HasValue && p.PriceSale.Value < p.Price)
+                                {
+                                    <small class="text-decoration-line-through text-muted">
+                                        @p.PriceSale.Value.ToString("N0", culture)đ
+                                    </small>
+                                }
+                            </p>
+
+                            <button class="btn btn-danger w-100 fw-bold mt-auto">
+                                <i class="fas fa-cart-plus"></i> Thêm vào giỏ
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+
+            }
+        </div>
+    </div>
+</div>
+
+
+
+<style>
+    .product-card {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    .card-body {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .card-title {
+        min-height: 50px; /* Cố định chiều cao tiêu đề */
+    }
+
+    .product-desc {
+        min-height: 40px; /* Đảm bảo mô tả không quá ngắn hoặc dài */
+    }
+
+    .warranty-text {
+        min-height: 30px; /* Cố định chiều cao dòng bảo hành */
+    }
+</style>

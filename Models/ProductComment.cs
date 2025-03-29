@@ -15,6 +15,10 @@ public partial class ProductComment
 
     public DateTime? CreatedAt { get; set; }
 
+    public string? Image { get; set; }
+
+    public int? Star { get; set; }
+
     public virtual Product? Product { get; set; }
 
     public virtual User? User { get; set; }
