@@ -280,35 +280,54 @@
     @Html.Raw(Model.Detail)
 </div>
 
-<div style="max-width: 900px; margin: auto; padding: 20px; text-align: center; font-family: Arial, sans-serif;">
-    <h2 style="margin-bottom: 20px; font-size: 24px; font-weight: bold;">Khách Hàng Đánh Giá</h2>
-    <div style="display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 20px; padding-bottom: 10px;">
-        <!-- Một review -->
+<div class="container mt-5">
+    <h2 class="text-center mb-4 text-primary">
+        💬 Khách Hàng Đánh Giá
+    </h2>
+    <div class="row justify-content-center">
         @foreach (var p in ProductComments)
         {
-            <div style="min-width: calc(33.33% - 20px); max-width: calc(33.33% - 20px); scroll-snap-align: center; background: #f9f9f9; border: 1px solid #ddd; border-radius: 10px; padding: 15px; flex-shrink: 0; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); text-align: center;">
-                <div>
+            <div class="col-12">
+                <div class="card shadow-sm border-0 mb-3 p-3 d-flex flex-row align-items-center">
+                    <!-- Ảnh đại diện -->
                     <img src="~/assets/img/team/@p.User?.ProfileImage" alt="Reviewer Avatar"
-                         style="width: 80px; height: 80px; object-fit: cover; border-radius: 50%; display: block; margin: auto; margin-bottom: 10px;">
-                  
-                    <h4 style="margin-bottom: 10px; font-size: 18px; font-weight: bold;">@p.User?.FullName</h4>
-                </div>
-                <div>
-                    <span style="display: block; color: #007bff; margin-bottom: 10px;">@p.CreatedAt</span>
-                    <div style="margin-bottom: 10px;">
-                        @for (var i = 0; i < p.Star; i++)
+                         class="rounded-circle flex-shrink-0"
+                         style="width: 60px; height: 60px; object-fit: cover; border: 3px solid #ddd; margin-right: 15px;">
+
+                    <!-- Nội dung bình luận -->
+                    <div class="d-flex justify-content-between w-100 align-items-center gap-3">
+                        <div>
+                            <h5 class="mb-1">@p.User?.FullName</h5>
+                            <small class="text-muted">@p.CreatedAt?.ToString("dd/MM/yyyy")</small>
+
+                            <!-- Đánh giá sao -->
+                            <div class="my-1">
+                                @for (var i = 0; i < p.Star; i++)
+                                {
+                                    <i class="fas fa-star text-warning"></i>
+                                }
+                            </div>
+
+                            <!-- Bình luận -->
+                            <p class="text-muted mb-1">@p.Comment</p>
+                        </div>
+
+                        <!-- Ảnh bình luận (nếu có) -->
+                        @if (!string.IsNullOrEmpty(p.Image))
                         {
-                            <i class="fas fa-star" style="color: #ffc107; font-size: 16px;"></i>
+                            <img src="~/assets/img/comment/@p.Image" alt="Hình ảnh bình luận"
+                                 class="img-fluid rounded shadow-sm flex-shrink-0"
+                                 style="width: 120px; height: 120px; object-fit: cover; border-radius: 10px;">
                         }
                     </div>
-                    <p style="color: #dc3545; font-size: 14px;">@p.Comment</p>
                 </div>
             </div>
         }
     </div>
-
-
 </div>
+
+
+
 @using System.Globalization
 @{
     var culture = new CultureInfo("vi-VN");
