@@ -1,165 +1,165 @@
 ﻿@model IEnumerable<PhapClinicX.Models.Product>
-<style>
-        .category-icon img {
-            width: 80px;
-            height: 80px;
-        }
- </style>
-
-    @* <!-- Header --> *@
-    @* <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm p-3"> *@
-    @*     <div class="container"> *@
-    @*         <a class="navbar-brand" href="#"> *@
-    @*             <span class="text-success">You</span><span class="text-danger">Med</span> *@
-    @*             Store *@
-    @*         </a> *@
-    @*         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"> *@
-    @*             <span class="navbar-toggler-icon"></span> *@
-    @*         </button> *@
-    @*         <div class="collapse navbar-collapse" id="navbarNav"> *@
-    @*             <ul class="navbar-nav ms-auto"> *@
-    @*                 <li class="nav-item"><a class="nav-link" href="#">Danh mục</a></li> *@
-    @*                 <li class="nav-item"><a class="nav-link" href="#">Tra cứu thuốc</a></li> *@
-    @*                 <li class="nav-item"><a class="nav-link" href="#">Chụp đơn thuốc</a></li> *@
-    @*                 <li class="nav-item"><a class="nav-link" href="#">Giỏ hàng (0)</a></li> *@
-    @*                 <li class="nav-item"><a class="nav-link" href="#">Đăng nhập / Đăng ký</a></li> *@
-    @*             </ul> *@
-    @*         </div> *@
-    @*     </div> *@
-    @* </nav> *@
-
-    <!-- Banner -->
-    <div class="container mt-4">
-        <div class="row">
-            <div class="col-md-8">
-                <img src="~/assets/img/banner/giamgia.png" class="img-fluid rounded" alt="Banner chính">
-            </div>
-            <div class="col-md-4 d-flex flex-column gap-3">
-            <img src="~/assets/img/banner/2.png" class="img-fluid rounded" alt="Banner phụ 1">
-            <img src="~/assets/img/banner/4.png" class="img-fluid rounded" alt="Banner phụ 2">
-            </div>
-        </div>
-    </div>
-
-    <!-- Danh mục sản phẩm -->
-    <div class="container mt-5">
-        <h4 style="margin-bottom:20px" class="fw-bold">Danh mục sản phẩm</h4>
-        <div class="row text-center">
-            <div class="col-md-2 col-4 category-icon">
-                <img src="https://youmedstore.vn/media/wysiwyg/icons/H_nh_h_tr_h_h_p.jpg" alt="Hô hấp">
-                <p>Hỗ trợ hô hấp</p>
-            </div>
-            <div class="col-md-2 col-4 category-icon">
-                <img src="https://youmedstore.vn/media/wysiwyg/icons/H_nh_h_tr_h_h_p.jpg" alt="Dinh dưỡng">
-                <p>Dinh dưỡng</p>
-            </div>
-            <div class="col-md-2 col-4 category-icon">
-                <img src="https://youmedstore.vn/media/wysiwyg/icons/H_nh_h_tr_h_h_p.jpg" alt="Làm đẹp">
-                <p>Hỗ trợ làm đẹp</p>
-            </div>
-            <div class="col-md-2 col-4 category-icon">
-                <img src="https://youmedstore.vn/media/wysiwyg/icons/H_nh_h_tr_h_h_p.jpg" alt="Tiêu hóa">
-                <p>Hỗ trợ tiêu hóa</p>
-            </div>
-            <div class="col-md-2 col-4 category-icon">
-                <img src="https://youmedstore.vn/media/wysiwyg/icons/H_nh_h_tr_h_h_p.jpg" alt="Trẻ nhỏ">
-                <p>Phát triển trẻ nhỏ</p>
-            </div>
-            <div class="col-md-2 col-4 category-icon">
-                <img src="https://youmedstore.vn/media/wysiwyg/icons/H_nh_h_tr_h_h_p.jpg" alt="Vitamin">
-                <p>Vitamin - Khoáng chất</p>
-            </div>
-        </div>
-    </div>
-@using System.Globalization
+@using System.Globalization;
 @{
+    List<ProductCategory> ProductCategories = ViewBag.ProductCategories;
+    List<Product> Products = ViewBag.Products;
     var culture = new CultureInfo("vi-VN");
 }
-<div style="border-radius:20px; padding:50px; background-color:#ededed" class="container mt-4">
-    <h2 class="mb-3 text-center text-uppercase fw-bold text-danger">
-        <i class="fas fa-fire"></i> Hotdeal Tháng 8 <i class="fas fa-fire"></i>
-    </h2>
+
+<div class="container mt-4">
     <div class="row g-4">
-        <div class="row row-cols-1 row-cols-md-5 g-4">
+        <!-- Sidebar -->
+        <div class="col-lg-3">
+            <div class="card mb-4 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title border-bottom pb-3 fw-bold text-primary">Danh Mục</h5>
+                    <div class="list-group list-group-flush">
+                        @foreach (var category in ProductCategories)
+                        {
+                            <a href="@Url.Action("Index", "Products", new { categoryId = category.CategoryId })"
+                               class="list-group-item list-group-item-action border-0">
+                                @category.CategoryName
+                            </a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Products Container -->
+        <div class="col-lg-9">
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4">
+                @foreach (var item in Products)
+                {
+                    string url = $"/san-pham/{item.Alias}-{item.ProductId}.html";
+                    <div class="col">
+                        <div class="card h-100 shadow-sm">
+                          
+                            <div class="text-center p-3 bg-light">
+                                <img src="~/assets/img/product/@item.Image" alt="@item.ProductName" class="img-fluid" style="height: 180px; object-fit: contain;">
+                            </div>
+                            <div class="card-body d-flex flex-column">
+                                <a href="@url"> <h6 class="card-title overflow-hidden" style="height: 40px; line-height: 1.4;">@item.ProductName</h6></a>
+                                <div class="d-flex align-items-center gap-2">
+                                    <span class="fw-bold text-muted text-decoration-line-through">
+                                        @item.Price.ToString("N0")đ
+                                    </span>
+                                    <span class="badge bg-danger px-2 py-1">
+                                        @item.PriceSale?.ToString("N0")đ
+                                    </span>
+                                </div>
+
+                                <small class="text-muted d-block mb-1">Xuất xứ: Việt Nam</small>
+                                <small class="text-muted d-block mb-3">Đã bán: @item.ProductSold</small>
+                                <button class="btn btn-primary w-100 mt-auto">
+                                    <i class="fas fa-cart-plus"></i> Thêm vào giỏ
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Banner -->
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8">
+            <img src="~/assets/img/banner/giamgia.png" class="img-fluid rounded" alt="Banner chính">
+        </div>
+        <div class="col-md-4 d-flex flex-column gap-3">
+            <img src="~/assets/img/banner/2.png" class="img-fluid rounded" alt="Banner phụ 1">
+            <img src="~/assets/img/banner/4.png" class="img-fluid rounded" alt="Banner phụ 2">
+        </div>
+    </div>
+</div>
+
+<!-- Danh mục sản phẩm -->
+<div class="container mt-5">
+    <h4 class="fw-bold mb-4">Danh mục sản phẩm</h4>
+    <div class="row text-center g-4">
+        <div class="col-6 col-md-4 col-lg-2">
+            <img src="https://youmedstore.vn/media/wysiwyg/icons/H_nh_h_tr_h_h_p.jpg" alt="Hô hấp" class="img-fluid" style="width: 80px; height: 80px;">
+            <p class="mt-2">Hỗ trợ hô hấp</p>
+        </div>
+        <div class="col-6 col-md-4 col-lg-2">
+            <img src="https://youmedstore.vn/media/wysiwyg/icons/H_nh_h_tr_h_h_p.jpg" alt="Dinh dưỡng" class="img-fluid" style="width: 80px; height: 80px;">
+            <p class="mt-2">Dinh dưỡng</p>
+        </div>
+        <div class="col-6 col-md-4 col-lg-2">
+            <img src="https://youmedstore.vn/media/wysiwyg/icons/H_nh_h_tr_h_h_p.jpg" alt="Làm đẹp" class="img-fluid" style="width: 80px; height: 80px;">
+            <p class="mt-2">Hỗ trợ làm đẹp</p>
+        </div>
+        <div class="col-6 col-md-4 col-lg-2">
+            <img src="https://youmedstore.vn/media/wysiwyg/icons/H_nh_h_tr_h_h_p.jpg" alt="Tiêu hóa" class="img-fluid" style="width: 80px; height: 80px;">
+            <p class="mt-2">Hỗ trợ tiêu hóa</p>
+        </div>
+        <div class="col-6 col-md-4 col-lg-2">
+            <img src="https://youmedstore.vn/media/wysiwyg/icons/H_nh_h_tr_h_h_p.jpg" alt="Trẻ nhỏ" class="img-fluid" style="width: 80px; height: 80px;">
+            <p class="mt-2">Phát triển trẻ nhỏ</p>
+        </div>
+        <div class="col-6 col-md-4 col-lg-2">
+            <img src="https://youmedstore.vn/media/wysiwyg/icons/H_nh_h_tr_h_h_p.jpg" alt="Vitamin" class="img-fluid" style="width: 80px; height: 80px;">
+            <p class="mt-2">Vitamin - Khoáng chất</p>
+        </div>
+    </div>
+</div>
+
+<!-- Hot Deals Section -->
+<div class="container mt-5 mb-5">
+    <div class="bg-light p-4 p-md-5 rounded-3">
+        <h2 class="mb-4 text-center text-uppercase fw-bold text-danger">
+            <i class="fas fa-fire"></i> Hotdeal Mới Nhất <i class="fas fa-fire"></i>
+        </h2>
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-5 g-4">
             @foreach (var p in Model)
             {
                 string url = $"/san-pham/{p.Alias}-{p.ProductId}.html";
                 <div class="col">
-                    <div class="card h-100 shadow-sm border-0 rounded-3 product-card">
+                    <div class="card h-100 shadow-sm border-0 rounded-3 position-relative">
+                        @if (p.PriceSale.HasValue && p.PriceSale.Value < p.Price)
+                        {
+                            <div class="position-absolute top-0 start-0 bg-danger text-white px-2 py-1 rounded-end">
+                                <i class="fas fa-tags"></i> Giảm @(Math.Round((1 - (p.PriceSale.Value / p.Price)) * 100))%
+                            </div>
+                            <div class="position-absolute top-0 end-0 me-2 mt-2">
+                                <img src="~/assets/img/logo/phaplife.png" alt="Logo" style="width: 60px; height: auto;">
+                            </div>
+                        }
                         <img src="~/assets/img/product/@p.Image" class="card-img-top"
-                             style="width: 100%; height: 200px; object-fit: cover; border-radius: 10px 10px 0 0;"
-                             alt="@p.ProductName">
-                        <div class="card-body text-center">
-                            <a href="@url"> <h5 class="card-title">@p.ProductName</h5></a>
-
-                            <p class="small text-success warranty-text">
+                             style="height: 200px; object-fit: cover;" alt="@p.ProductName">
+                        <div class="card-body d-flex flex-column text-center">
+                            <a href="@url" class="text-decoration-none">
+                                <h5 class="card-title mb-3">@p.ProductName</h5>
+                            </a>
+                            <p class="small text-success mb-1">
                                 <i class="fas fa-shield-alt"></i> Bảo hành: <strong>@p.Warranty</strong> tháng
                             </p>
-
-                            <!-- Hiển thị số lượng đã bán -->
-                            <p class="small text-secondary">
+                            <p class="small text-secondary mb-2">
                                 <i class="fas fa-shopping-bag"></i> Đã bán: <strong>@p.ProductSold</strong> sản phẩm
                             </p>
-
-                            @if (p.PriceSale.HasValue && p.PriceSale.Value < p.Price)
-                            {
-                                <div class="position-absolute top-0 start-0 bg-danger text-white px-3 py-1 rounded-end">
-                                    <i class="fas fa-tags"></i> Giảm @(Math.Round((1 - (p.PriceSale.Value / p.Price)) * 100))%
-                                </div>
-                                <div style="position: absolute; top:-10px; right:-15px">
-                                    <img style="width: 70px; height:auto" src="~/assets/img/logo/phaplife.png" alt="Alternate Text" />
-                                </div>
-                            }
-
-                            <p class="text-danger fw-bold">
-                                <i class="fas fa-dollar-sign"></i> @p.Price.ToString("N0", culture)đ
+                            <p class="text-danger fw-bold mb-3">
                                 @if (p.PriceSale.HasValue && p.PriceSale.Value < p.Price)
                                 {
-                                    <small class="text-decoration-line-through text-muted">
-                                        @p.PriceSale.Value.ToString("N0", culture)đ
+                                    <span>@p.PriceSale.Value.ToString("N0", culture)đ</span>
+                                    <small class="text-decoration-line-through text-muted ms-2">
+                                        @p.Price.ToString("N0", culture)đ
                                     </small>
                                 }
+                                else
+                                {
+                                    <span>@p.Price.ToString("N0", culture)đ</span>
+                                }
                             </p>
-
                             <button class="btn btn-danger w-100 fw-bold mt-auto">
                                 <i class="fas fa-cart-plus"></i> Thêm vào giỏ
                             </button>
                         </div>
                     </div>
                 </div>
-
-
             }
         </div>
     </div>
 </div>
-
-
-
-
-<style>
-    .product-card {
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-    }
-
-    .card-body {
-        flex-grow: 1;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-    }
-
-    .card-title {
-        min-height: 50px; /* Cố định chiều cao tiêu đề */
-    }
-
-    .product-desc {
-        min-height: 40px; /* Đảm bảo mô tả không quá ngắn hoặc dài */
-    }
-
-    .warranty-text {
-        min-height: 30px; /* Cố định chiều cao dòng bảo hành */
-    }
-</style>

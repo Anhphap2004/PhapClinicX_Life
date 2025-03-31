@@ -15,11 +15,24 @@ namespace PhapClinicX.Controllers
             _context = context;
             _logger = logger;
         }
-        public IActionResult Index()
+        public IActionResult Index(int? categoryID)
         {
-            var Products = _context.Products.Where(p => p.IsActive == true).ToList();
+            ViewBag.ProductCategories = _context.ProductCategories.ToList();
+
+            var Products = _context.Products.Where(p => p.IsActive == true).OrderByDescending(p=> p.CreatedDate).Take(5).ToList();
+            ViewBag.Products = _context.Products
+                .Where(p => (!categoryID.HasValue || p.CategoryId == categoryID.Value) && p.IsActive)
+                .Include(p => p.Category) // Load thêm dữ liệu danh mục nếu cần
+                .ToList();
+
             return View(Products);
         }
+
+        //public IActionResult Index()
+        //{
+        //    var Products = _context.Products.Where(p => p.IsActive == true).ToList();
+        //    return View(Products);
+        //}
         [Route("/san-pham/{alias}-{id}.html")]
         public async Task<IActionResult> Details(string alias, int id)
         {
