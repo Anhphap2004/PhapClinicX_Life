@@ -6,62 +6,7 @@
     var culture = new CultureInfo("vi-VN");
 }
 
-<div class="container mt-4">
-    <div class="row g-4">
-        <!-- Sidebar -->
-        <div class="col-lg-3">
-            <div class="card mb-4 shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title border-bottom pb-3 fw-bold text-primary">Danh Mục</h5>
-                    <div class="list-group list-group-flush">
-                        @foreach (var category in ProductCategories)
-                        {
-                            <a href="@Url.Action("Index", "Products", new { categoryId = category.CategoryId })"
-                               class="list-group-item list-group-item-action border-0">
-                                @category.CategoryName
-                            </a>
-                        }
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <!-- Products Container -->
-        <div class="col-lg-9">
-            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4">
-                @foreach (var item in Products)
-                {
-                    string url = $"/san-pham/{item.Alias}-{item.ProductId}.html";
-                    <div class="col">
-                        <div class="card h-100 shadow-sm">
-                          
-                            <div class="text-center p-3 bg-light">
-                                <img src="~/assets/img/product/@item.Image" alt="@item.ProductName" class="img-fluid" style="height: 180px; object-fit: contain;">
-                            </div>
-                            <div class="card-body d-flex flex-column">
-                                <a href="@url"> <h6 class="card-title overflow-hidden" style="height: 40px; line-height: 1.4;">@item.ProductName</h6></a>
-                                <div class="d-flex align-items-center gap-2">
-                                    <span class="fw-bold text-muted text-decoration-line-through">
-                                        @item.Price.ToString("N0")đ
-                                    </span>
-                                    <span class="badge bg-danger px-2 py-1">
-                                        @item.PriceSale?.ToString("N0")đ
-                                    </span>
-                                </div>
-
-                                <small class="text-muted d-block mb-1">Xuất xứ: Việt Nam</small>
-                                <small class="text-muted d-block mb-3">Đã bán: @item.ProductSold</small>
-                                <button class="btn btn-primary w-100 mt-auto">
-                                    <i class="fas fa-cart-plus"></i> Thêm vào giỏ
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                }
-            </div>
-        </div>
-    </div>
-</div>
 
 <!-- Banner -->
 <div class="container mt-5">
@@ -76,37 +21,245 @@
     </div>
 </div>
 
-<!-- Danh mục sản phẩm -->
-<div class="container mt-5">
-    <h4 class="fw-bold mb-4">Danh mục sản phẩm</h4>
-    <div class="row text-center g-4">
+<!-- Category Icons Section -->
+<div class="container my-5">
+    <div class="row mb-4 align-items-center">
+        <div class="col-md-6">
+            <h4 class="fw-bold mb-0">Danh mục sản phẩm</h4>
+        </div>
+        <div class="col-md-6 text-md-end">
+            <a href="#" class="text-decoration-none">Xem tất cả <i class="fas fa-arrow-right ms-1"></i></a>
+        </div>
+    </div>
+
+    <div class="row text-center g-4 justify-content-center">
         <div class="col-6 col-md-4 col-lg-2">
-            <img src="https://youmedstore.vn/media/wysiwyg/icons/H_nh_h_tr_h_h_p.jpg" alt="Hô hấp" class="img-fluid" style="width: 80px; height: 80px;">
-            <p class="mt-2">Hỗ trợ hô hấp</p>
+            <div class="card h-100 rounded-4 border-0 shadow-sm">
+                <div class="card-body d-flex flex-column justify-content-center align-items-center py-4">
+                    <div class="bg-light rounded-circle p-3 mb-3">
+                        <img src="https://youmedstore.vn/media/wysiwyg/icons/H_nh_h_tr_h_h_p.jpg" alt="Hô hấp" class="img-fluid" style="width: 60px; height: 60px;">
+                    </div>
+                    <p class="mb-0 fw-medium">Hỗ trợ hô hấp</p>
+                </div>
+            </div>
         </div>
         <div class="col-6 col-md-4 col-lg-2">
-            <img src="https://youmedstore.vn/media/wysiwyg/icons/H_nh_h_tr_h_h_p.jpg" alt="Dinh dưỡng" class="img-fluid" style="width: 80px; height: 80px;">
-            <p class="mt-2">Dinh dưỡng</p>
+            <div class="card h-100 rounded-4 border-0 shadow-sm">
+                <div class="card-body d-flex flex-column justify-content-center align-items-center py-4">
+                    <div class="bg-light rounded-circle p-3 mb-3">
+                        <img src="https://youmedstore.vn/media/wysiwyg/icons/H_nh_h_tr_h_h_p.jpg" alt="Dinh dưỡng" class="img-fluid" style="width: 60px; height: 60px;">
+                    </div>
+                    <p class="mb-0 fw-medium">Dinh dưỡng</p>
+                </div>
+            </div>
         </div>
         <div class="col-6 col-md-4 col-lg-2">
-            <img src="https://youmedstore.vn/media/wysiwyg/icons/H_nh_h_tr_h_h_p.jpg" alt="Làm đẹp" class="img-fluid" style="width: 80px; height: 80px;">
-            <p class="mt-2">Hỗ trợ làm đẹp</p>
+            <div class="card h-100 rounded-4 border-0 shadow-sm">
+                <div class="card-body d-flex flex-column justify-content-center align-items-center py-4">
+                    <div class="bg-light rounded-circle p-3 mb-3">
+                        <img src="https://youmedstore.vn/media/wysiwyg/icons/H_nh_h_tr_h_h_p.jpg" alt="Làm đẹp" class="img-fluid" style="width: 60px; height: 60px;">
+                    </div>
+                    <p class="mb-0 fw-medium">Hỗ trợ làm đẹp</p>
+                </div>
+            </div>
         </div>
         <div class="col-6 col-md-4 col-lg-2">
-            <img src="https://youmedstore.vn/media/wysiwyg/icons/H_nh_h_tr_h_h_p.jpg" alt="Tiêu hóa" class="img-fluid" style="width: 80px; height: 80px;">
-            <p class="mt-2">Hỗ trợ tiêu hóa</p>
+            <div class="card h-100 rounded-4 border-0 shadow-sm">
+                <div class="card-body d-flex flex-column justify-content-center align-items-center py-4">
+                    <div class="bg-light rounded-circle p-3 mb-3">
+                        <img src="https://youmedstore.vn/media/wysiwyg/icons/H_nh_h_tr_h_h_p.jpg" alt="Tiêu hóa" class="img-fluid" style="width: 60px; height: 60px;">
+                    </div>
+                    <p class="mb-0 fw-medium">Hỗ trợ tiêu hóa</p>
+                </div>
+            </div>
         </div>
         <div class="col-6 col-md-4 col-lg-2">
-            <img src="https://youmedstore.vn/media/wysiwyg/icons/H_nh_h_tr_h_h_p.jpg" alt="Trẻ nhỏ" class="img-fluid" style="width: 80px; height: 80px;">
-            <p class="mt-2">Phát triển trẻ nhỏ</p>
+            <div class="card h-100 rounded-4 border-0 shadow-sm">
+                <div class="card-body d-flex flex-column justify-content-center align-items-center py-4">
+                    <div class="bg-light rounded-circle p-3 mb-3">
+                        <img src="https://youmedstore.vn/media/wysiwyg/icons/H_nh_h_tr_h_h_p.jpg" alt="Trẻ nhỏ" class="img-fluid" style="width: 60px; height: 60px;">
+                    </div>
+                    <p class="mb-0 fw-medium">Phát triển trẻ nhỏ</p>
+                </div>
+            </div>
         </div>
         <div class="col-6 col-md-4 col-lg-2">
-            <img src="https://youmedstore.vn/media/wysiwyg/icons/H_nh_h_tr_h_h_p.jpg" alt="Vitamin" class="img-fluid" style="width: 80px; height: 80px;">
-            <p class="mt-2">Vitamin - Khoáng chất</p>
+            <div class="card h-100 rounded-4 border-0 shadow-sm">
+                <div class="card-body d-flex flex-column justify-content-center align-items-center py-4">
+                    <div class="bg-light rounded-circle p-3 mb-3">
+                        <img src="https://youmedstore.vn/media/wysiwyg/icons/H_nh_h_tr_h_h_p.jpg" alt="Vitamin" class="img-fluid" style="width: 60px; height: 60px;">
+                    </div>
+                    <p class="mb-0 fw-medium">Vitamin - Khoáng chất</p>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
+<!-- Main Products Section -->
+<div class="container my-5">
+    <div class="row g-4">
+        <!-- Sidebar -->
+        <div class="col-lg-3">
+            <div class="card rounded-4 border-0 shadow-sm sticky-lg-top" style="top: 20px; z-index: 1020;">
+                <div class="card-body p-4">
+                    <h5 class="card-title border-bottom pb-3 mb-3 fw-bold text-primary">Danh Mục</h5>
+                    <div class="list-group list-group-flush">
+                        @foreach (var category in ProductCategories)
+                        {
+                            <a href="@Url.Action("Index", "Products", new { categoryId = category.CategoryId })"
+                               class="list-group-item list-group-item-action border-0 px-2 py-2 rounded-3 mb-1">
+                                <i class="fas fa-angle-right me-2 text-primary small"></i>
+                                @category.CategoryName
+                            </a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Products Container -->
+        <div class="col-lg-9">
+            <div class="card border-0 shadow-sm rounded-4 mb-4">
+                <div class="card-body p-3 p-md-4">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h5 class="mb-0 fw-bold">Sản phẩm nổi bật</h5>
+                        <div class="d-flex gap-2">
+                            <div class="dropdown">
+                                <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" id="sortDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Sắp xếp
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="sortDropdown">
+                                    <li><a class="dropdown-item" href="#">Giá: Cao đến thấp</a></li>
+                                    <li><a class="dropdown-item" href="#">Giá: Thấp đến cao</a></li>
+                                    <li><a class="dropdown-item" href="#">Bán chạy nhất</a></li>
+                                </ul>
+                            </div>
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-outline-secondary btn-sm">
+                                    <i class="fas fa-th-large"></i>
+                                </button>
+                                <button type="button" class="btn btn-outline-secondary btn-sm">
+                                    <i class="fas fa-list"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 row-cols-xl-4 g-4">
+                        @foreach (var item in Products)
+                        {
+                            string url = $"/san-pham/{item.Alias}-{item.ProductId}.html";
+                            <div class="col">
+                                <div class="card h-100 rounded-4 border-0 shadow-sm position-relative product-card">
+                                    @if (item.PriceSale.HasValue && item.PriceSale.Value < item.Price)
+                                    {
+                                        <div class="position-absolute top-0 start-0 bg-danger text-white px-2 py-1 m-2 rounded-pill fs-7">
+                                            -@(Math.Round((1 - (item.PriceSale.Value / item.Price)) * 100))%
+                                        </div>
+                                    }
+                                    <div class="text-center p-3">
+                                        <a href="@url" class="d-block overflow-hidden">
+                                            <img src="~/assets/img/product/@item.Image" alt="@item.ProductName"
+                                                 class="img-fluid product-img" style="height: 180px; object-fit: contain; transition: transform 0.3s;">
+                                        </a>
+                                    </div>
+                                    <div class="card-body d-flex flex-column p-3">
+                                        <a href="@url" class="text-decoration-none">
+                                            <h6 class="card-title text-dark overflow-hidden mb-3" style="height: 40px; line-height: 1.4;">
+                                                @item.ProductName
+                                            </h6>
+                                        </a>
+                                        <div class="d-flex align-items-center gap-2 mb-2">
+                                            @if (item.PriceSale.HasValue && item.PriceSale.Value < item.Price)
+                                            {
+                                                <span class="fw-bold text-danger fs-5">
+                                                    @item.PriceSale?.ToString("N0")đ
+                                                </span>
+                                                <span class="text-muted text-decoration-line-through fs-6">
+                                                    @item.Price.ToString("N0")đ
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                <span class="fw-bold text-danger fs-5">
+                                                    @item.Price.ToString("N0")đ
+                                                </span>
+                                            }
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <small class="text-muted d-block mb-1">Xuất xứ: Việt Nam</small>
+                                            <small class="text-muted d-block mb-3">Đã bán: @item.ProductSold</small>
+                                        </div>
+
+                                        <div class="d-grid gap-2 mt-auto">
+                                            <button class="btn btn-primary fw-medium rounded-3">
+                                                <i class="fas fa-cart-plus me-2"></i>Thêm vào giỏ
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+
+                    <!-- Pagination -->
+                    <nav class="mt-5" aria-label="Page navigation">
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
+                                    <i class="fas fa-chevron-left"></i>
+                                </a>
+                            </li>
+                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item">
+                                <a class="page-link" href="#">
+                                    <i class="fas fa-chevron-right"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Custom utility class for font size */
+    .fs-7 {
+        font-size: 0.85rem !important;
+    }
+
+    /* Hover effects for category cards */
+    .card.product-card:hover {
+        box-shadow: 0 .5rem 1rem rgba(0,0,0,.15) !important;
+        transform: translateY(-3px);
+        transition: all 0.3s ease;
+    }
+
+        .card.product-card:hover .product-img {
+            transform: scale(1.05);
+        }
+
+    /* List group hover effect */
+    .list-group-item-action:hover {
+        background-color: rgba(13, 110, 253, 0.05);
+    }
+
+    /* Custom hover for buttons */
+    .btn-primary {
+        transition: all 0.3s ease;
+    }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2);
+        }
+</style>
 <!-- Hot Deals Section -->
 <div class="container mt-5 mb-5">
     <div class="bg-light p-4 p-md-5 rounded-3">
