@@ -17,5 +17,7 @@ public partial class ServicePackage
 
     public string? Title { get; set; }
 
-    public DateOnly? Date { get; set; }
+    public DateTime Date { get; set; }
+
+    public string? Detail { get; set; }
 }

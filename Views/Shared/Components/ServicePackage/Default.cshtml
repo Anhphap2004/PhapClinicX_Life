@@ -10,13 +10,15 @@
                 Chúng tôi cung cấp nhiều gói dịch vụ y tế chuyên sâu, giúp bạn chăm sóc sức khỏe tốt nhất với mức giá hợp lý.
             </p>
         </div>
+
         <div class="row g-4">
             @foreach (var p in Model)
             {
+                string url = $"/servicepackage/{p.PackageId}";
                 <div class="col-md-6 col-lg-4 wow fadeInUp">
                     <div class="service-item p-4 bg-white text-center shadow rounded">
                         <img style="width: 400px; height: 200px; object-fit:cover" src="~/assets/img/ServicePackages/@p.Image" alt="Khám tổng quát" class="img-fluid rounded mb-3">
-                    <h4 class="mb-3">@p.PackageName</h4>
+                        <a href="@url"> <h4 class="mb-3">@p.PackageName</h4></a>
                     <p class="mb-3">@p.Title</p>
                         @using System.Globalization
                     <h3 class="text-primary">@p.Price?.ToString("N0", new CultureInfo("vi-VN")) VNĐ</h3>
@@ -28,4 +30,3 @@
         </div>
     </div>
 </div>
-<!-- Service Packages End -->

@@ -10,7 +10,7 @@ namespace PhapClinicX.Controllers
         {
             _context = context;
         } 
-        //[Route("goi-dich-vu")]
+        //[Route("goi-dich-vu")
         public IActionResult Index()
         {
             return View();
@@ -58,6 +58,26 @@ namespace PhapClinicX.Controllers
             return View(voucher);
         }
 
+        [Route("/servicepackage/{id}")]
+        public async Task<IActionResult> ServicePackageDetail(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var servicepackage = await _context.ServicePackages
+                .FirstOrDefaultAsync(p => p.PackageId == id);
+            if (servicepackage == null)
+            {
+                return NotFound();
+            }
+            ViewBag.servicepackagenew = _context.ServicePackages
+                .Where(p => p.IsActive && p.PackageId != id)
+                .OrderByDescending(p => p.Date)
+                .Take(3)
+                .ToList();
+            return View(servicepackage);
+        }
 
     }
 }

@@ -1,0 +1,150 @@
+﻿@model PhapClinicX.Models.ServicePackage
+@{
+    List <ServicePackage> servicepackagenew = ViewBag.servicepackagenew;
+}
+<style>
+    .service-header {
+        background-color: #f8f9fa;
+        padding: 40px 0;
+        margin-bottom: 30px;
+    }
+
+    .service-image {
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        max-height: 400px;
+        object-fit: cover;
+    }
+
+    .price-tag {
+        background-color: #0d6efd;
+        color: white;
+        font-weight: bold;
+        padding: 5px 15px;
+        border-radius: 20px;
+        display: inline-block;
+        margin-bottom: 20px;
+    }
+
+    .feature-item {
+        margin-bottom: 15px;
+    }
+
+        .feature-item i {
+            color: #0d6efd;
+            margin-right: 10px;
+        }
+
+    .related-service-card {
+        transition: transform 0.3s;
+        height: 100%;
+    }
+
+        .related-service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+    .card-img-top {
+        height: 200px;
+        object-fit: cover;
+    }
+
+    .cta-section {
+        background-color: #f8f9fa;
+        padding: 40px 0;
+        margin-top: 40px;
+    }
+</style>
+<!-- Nội dung chính -->
+<div class="container mt-5 mb-5">
+    <div class="row">
+        <!-- Hình ảnh dịch vụ -->
+        <div class="col-lg-6 mb-4">
+            <img src="~/assets/img/ServicePackages/@Model.Image" alt="Dịch vụ tư vấn khởi nghiệp"
+                 class="img-fluid service-image w-100">
+        </div>
+        
+
+        <!-- Thông tin dịch vụ -->
+        <div class="col-lg-6">
+            <div class="price-tag">
+                <i class="fas fa-tag"></i> @Model.Price?.ToString("N0") VNĐ
+            </div>
+            <h2>@Model.Title</h2>
+     
+            <h3 class="mt-4">Quyền lợi bao gồm</h3>
+            <div class="feature-item">
+                <i class="fas fa-check-circle"></i> Khám tổng quát và tư vấn điều trị chuyên sâu
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-check-circle"></i> Chụp X-quang răng miễn phí (nếu cần)
+            </div>
+         
+            <div class="feature-item">
+                <i class="fas fa-check-circle"></i> Vệ sinh răng miệng định kỳ chuyên sâu
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-check-circle"></i> Giảm giá khi thực hiện các dịch vụ nha khoa thẩm mỹ
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-check-circle"></i> Hỗ trợ trả góp linh hoạt cho các dịch vụ chỉnh nha
+            </div>
+            
+
+
+            <button class="btn btn-primary btn-lg mt-4">
+                <i class="fas fa-shopping-cart"></i> Đăng ký ngay
+            </button>
+            <button class="btn btn-outline-primary btn-lg mt-4 ms-2">
+                <i class="fas fa-phone"></i> Liên hệ tư vấn
+            </button>
+        </div>
+    </div>
+
+    <!-- Chi tiết dịch vụ -->
+    <div class="row mt-5">
+        @Html.Raw(Model.Detail)
+    </div>
+</div>
+
+<!-- Call to Action -->
+<div class="cta-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <h2>Bạn đang tìm kiếm giải pháp cho doanh nghiệp khởi nghiệp?</h2>
+                <p class="lead mb-0">Hãy để chúng tôi đồng hành cùng bạn trong hành trình kinh doanh</p>
+            </div>
+            <div class="col-lg-4 text-lg-end mt-3 mt-lg-0">
+                <button class="btn btn-primary btn-lg">
+                    <i class="fas fa-calendar-alt me-2"></i> Đặt lịch tư vấn miễn phí
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Các dịch vụ liên quan -->
+<div class="container my-5">
+    <h2 class="text-center mb-4">Các gói dịch vụ liên quan</h2>
+    <div class="row">
+        @foreach (var p in servicepackagenew)
+        {
+            string url = $"/servicepackage/{p.PackageId}";
+            <div class="col-md-4 mb-4">
+                <div class="card related-service-card">
+                <img src="~/assets/img/ServicePackages/@p.Image" class="card-img-top" alt="Tư vấn marketing">
+                <div class="card-body">
+                    <h5 class="card-title">@p.Title</h5>
+                   
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="text-primary fw-bold">@p.Price?.ToString("N0") VNĐ</span>
+                        <a href="@url" class="btn btn-outline-primary">Xem chi tiết</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        }
+    </div>
+</div>

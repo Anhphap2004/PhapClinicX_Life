@@ -72,6 +72,7 @@ public partial class ClinicManagementContext : DbContext
     public virtual DbSet<User> Users { get; set; }
 
     
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<About>(entity =>
@@ -579,7 +580,10 @@ public partial class ClinicManagementContext : DbContext
             entity.HasKey(e => e.PackageId).HasName("PK__ServiceP__63846AE8E83AB9B7");
 
             entity.Property(e => e.PackageId).HasColumnName("package_id");
-            entity.Property(e => e.Date).HasColumnName("date");
+            entity.Property(e => e.Date)
+                .HasColumnType("datetime")
+                .HasColumnName("date");
+            entity.Property(e => e.Detail).HasColumnName("detail");
             entity.Property(e => e.Image)
                 .HasMaxLength(255)
                 .HasColumnName("image");
