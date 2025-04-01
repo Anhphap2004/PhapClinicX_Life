@@ -62,7 +62,7 @@ namespace PhapClinicX.Controllers
                 .ToListAsync();
 
             ViewBag.RelatedProducts = await _context.Products
-                .Where(p => p.IsActive && p.CategoryId == product.CategoryId && p.ProductId != product.ProductId)
+                .Where(p => p.IsActive && p.CategoryId == product.CategoryId && p.ProductId != product.ProductId).Take(5)
                 .ToListAsync(); // Thêm điều kiện tránh lặp chính nó
             var RandomDiscount = await _context.Discounts
       .Where(d => d.IsActive == true && d.StartDate <= DateTime.Now && d.EndDate >= DateTime.Now)
