@@ -36,16 +36,6 @@ namespace PhapClinicX.Controllers
             {
                 return NotFound();
             }
-            var availableSlots = new List<DateTime>
-            {
-                DateTime.Now.AddDays(1).Date.AddHours(9),
-                DateTime.Now.AddDays(1).Date.AddHours(11),
-                DateTime.Now.AddDays(1).Date.AddHours(14),
-                DateTime.Now.AddDays(1).Date.AddHours(16),
-                DateTime.Now.AddDays(2).Date.AddHours(10),
-            };
-
-            ViewBag.AvailableSlots = availableSlots;
             ViewBag.doctor_id = id;
             return View(doctor);
         }
@@ -92,16 +82,7 @@ namespace PhapClinicX.Controllers
             {
                 return NotFound();
             }
-            var availableSlots = new List<DateTime>
-            {
-                DateTime.Now.AddDays(1).Date.AddHours(9),
-                DateTime.Now.AddDays(1).Date.AddHours(11),
-                DateTime.Now.AddDays(1).Date.AddHours(14),
-                DateTime.Now.AddDays(1).Date.AddHours(16),
-                DateTime.Now.AddDays(2).Date.AddHours(10),
-            };
-
-            ViewBag.AvailableSlots = availableSlots;
+           
             ViewBag.PhongKhamId = id;
             return View(branch);
         }

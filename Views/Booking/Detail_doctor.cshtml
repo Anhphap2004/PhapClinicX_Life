@@ -108,24 +108,7 @@
                             <span class="input-group-text bg-primary text-white">
                                 <i class="bi bi-calendar-check"></i>
                             </span>
-                            <select class="form-select" id="SelectedSlot" name="SelectedSlot">
-                                @{
-                                    var slots = ViewBag.AvailableSlots as List<DateTime> ?? new List<DateTime>();
-                                }
-                                @if (slots.Any())
-                                {
-                                    foreach (var slot in slots)
-                                    {
-                                        <option value="@slot.ToString("yyyy-MM-dd HH:mm")">
-                                            @slot.ToString("dd/MM/yyyy HH:mm")
-                                        </option>
-                                    }
-                                }
-                                else
-                                {
-                                    <option disabled>Không có lịch trống</option>
-                                }
-                            </select>
+                            <input type="datetime-local" id="SelectedSlot" name="SelectedSlot" class="form-control" />
                         </div>
                     </div>
 
