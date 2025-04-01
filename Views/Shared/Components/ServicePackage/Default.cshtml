@@ -14,19 +14,31 @@
         <div class="row g-4">
             @foreach (var p in Model)
             {
-                string url = $"/servicepackage/{p.PackageId}";
                 <div class="col-md-6 col-lg-4 wow fadeInUp">
                     <div class="service-item p-4 bg-white text-center shadow rounded">
-                        <img style="width: 400px; height: 200px; object-fit:cover" src="~/assets/img/ServicePackages/@p.Image" alt="Khám tổng quát" class="img-fluid rounded mb-3">
-                        <a href="@url"> <h4 class="mb-3">@p.PackageName</h4></a>
-                    <p class="mb-3">@p.Title</p>
-                        @using System.Globalization
-                    <h3 class="text-primary">@p.Price?.ToString("N0", new CultureInfo("vi-VN")) VNĐ</h3>
+                        <img src="~/assets/img/ServicePackages/@p.Image"
+                             alt="@p.PackageName"
+                             class="img-fluid rounded mb-3"
+                             style="width: 100%; height: 200px; object-fit: cover;">
 
-                    <a class="btn btn-primary rounded-pill py-2 px-4 mt-3" href="#">Đặt Lịch Ngay</a>
+                        <a href="/servicepackage/@p.PackageId" class="text-decoration-none text-dark">
+                            <h4 class="mb-3">@p.PackageName</h4>
+                        </a>
+
+                        <p class="mb-3 text-muted">@p.Title</p>
+
+                        @using System.Globalization
+                    <h3 class="text-primary fw-bold">
+                        @p.Price?.ToString("N0", new CultureInfo("vi-VN")) VNĐ
+                    </h3>
+
+                        <a class="btn btn-primary rounded-pill py-2 px-4 mt-3" href="#">
+                            Đặt Lịch Ngay
+                        </a>
+                    </div>
                 </div>
-            </div>
-            }
+                        }
         </div>
+
     </div>
 </div>

@@ -105,6 +105,14 @@
                 <div class="card-body p-4">
                     <h5 class="card-title border-bottom pb-3 mb-3 fw-bold text-primary">Danh Mục</h5>
                     <div class="list-group list-group-flush">
+                        <!-- Hiển thị danh mục 'Tất cả sản phẩm' -->
+                        <a href="@Url.Action("Index", "Products")"
+                           class="list-group-item list-group-item-action border-0 px-2 py-2 rounded-3 mb-1 fw-bold">
+                            <i class="fas fa-list me-2 text-primary small"></i>
+                            Tất cả sản phẩm
+                        </a>
+
+                        <!-- Hiển thị tất cả danh mục từ ProductCategories -->
                         @foreach (var category in ProductCategories)
                         {
                             <a href="@Url.Action("Index", "Products", new { categoryId = category.CategoryId })"
@@ -117,6 +125,7 @@
                 </div>
             </div>
         </div>
+
 
         <!-- Products Container -->
         <div class="col-lg-9">
@@ -188,11 +197,17 @@
                                             }
                                         </div>
 
-                                        <div class="mb-3">
+                                        <div>
                                             <small class="text-muted d-block mb-1">Xuất xứ: Việt Nam</small>
                                             <small class="text-muted d-block mb-3">Đã bán: @item.ProductSold</small>
                                         </div>
-
+                                        <div class="mb-3">
+                                            @for (int i = 0; i < item.Star; i++)
+                                            {
+                                                <i class="fas fa-star text-warning"></i>
+                                            }
+    
+                                        </div>
                                         <div class="d-grid gap-2 mt-auto">
                                             <button class="btn btn-primary fw-medium rounded-3">
                                                 <i class="fas fa-cart-plus me-2"></i>Thêm vào giỏ

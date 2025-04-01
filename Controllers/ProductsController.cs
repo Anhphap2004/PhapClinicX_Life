@@ -19,7 +19,7 @@ namespace PhapClinicX.Controllers
         {
             ViewBag.ProductCategories = _context.ProductCategories.ToList();
 
-            var Products = _context.Products.Where(p => p.IsActive == true).OrderByDescending(p=> p.CreatedDate).Take(5).ToList();
+            var Products = _context.Products.Where(p => p.IsActive == true && p.IsNew ==true).OrderByDescending(p=> p.CreatedDate).Take(5).ToList();
             ViewBag.Products = _context.Products
                 .Where(p => (!categoryID.HasValue || p.CategoryId == categoryID.Value) && p.IsActive)
                 .Include(p => p.Category) // Load thêm dữ liệu danh mục nếu cần
