@@ -17,5 +17,5 @@ public partial class ClinicAppointment
 
     public int PhongKhamId { get; set; }
 
-    public virtual PhongKham PhongKham { get; set; } = null!;
+    public virtual PhongKham? PhongKham { get; set; }
 }
