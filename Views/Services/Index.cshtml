@@ -1,10 +1,94 @@
-﻿      <!-- Header Start -->
+﻿ @{
+    List<ServiceCategory> Servicecategories = ViewBag.Servicecategories;
+    List<ServicePackage> ServicePackages = ViewBag.ServicePackages;
+ }
+
+<link href="~/assets/css/servicepackage.css" rel="stylesheet" />
+     <!-- Header Start -->
 <div class="container-fluid bg-breadcrumb">
     <div class="container py-5" style="max-width: 900px;">
         <h4 style="position:relative; left:-200px;top:-40px" class="text-white display-4 mb-4 wow fadeInDown" data-wow-delay="0.1s">Dịch Vụ Của Chúng Tôi</h4>
         
     </div>
 </div>
-<!-- Header End -->
-@await Component.InvokeAsync("ServicePackage", new { isIndexPage = false })
+
+
+<div class="ltn-container">
+    <!-- Sidebar - Danh mục dịch vụ -->
+    <div class="ltn-sidebar">
+        <div class="ltn-sidebar-header">
+            <i class="fas fa-tooth ltn-mr-2"></i> Dịch Vụ Nha Khoa
+        </div>
+        <ul>
+            <!-- Hiển thị danh mục 'Tất cả sản phẩm' -->
+            <li>
+                <a href="@Url.Action("Index", "Services")" class="list-group-item list-group-item-action border-0 px-2 py-2 rounded-3 mb-1 fw-bold">
+                    <i class="fas fa-list me-2 text-primary small"></i>
+                    Tất cả sản phẩm
+                </a>
+            </li>
+
+            @foreach (var category in Servicecategories)
+            {
+                <li>
+                    <a href="@Url.Action("Index", "Services", new { categoryId = category.CategoryId })">
+                        <i class="fas fa-angle-right ltn-mr-2"></i> @category.CategoryName
+                    </a>
+                </li>
+            }
+        </ul>
+
+        <!-- Promotions -->
+        <div class="ltn-sidebar-promotions">
+            <div class="ltn-promo-item">
+                <img src="https://img.freepik.com/free-vector/dental-care-background-design_23-2148536076.jpg" alt="Khuyến mãi khám răng">
+                <div class="ltn-promo-caption">
+                    <i class="fas fa-percentage ltn-mr-1"></i> Giảm 30% Khám Tổng Quát
+                </div>
+            </div>
+            <div class="ltn-promo-item">
+                <img src="https://img.freepik.com/free-vector/dental-care-concept_23-2148536075.jpg" alt="Chăm sóc răng miệng">
+                <div class="ltn-promo-caption">
+                    <i class="fas fa-smile ltn-mr-1"></i> Tẩy Trắng Răng Giảm 20%
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    <!-- Main content -->
+    <div class="ltn-main-content">
+        <h1 class="ltn-service-title">
+            <i class="fas fa-teeth ltn-mr-2"></i> Dịch Vụ Nha Khoa
+        </h1>
+        <div class="service-description">
+            <p>Phòng khám nha khoa LTN-Dental cung cấp các dịch vụ chăm sóc răng miệng chất lượng cao với đội ngũ bác sĩ giỏi và trang thiết bị hiện đại. Chúng tôi cam kết mang đến cho khách hàng trải nghiệm điều trị thoải mái và hiệu quả.</p>
+        </div>
+        <div class="ltn-service-grid">
+            @foreach (var item in ServicePackages)
+            {
+                <div class="ltn-service-item ">
+                    <div class="ltn-service-image">
+                      
+                            <img src="~/assets/img/ServicePackages/@item.Image" alt="@item.Title">
+                 
+                        <div class="ltn-service-heart" title="Thêm vào yêu thích"></div>
+                    </div>
+                    <div class="ltn-service-name">@item.PackageName</div>
+                    <div class="ltn-service-price">
+                        <div class="ltn-service-current-price">@item.Price?.ToString("N0") đ</div>
+
+
+
+                    </div>
+                    <div class="ltn-service-description-short">
+                        Dịch vụ nha khoa chất lượng cao với đội ngũ bác sĩ giỏi...
+                    </div>
+                    <a asp-controller="Services" asp-action="ServicePackageDetail" asp-route-id="@item.CategoryId" class="ltn-appointment-button">
+                        <i class="fas fa-calendar-check ltn-mr-1"></i> Đặt Lịch Ngay
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
 @await Component.InvokeAsync("Service")

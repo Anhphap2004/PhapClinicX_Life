@@ -9,10 +9,19 @@ namespace PhapClinicX.Controllers
         public ServicesController(ClinicManagementContext context)
         {
             _context = context;
-        } 
+        }
         //[Route("goi-dich-vu")
-        public IActionResult Index()
+        public async Task<IActionResult> Index(int? categoryId)
         {
+            // Lấy tất cả danh mục dịch vụ
+            ViewBag.Servicecategories = await _context.ServiceCategories.ToListAsync();
+
+            // Nếu categoryId có giá trị, lọc các ServicePackage theo CategoryId, nếu không thì lấy tất cả gói dịch vụ
+            ViewBag.ServicePackages = await _context.ServicePackages
+                .Where(p => (!categoryId.HasValue || p.CategoryId == categoryId.Value) && p.IsActive)
+                .Include(p => p.Category)
+                .ToListAsync();
+
             return View();
         }
 

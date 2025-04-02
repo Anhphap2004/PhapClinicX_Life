@@ -65,13 +65,16 @@ public partial class ClinicManagementContext : DbContext
 
     public virtual DbSet<Service> Services { get; set; }
 
+    public virtual DbSet<ServiceCategory> ServiceCategories { get; set; }
+
     public virtual DbSet<ServicePackage> ServicePackages { get; set; }
 
     public virtual DbSet<ServiceReview> ServiceReviews { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
 
-   
+
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<About>(entity =>
@@ -574,6 +577,20 @@ public partial class ClinicManagementContext : DbContext
                 .HasColumnName("service_name");
         });
 
+        modelBuilder.Entity<ServiceCategory>(entity =>
+        {
+            entity.HasKey(e => e.CategoryId).HasName("PK__ServiceC__19093A0BACB4B6F1");
+
+            entity.ToTable("ServiceCategory");
+
+            entity.Property(e => e.CategoryName).HasMaxLength(255);
+            entity.Property(e => e.CreatedAt)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
+            entity.Property(e => e.Description).HasMaxLength(500);
+            entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
+        });
+
         modelBuilder.Entity<ServicePackage>(entity =>
         {
             entity.HasKey(e => e.PackageId).HasName("PK__ServiceP__63846AE8E83AB9B7");
@@ -598,6 +615,11 @@ public partial class ClinicManagementContext : DbContext
             entity.Property(e => e.Title)
                 .HasMaxLength(255)
                 .HasColumnName("title");
+
+            entity.HasOne(d => d.Category).WithMany(p => p.ServicePackages)
+                .HasForeignKey(d => d.CategoryId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("FK_ServicePackages_ServiceCategory");
         });
 
         modelBuilder.Entity<ServiceReview>(entity =>

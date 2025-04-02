@@ -20,4 +20,8 @@ public partial class ServicePackage
     public DateTime Date { get; set; }
 
     public string? Detail { get; set; }
+
+    public int? CategoryId { get; set; }
+
+    public virtual ServiceCategory? Category { get; set; }
 }
