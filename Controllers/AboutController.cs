@@ -21,5 +21,25 @@ namespace PhapClinicX.Controllers
         {
             return View();
         }
+
+        [Route("Chi-Tiet-Phong-Kham/{id}")]
+        public async Task<IActionResult> Detail(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound(); 
+            }
+
+            var phongKham = await _context.PhongKhams
+                .FirstOrDefaultAsync(p => p.PhongKhamId == id && p.Isactive); 
+
+            if (phongKham == null)
+            {
+                return NotFound(); 
+            }
+
+            return View(phongKham); 
+        }
+
     }
 }

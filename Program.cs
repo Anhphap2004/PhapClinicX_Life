@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using PhapClinicX.Middleware;
 using PhapClinicX.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -33,6 +34,7 @@ app.UseRouting();
 
 app.UseAuthorization();
 app.UseSession();
+app.UseMiddleware<RoleMiddleware>();
 app.MapStaticAssets();
 
 

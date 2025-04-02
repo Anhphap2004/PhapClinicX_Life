@@ -1,0 +1,82 @@
+﻿@model PhapClinicX.Models.PhongKham
+
+    <div class="container mt-5">
+        <!-- Tiêu đề trang -->
+        <div class="text-center">
+            <h2>Chi Tiết Phòng Khám</h2>
+            <p class="text-muted">Thông tin chi tiết về phòng khám</p>
+        </div>
+
+        <div class="row">
+            <!-- Cột bên trái: Thông tin phòng khám -->
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h4>Thông Tin Phòng Khám</h4>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Tên phòng khám:</strong> Phòng Khám Đa Khoa ABC</p>
+                        <p><strong>Địa chỉ:</strong> 123 Đường ABC, Quận XYZ, Thành phố HCM</p>
+                        <p><strong>Số điện thoại:</strong> 0901234567</p>
+                        <p><strong>Email:</strong> contact@clinicabc.com</p>
+                        <p><strong>Mô tả:</strong> Phòng khám ABC cung cấp các dịch vụ y tế đa dạng, từ khám bệnh, chữa bệnh đến chăm sóc sức khỏe định kỳ. Đội ngũ bác sĩ chuyên nghiệp, trang thiết bị hiện đại đảm bảo sự an tâm cho bệnh nhân.</p>
+                    </div>
+                </div>
+
+                <!-- Thêm một bảng chi tiết khác nếu cần -->
+                <div class="card mb-4">
+                    <div class="card-header bg-warning text-white">
+                        <h4>Giờ Làm Việc</h4>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Thứ Hai - Thứ Sáu:</strong> 08:00 - 17:00</p>
+                        <p><strong>Thứ Bảy:</strong> 08:00 - 12:00</p>
+                        <p><strong>Chủ Nhật:</strong> Nghỉ</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cột bên phải: Ảnh phòng khám -->
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header bg-success text-white">
+                        <h4>Ảnh Phòng Khám</h4>
+                    </div>
+                    <div class="card-body text-center">
+                        <img src="~/assets/img/clinicbranch/@Model.Image" alt="Ảnh phòng khám" class="img-fluid rounded">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bảng các dịch vụ -->
+        <div class="mt-5">
+            <h3 class="text-center">Các Dịch Vụ Cung Cấp</h3>
+            <table class="table table-bordered">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col">STT</th>
+                        <th scope="col">Dịch Vụ</th>
+                        <th scope="col">Giá</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>Khám tổng quát</td>
+                        <td>500.000 VND</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">2</th>
+                        <td>Khám chuyên khoa</td>
+                        <td>700.000 VND</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">3</th>
+                        <td>Xét nghiệm máu</td>
+                        <td>200.000 VND</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+</div>

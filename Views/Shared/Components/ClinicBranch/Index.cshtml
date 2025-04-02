@@ -142,6 +142,7 @@
         <div class="col-md-8">
             @foreach (var p in Model)
             {
+                string purl = $"Chi-Tiet-Phong-Kham/{p.PhongKhamId}";
                 string url = $"/booking/chi-nhanh-kham/{p.PhongKhamId}.html";
                 <div style="position:relative" class="clinic-card card">
                     <div class="clinic-header">
@@ -149,7 +150,7 @@
                         <div class="flex-grow-1">
                             <div>
                                 <span style="position:absolute; top:0; right:0" class="promotion-badge">Khuyến Mãi</span>
-                                <strong style="color:#1677ff">@p.TenPhongKham</strong>
+                                <a href="@purl"><strong style="color:#1677ff">@p.TenPhongKham</strong></a>
                             </div>
                             <div class="mb-2">
                                 <span class="rating">★ 4.9</span> (21 Đánh giá)
