@@ -60,7 +60,7 @@ namespace PhapClinicX.Controllers
             HttpContext.Session.SetString("FullName", check.FullName ?? string.Empty);
             HttpContext.Session.SetString("Phone", check.Phone ?? string.Empty);
             HttpContext.Session.SetInt32("RoleId", check.RoleId ?? 0);
-
+            HttpContext.Session.SetString("ProfileImage", check.ProfileImage ?? string.Empty);
             // Nếu chọn "Ghi nhớ đăng nhập", lưu vào Cookie
             if (rememberMe)
             {

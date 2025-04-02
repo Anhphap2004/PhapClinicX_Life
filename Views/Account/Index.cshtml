@@ -1,0 +1,150 @@
+﻿@model PhapClinicX.Models.User
+@using Microsoft.AspNetCore.Http;
+@using Microsoft.AspNetCore.Http.Extensions;
+@{
+    ViewData["Title"] = "Thông Tin Người Dùng";
+    var userid = Context.Session.GetInt32("UserId");
+    var username = Context.Session.GetString("Username");
+    var avatar = Context.Session.GetString("ProfileImage");
+    var email = Context.Session.GetString("Email") ?? "example@gmail.com";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+            <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+                <!-- Header với gradient -->
+                <div class="card-header text-center bg-gradient p-4" style="background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);">
+                    <h3 class="text-white mb-0 fw-bold">Hồ Sơ Cá Nhân</h3>
+                </div>
+
+                <div class="card-body p-4">
+                    <div class="text-center mb-4">
+                        <!-- Ảnh đại diện với hiệu ứng border -->
+                        <div class="avatar-wrapper mx-auto mb-4 position-relative">
+                            <img src="~/assets/img/team/@avatar" alt="Avatar"
+                                 class="rounded-circle img-thumbnail shadow-sm border-3 border-primary"
+                                 style="width: 150px; height: 150px; object-fit: cover; border: 4px solid #2575fc;">
+                        </div>
+
+                        <!-- Thông tin cơ bản -->
+                        <h4 class="fw-bold text-primary mb-1">@username</h4>
+                        <p class="text-muted">
+                            <i class="fas fa-envelope me-2 text-primary"></i>@email
+                        </p>
+                    </div>
+
+                    <!-- Thông tin chi tiết -->
+                    <div class="card bg-light mb-4 border-0 rounded-3 shadow-sm">
+                        <div class="card-body p-4">
+                            <h5 class="card-title text-primary mb-3 border-bottom pb-2">
+                                <i class="fas fa-user-circle me-2"></i>Thông Tin Chi Tiết
+                            </h5>
+                            <div class="row g-4">
+                                <div class="col-md-6">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <div class="icon-box bg-primary text-white rounded-circle p-2 me-3">
+                                            <i class="fas fa-user"></i>
+                                        </div>
+                                        <div>
+                                            <small class="text-muted d-block">Họ và Tên</small>
+                                            <span class="fw-bold">@username</span>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center">
+                                        <div class="icon-box bg-primary text-white rounded-circle p-2 me-3">
+                                            <i class="fas fa-envelope"></i>
+                                        </div>
+                                        <div>
+                                            <small class="text-muted d-block">Email</small>
+                                            <span class="fw-bold">@email</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <div class="icon-box bg-primary text-white rounded-circle p-2 me-3">
+                                            <i class="fas fa-phone"></i>
+                                        </div>
+                                        <div>
+                                            <small class="text-muted d-block">Số Điện Thoại</small>
+                                            <span class="fw-bold">0123-456-789</span>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center">
+                                        <div class="icon-box bg-primary text-white rounded-circle p-2 me-3">
+                                            <i class="fas fa-map-marker-alt"></i>
+                                        </div>
+                                        <div>
+                                            <small class="text-muted d-block">Địa Chỉ</small>
+                                            <span class="fw-bold">Hà Nội, Việt Nam</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Nút tương tác -->
+                    <div class="d-flex justify-content-center gap-3 mt-4">
+                        <a href="/profile/edit" class="btn btn-primary px-4 py-2 rounded-pill shadow-sm">
+                            <i class="fas fa-edit me-2"></i>Chỉnh Sửa Hồ Sơ
+                        </a>
+                        <a href="/profile/change-password" class="btn btn-warning px-4 py-2 rounded-pill shadow-sm">
+                            <i class="fas fa-key me-2"></i>Đổi Mật Khẩu
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <div class="card-footer bg-light text-center py-3">
+                    <p class="mb-0 text-muted">Cập nhật lần cuối: @DateTime.Now.ToString("dd/MM/yyyy")</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .icon-box {
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .rounded-4 {
+        border-radius: 0.75rem;
+    }
+
+    .bg-primary {
+        background-color: #2575fc !important;
+    }
+
+    .text-primary {
+        color: #2575fc !important;
+    }
+
+    .btn-primary {
+        background-color: #2575fc;
+        border-color: #2575fc;
+    }
+
+        .btn-primary:hover {
+            background-color: #1a68e5;
+            border-color: #1a68e5;
+        }
+
+    .btn-warning {
+        background-color: #ff9a3c;
+        border-color: #ff9a3c;
+        color: white;
+    }
+
+        .btn-warning:hover {
+            background-color: #ff8920;
+            border-color: #ff8920;
+            color: white;
+        }
+</style>
