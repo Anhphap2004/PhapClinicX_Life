@@ -1,0 +1,85 @@
+﻿@model IEnumerable<PhapClinicX.Models.Product>
+
+@{
+    ViewData["Title"] = "Danh sách sản phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="text-center my-4">Danh sách sản phẩm</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Thêm mới</a>
+</p>
+
+<table class="table table-bordered table-hover text-center">
+    <thead class="table-dark">
+        <tr>
+            <th>STT</th>
+            <th>Sản Phẩm</th>
+            <th>Giá Cả</th>
+            <th>Hình ảnh</th>
+            <th>Bảo Hành</th>
+            <th>Trạng thái</th>
+            <th>Giá Giảm</th>
+            <th>SL Đã Bán</th>
+            <th>SL Nhập vào</th>
+            <th>Mới</th>
+            <th>Bán chạy</th>
+            <th>Đánh giá</th>
+            <th>Danh Mục</th>
+            <th>Hành động</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            int stt = 1;
+        }
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@stt</td>
+                <td>@Html.DisplayFor(modelItem => item.ProductName)</td>
+                <td>@string.Format("{0:N0} VNĐ", item.Price)</td>
+
+                <td>
+                    <img src="~/assets/img/product/@item.Image" alt="Ảnh sản phẩm" class="img-thumbnail" style="max-width: 100px; height: auto;">
+                </td>
+                <td>@Html.DisplayFor(modelItem => item.Warranty)</td>
+                <td>
+                    @if (item.IsActive)
+                    {
+                        <span class="badge bg-success">Hiển Thị</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger">Không Hiển Thị</span>
+                    }
+                </td>
+                <td>@string.Format("{0:N0} VNĐ", item.PriceSale)</td>
+
+                <td>@Html.DisplayFor(modelItem => item.ProductSold)</td>
+                <td>@Html.DisplayFor(modelItem => item.ProductImport)</td>
+                <td>
+                    @if (item.IsNew ==true)
+                    {
+                        <span class="badge bg-info">Mới</span>
+                    }
+                </td>
+                <td>
+                    @if (item.IsBestSeller ==true)
+                    {
+                        <span class="badge bg-warning">Bán chạy</span>
+                    }
+                </td>
+                <td>@Html.DisplayFor(modelItem => item.Star) ⭐</td>
+                <td>@(item.Category != null ? item.Category.CategoryName : "Không có danh mục")</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.ProductId" class="btn btn-sm btn-warning">Sửa</a>
+                    <a asp-action="Details" asp-route-id="@item.ProductId" class="btn btn-sm btn-info">Chi tiết</a>
+                    <a asp-action="Delete" asp-route-id="@item.ProductId" class="btn btn-sm btn-danger">Xóa</a>
+                </td>
+            </tr>
+            stt++;
+        }
+    </tbody>
+</table>

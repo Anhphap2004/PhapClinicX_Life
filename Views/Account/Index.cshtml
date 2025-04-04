@@ -5,100 +5,444 @@
     ViewData["Title"] = "Thông Tin Người Dùng";
     var userid = Context.Session.GetInt32("UserId");
     var username = Context.Session.GetString("Username");
-    var avatar = Context.Session.GetString("ProfileImage");
+    var avatar = Context.Session.GetString("ProfileImage") ?? "default-avatar.jpg";
     var email = Context.Session.GetString("Email") ?? "example@gmail.com";
 }
 
 <div class="container py-5">
     <div class="row justify-content-center">
-        <div class="col-lg-8 col-md-10">
+        <div class="col-lg-10">
+            <!-- Thẻ chính cho hồ sơ -->
             <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
                 <!-- Header với gradient -->
-                <div class="card-header text-center bg-gradient p-4" style="background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);">
-                    <h3 class="text-white mb-0 fw-bold">Hồ Sơ Cá Nhân</h3>
+                <div class="card-header bg-gradient p-4 position-relative" style="background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);">
+                    <div class="d-flex align-items-center">
+                        <div class="position-relative me-4">
+                            <img src="~/assets/img/team/@avatar" alt="Avatar"
+                                 class="rounded-circle profile-image"
+                                 style="width: 120px; height: 120px; object-fit: cover; border: 4px solid #ffffff;">
+                            <div class="upload-overlay">
+                                <label for="profile-upload" class="upload-button">
+                                    <i class="fas fa-camera"></i>
+                                </label>
+                                <input type="file" id="profile-upload" class="d-none">
+                            </div>
+                        </div>
+                        <div class="text-white">
+                            <h3 class="fw-bold mb-1">@username</h3>
+                            <p class="mb-0 d-flex align-items-center">
+                                <i class="fas fa-envelope me-2"></i>@email
+                            </p>
+                            <div class="badge bg-white text-primary mt-2">Thành viên thường</div>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="card-body p-4">
-                    <div class="text-center mb-4">
-                        <!-- Ảnh đại diện với hiệu ứng border -->
-                        <div class="avatar-wrapper mx-auto mb-4 position-relative">
-                            <img src="~/assets/img/team/@avatar" alt="Avatar"
-                                 class="rounded-circle img-thumbnail shadow-sm border-3 border-primary"
-                                 style="width: 150px; height: 150px; object-fit: cover; border: 4px solid #2575fc;">
-                        </div>
+                <!-- Tabs điều hướng -->
+                <div class="profile-tabs">
+                    <ul class="nav nav-pills nav-fill" id="profileTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="info-tab" data-bs-toggle="tab" data-bs-target="#info" type="button" role="tab">
+                                <i class="fas fa-user-circle me-2"></i>Thông tin cá nhân
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="activity-tab" data-bs-toggle="tab" data-bs-target="#activity" type="button" role="tab">
+                                <i class="fas fa-chart-line me-2"></i>Hoạt động gần đây
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="appointments-tab" data-bs-toggle="tab" data-bs-target="#appointments" type="button" role="tab">
+                                <i class="fas fa-calendar-check me-2"></i>Lịch hẹn
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="settings-tab" data-bs-toggle="tab" data-bs-target="#settings" type="button" role="tab">
+                                <i class="fas fa-cog me-2"></i>Cài đặt
+                            </button>
+                        </li>
+                    </ul>
+                </div>
 
-                        <!-- Thông tin cơ bản -->
-                        <h4 class="fw-bold text-primary mb-1">@username</h4>
-                        <p class="text-muted">
-                            <i class="fas fa-envelope me-2 text-primary"></i>@email
-                        </p>
-                    </div>
-
-                    <!-- Thông tin chi tiết -->
-                    <div class="card bg-light mb-4 border-0 rounded-3 shadow-sm">
-                        <div class="card-body p-4">
-                            <h5 class="card-title text-primary mb-3 border-bottom pb-2">
-                                <i class="fas fa-user-circle me-2"></i>Thông Tin Chi Tiết
-                            </h5>
-                            <div class="row g-4">
-                                <div class="col-md-6">
-                                    <div class="d-flex align-items-center mb-3">
-                                        <div class="icon-box bg-primary text-white rounded-circle p-2 me-3">
-                                            <i class="fas fa-user"></i>
+                <!-- Nội dung tabs -->
+                <div class="tab-content p-4" id="profileTabsContent">
+                    <!-- Tab thông tin cá nhân -->
+                    <div class="tab-pane fade show active" id="info" role="tabpanel" aria-labelledby="info-tab">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <!-- Thông tin cơ bản -->
+                                <div class="card border-0 rounded-4 shadow-sm mb-4">
+                                    <div class="card-header bg-light py-3">
+                                        <h5 class="mb-0 fw-bold text-primary">
+                                            <i class="fas fa-id-card me-2"></i>Thông tin cơ bản
+                                        </h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="profile-info-item">
+                                            <span class="info-label"><i class="fas fa-user text-primary me-2"></i>Họ và tên</span>
+                                            <span class="info-value fw-medium">@username</span>
                                         </div>
-                                        <div>
-                                            <small class="text-muted d-block">Họ và Tên</small>
-                                            <span class="fw-bold">@username</span>
+                                        <div class="profile-info-item">
+                                            <span class="info-label"><i class="fas fa-envelope text-primary me-2"></i>Email</span>
+                                            <span class="info-value fw-medium">@email</span>
+                                        </div>
+                                        <div class="profile-info-item">
+                                            <span class="info-label"><i class="fas fa-phone text-primary me-2"></i>Số điện thoại</span>
+                                            <span class="info-value fw-medium">0123-456-789</span>
+                                        </div>
+                                        <div class="profile-info-item">
+                                            <span class="info-label"><i class="fas fa-birthday-cake text-primary me-2"></i>Ngày sinh</span>
+                                            <span class="info-value fw-medium">01/01/1990</span>
+                                        </div>
+                                        <div class="profile-info-item">
+                                            <span class="info-label"><i class="fas fa-venus-mars text-primary me-2"></i>Giới tính</span>
+                                            <span class="info-value fw-medium">Nam</span>
                                         </div>
                                     </div>
-                                    <div class="d-flex align-items-center">
-                                        <div class="icon-box bg-primary text-white rounded-circle p-2 me-3">
-                                            <i class="fas fa-envelope"></i>
-                                        </div>
-                                        <div>
-                                            <small class="text-muted d-block">Email</small>
-                                            <span class="fw-bold">@email</span>
-                                        </div>
+                                    <div class="card-footer bg-white text-end">
+                                        <button class="btn btn-sm btn-outline-primary">
+                                            <i class="fas fa-edit me-1"></i>Chỉnh sửa
+                                        </button>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="d-flex align-items-center mb-3">
-                                        <div class="icon-box bg-primary text-white rounded-circle p-2 me-3">
-                                            <i class="fas fa-phone"></i>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <!-- Thông tin liên hệ -->
+                                <div class="card border-0 rounded-4 shadow-sm mb-4">
+                                    <div class="card-header bg-light py-3">
+                                        <h5 class="mb-0 fw-bold text-primary">
+                                            <i class="fas fa-map-marked-alt me-2"></i>Thông tin liên hệ
+                                        </h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="profile-info-item">
+                                            <span class="info-label"><i class="fas fa-map-marker-alt text-primary me-2"></i>Địa chỉ</span>
+                                            <span class="info-value fw-medium">123 Đường Trần Duy Hưng, Cầu Giấy</span>
                                         </div>
-                                        <div>
-                                            <small class="text-muted d-block">Số Điện Thoại</small>
-                                            <span class="fw-bold">0123-456-789</span>
+                                        <div class="profile-info-item">
+                                            <span class="info-label"><i class="fas fa-city text-primary me-2"></i>Thành phố</span>
+                                            <span class="info-value fw-medium">Hà Nội</span>
+                                        </div>
+                                        <div class="profile-info-item">
+                                            <span class="info-label"><i class="fas fa-flag text-primary me-2"></i>Quốc gia</span>
+                                            <span class="info-value fw-medium">Việt Nam</span>
+                                        </div>
+                                        <div class="profile-info-item">
+                                            <span class="info-label"><i class="fas fa-phone-alt text-primary me-2"></i>Liên hệ khẩn cấp</span>
+                                            <span class="info-value fw-medium">0987-654-321</span>
                                         </div>
                                     </div>
-                                    <div class="d-flex align-items-center">
-                                        <div class="icon-box bg-primary text-white rounded-circle p-2 me-3">
-                                            <i class="fas fa-map-marker-alt"></i>
+                                    <div class="card-footer bg-white text-end">
+                                        <button class="btn btn-sm btn-outline-primary">
+                                            <i class="fas fa-edit me-1"></i>Chỉnh sửa
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Thông tin y tế -->
+                                <div class="card border-0 rounded-4 shadow-sm">
+                                    <div class="card-header bg-light py-3">
+                                        <h5 class="mb-0 fw-bold text-primary">
+                                            <i class="fas fa-heartbeat me-2"></i>Thông tin y tế
+                                        </h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="profile-info-item">
+                                            <span class="info-label"><i class="fas fa-notes-medical text-primary me-2"></i>Nhóm máu</span>
+                                            <span class="info-value fw-medium">A+</span>
                                         </div>
-                                        <div>
-                                            <small class="text-muted d-block">Địa Chỉ</small>
-                                            <span class="fw-bold">Hà Nội, Việt Nam</span>
+                                        <div class="profile-info-item">
+                                            <span class="info-label"><i class="fas fa-pills text-primary me-2"></i>Dị ứng</span>
+                                            <span class="info-value fw-medium">Không có</span>
                                         </div>
+                                    </div>
+                                    <div class="card-footer bg-white text-end">
+                                        <button class="btn btn-sm btn-outline-primary">
+                                            <i class="fas fa-edit me-1"></i>Chỉnh sửa
+                                        </button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Nút tương tác -->
-                    <div class="d-flex justify-content-center gap-3 mt-4">
-                        <a href="/profile/edit" class="btn btn-primary px-4 py-2 rounded-pill shadow-sm">
-                            <i class="fas fa-edit me-2"></i>Chỉnh Sửa Hồ Sơ
-                        </a>
-                        <a href="/profile/change-password" class="btn btn-warning px-4 py-2 rounded-pill shadow-sm">
-                            <i class="fas fa-key me-2"></i>Đổi Mật Khẩu
-                        </a>
+                    <!-- Tab hoạt động gần đây -->
+                    <div class="tab-pane fade" id="activity" role="tabpanel" aria-labelledby="activity-tab">
+                        <div class="card border-0 rounded-4 shadow-sm">
+                            <div class="card-header bg-light py-3">
+                                <h5 class="mb-0 fw-bold text-primary">
+                                    <i class="fas fa-history me-2"></i>Hoạt động gần đây
+                                </h5>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="timeline-container">
+                                    <div class="timeline-item">
+                                        <div class="timeline-icon bg-primary">
+                                            <i class="fas fa-calendar-check text-white"></i>
+                                        </div>
+                                        <div class="timeline-content">
+                                            <h6 class="fw-bold mb-1">Đặt lịch khám</h6>
+                                            <p class="text-muted mb-0">Bạn đã đặt lịch khám với Bác sĩ Nguyễn Văn A</p>
+                                            <small class="text-muted">2 giờ trước</small>
+                                        </div>
+                                    </div>
+                                    <div class="timeline-item">
+                                        <div class="timeline-icon bg-info">
+                                            <i class="fas fa-sign-in-alt text-white"></i>
+                                        </div>
+                                        <div class="timeline-content">
+                                            <h6 class="fw-bold mb-1">Đăng nhập vào hệ thống</h6>
+                                            <p class="text-muted mb-0">Đăng nhập thành công từ thiết bị mới</p>
+                                            <small class="text-muted">Hôm nay, 9:30</small>
+                                        </div>
+                                    </div>
+                                    <div class="timeline-item">
+                                        <div class="timeline-icon bg-success">
+                                            <i class="fas fa-file-medical text-white"></i>
+                                        </div>
+                                        <div class="timeline-content">
+                                            <h6 class="fw-bold mb-1">Xem kết quả xét nghiệm</h6>
+                                            <p class="text-muted mb-0">Bạn đã xem kết quả xét nghiệm máu</p>
+                                            <small class="text-muted">Hôm qua, 15:45</small>
+                                        </div>
+                                    </div>
+                                    <div class="timeline-item">
+                                        <div class="timeline-icon bg-warning">
+                                            <i class="fas fa-comment-medical text-white"></i>
+                                        </div>
+                                        <div class="timeline-content">
+                                            <h6 class="fw-bold mb-1">Nhận tư vấn trực tuyến</h6>
+                                            <p class="text-muted mb-0">Phiên tư vấn với Bác sĩ Trần B đã hoàn thành</p>
+                                            <small class="text-muted">3 ngày trước</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer bg-white text-center">
+                                <button class="btn btn-sm btn-outline-primary">
+                                    <i class="fas fa-sync-alt me-1"></i>Xem thêm
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                </div>
 
-                <!-- Footer -->
-                <div class="card-footer bg-light text-center py-3">
-                    <p class="mb-0 text-muted">Cập nhật lần cuối: @DateTime.Now.ToString("dd/MM/yyyy")</p>
+                    <!-- Tab lịch hẹn -->
+                    <div class="tab-pane fade" id="appointments" role="tabpanel" aria-labelledby="appointments-tab">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h5 class="fw-bold text-primary mb-0">Lịch hẹn của bạn</h5>
+                            <button class="btn btn-primary">
+                                <i class="fas fa-plus me-1"></i>Đặt lịch mới
+                            </button>
+                        </div>
+
+                        <!-- Lịch sắp tới -->
+                        <div class="card border-0 rounded-4 shadow-sm mb-4">
+                            <div class="card-header bg-light py-3">
+                                <h6 class="mb-0 fw-bold text-primary">
+                                    <i class="fas fa-calendar me-2"></i>Lịch hẹn sắp tới
+                                </h6>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="appointment-item">
+                                    <div class="appointment-date">
+                                        <span class="month">Tháng 4</span>
+                                        <span class="day">12</span>
+                                        <span class="time">09:30</span>
+                                    </div>
+                                    <div class="appointment-info">
+                                        <h6 class="fw-bold mb-1">Khám tổng quát</h6>
+                                        <p class="text-muted mb-0">Bác sĩ: Nguyễn Văn A</p>
+                                        <p class="text-muted mb-0">Phòng: A203</p>
+                                    </div>
+                                    <div class="appointment-action">
+                                        <button class="btn btn-sm btn-outline-primary mb-2 w-100">Chi tiết</button>
+                                        <button class="btn btn-sm btn-outline-danger w-100">Hủy lịch</button>
+                                    </div>
+                                </div>
+                                <div class="appointment-item">
+                                    <div class="appointment-date">
+                                        <span class="month">Tháng 4</span>
+                                        <span class="day">20</span>
+                                        <span class="time">14:00</span>
+                                    </div>
+                                    <div class="appointment-info">
+                                        <h6 class="fw-bold mb-1">Tư vấn dinh dưỡng</h6>
+                                        <p class="text-muted mb-0">Bác sĩ: Lê Thị B</p>
+                                        <p class="text-muted mb-0">Phòng: B105</p>
+                                    </div>
+                                    <div class="appointment-action">
+                                        <button class="btn btn-sm btn-outline-primary mb-2 w-100">Chi tiết</button>
+                                        <button class="btn btn-sm btn-outline-danger w-100">Hủy lịch</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Lịch sử lịch hẹn -->
+                        <div class="card border-0 rounded-4 shadow-sm">
+                            <div class="card-header bg-light py-3">
+                                <h6 class="mb-0 fw-bold text-primary">
+                                    <i class="fas fa-history me-2"></i>Lịch sử lịch hẹn
+                                </h6>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="appointment-item completed">
+                                    <div class="appointment-date">
+                                        <span class="month">Tháng 3</span>
+                                        <span class="day">25</span>
+                                        <span class="time">11:00</span>
+                                    </div>
+                                    <div class="appointment-info">
+                                        <h6 class="fw-bold mb-1">Khám răng định kỳ</h6>
+                                        <p class="text-muted mb-0">Bác sĩ: Phạm C</p>
+                                        <p class="text-muted mb-0">Phòng: C301</p>
+                                        <span class="badge bg-success">Hoàn thành</span>
+                                    </div>
+                                    <div class="appointment-action">
+                                        <button class="btn btn-sm btn-outline-secondary w-100">Đánh giá</button>
+                                    </div>
+                                </div>
+                                <div class="appointment-item completed">
+                                    <div class="appointment-date">
+                                        <span class="month">Tháng 3</span>
+                                        <span class="day">10</span>
+                                        <span class="time">15:30</span>
+                                    </div>
+                                    <div class="appointment-info">
+                                        <h6 class="fw-bold mb-1">Tư vấn tim mạch</h6>
+                                        <p class="text-muted mb-0">Bác sĩ: Trần D</p>
+                                        <p class="text-muted mb-0">Phòng: D102</p>
+                                        <span class="badge bg-success">Hoàn thành</span>
+                                    </div>
+                                    <div class="appointment-action">
+                                        <button class="btn btn-sm btn-outline-secondary w-100">Đánh giá</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer bg-white text-center">
+                                <button class="btn btn-sm btn-outline-primary">
+                                    <i class="fas fa-history me-1"></i>Xem thêm
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tab cài đặt -->
+                    <div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <!-- Cài đặt bảo mật -->
+                                <div class="card border-0 rounded-4 shadow-sm mb-4">
+                                    <div class="card-header bg-light py-3">
+                                        <h5 class="mb-0 fw-bold text-primary">
+                                            <i class="fas fa-shield-alt me-2"></i>Bảo mật tài khoản
+                                        </h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="setting-item d-flex justify-content-between align-items-center mb-3">
+                                            <div>
+                                                <h6 class="fw-bold mb-1">Đổi mật khẩu</h6>
+                                                <small class="text-muted">Cập nhật mật khẩu của bạn</small>
+                                            </div>
+                                            <a href="/profile/change-password" class="btn btn-sm btn-primary">
+                                                <i class="fas fa-key me-1"></i>Cập nhật
+                                            </a>
+                                        </div>
+                                        <div class="setting-item d-flex justify-content-between align-items-center mb-3">
+                                            <div>
+                                                <h6 class="fw-bold mb-1">Xác thực hai yếu tố</h6>
+                                                <small class="text-muted">Bảo mật tài khoản với xác thực hai lớp</small>
+                                            </div>
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" id="2faSwitch">
+                                            </div>
+                                        </div>
+                                        <div class="setting-item d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <h6 class="fw-bold mb-1">Thiết bị đã đăng nhập</h6>
+                                                <small class="text-muted">Quản lý các thiết bị đã đăng nhập</small>
+                                            </div>
+                                            <button class="btn btn-sm btn-outline-primary">
+                                                <i class="fas fa-laptop me-1"></i>Xem
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <!-- Cài đặt thông báo -->
+                                <div class="card border-0 rounded-4 shadow-sm mb-4">
+                                    <div class="card-header bg-light py-3">
+                                        <h5 class="mb-0 fw-bold text-primary">
+                                            <i class="fas fa-bell me-2"></i>Cài đặt thông báo
+                                        </h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="setting-item d-flex justify-content-between align-items-center mb-3">
+                                            <div>
+                                                <h6 class="fw-bold mb-1">Thông báo về lịch hẹn</h6>
+                                                <small class="text-muted">Nhận thông báo về lịch hẹn sắp tới</small>
+                                            </div>
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" id="appointmentSwitch" checked>
+                                            </div>
+                                        </div>
+                                        <div class="setting-item d-flex justify-content-between align-items-center mb-3">
+                                            <div>
+                                                <h6 class="fw-bold mb-1">Thông báo qua email</h6>
+                                                <small class="text-muted">Nhận thông báo qua email</small>
+                                            </div>
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" id="emailSwitch" checked>
+                                            </div>
+                                        </div>
+                                        <div class="setting-item d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <h6 class="fw-bold mb-1">Tin tức và cập nhật</h6>
+                                                <small class="text-muted">Nhận thông tin về chương trình mới</small>
+                                            </div>
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" id="newsSwitch">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Cài đặt ngôn ngữ -->
+                                <div class="card border-0 rounded-4 shadow-sm">
+                                    <div class="card-header bg-light py-3">
+                                        <h5 class="mb-0 fw-bold text-primary">
+                                            <i class="fas fa-globe me-2"></i>Ngôn ngữ & Khu vực
+                                        </h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="setting-item d-flex justify-content-between align-items-center mb-3">
+                                            <div>
+                                                <h6 class="fw-bold mb-1">Ngôn ngữ</h6>
+                                                <small class="text-muted">Chọn ngôn ngữ hiển thị</small>
+                                            </div>
+                                            <select class="form-select form-select-sm" style="width: auto;">
+                                                <option selected>Tiếng Việt</option>
+                                                <option>English</option>
+                                            </select>
+                                        </div>
+                                        <div class="setting-item d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <h6 class="fw-bold mb-1">Múi giờ</h6>
+                                                <small class="text-muted">Cài đặt múi giờ cho lịch hẹn</small>
+                                            </div>
+                                            <select class="form-select form-select-sm" style="width: auto;">
+                                                <option selected>(GMT+7) Hà Nội</option>
+                                                <option>(GMT+8) Singapore</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -106,18 +450,21 @@
 </div>
 
 <style>
-    .icon-box {
-        width: 36px;
-        height: 36px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+    /* Thiết lập chung */
+    body {
+        background-color: #f8f9fa;
     }
 
     .rounded-4 {
         border-radius: 0.75rem;
     }
 
+    .btn {
+        border-radius: 0.5rem;
+        transition: all 0.3s ease;
+    }
+
+    /* Màu chủ đạo */
     .bg-primary {
         background-color: #2575fc !important;
     }
@@ -147,4 +494,193 @@
             border-color: #ff8920;
             color: white;
         }
+
+    /* Ảnh đại diện và overlay upload */
+    .profile-image {
+        box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+    }
+
+    .upload-overlay {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+    }
+
+    .upload-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        background-color: #2575fc;
+        color: white;
+        border-radius: 50%;
+        border: 2px solid white;
+        cursor: pointer;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Tabs điều hướng */
+    .profile-tabs {
+        background-color: #f8f9fa;
+        padding: 1rem;
+        border-bottom: 1px solid #e9ecef;
+    }
+
+        .profile-tabs .nav-link {
+            border-radius: 0.5rem;
+            color: #6c757d;
+            font-weight: 500;
+            padding: 0.75rem 1rem;
+        }
+
+            .profile-tabs .nav-link.active {
+                background-color: #2575fc;
+                color: white;
+            }
+
+    /* Thông tin cá nhân */
+    .profile-info-item {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 1rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid #f1f1f1;
+    }
+
+        .profile-info-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+    .info-label {
+        font-size: 0.85rem;
+        color: #6c757d;
+        margin-bottom: 0.3rem;
+    }
+
+    .info-value {
+        color: #343a40;
+    }
+    /* Timeline hoạt động */
+    .timeline-container {
+        position: relative;
+        padding: 1rem;
+    }
+
+    .timeline-item {
+        display: flex;
+        position: relative;
+        margin-bottom: 1.5rem;
+        padding-bottom: 1.5rem;
+        border-left: 2px solid #e9ecef;
+        padding-left: 1.5rem;
+    }
+
+        .timeline-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-left-color: transparent;
+        }
+
+    .timeline-icon {
+        position: absolute;
+        left: -18px;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #2575fc;
+        box-shadow: 0 0 0 4px #f8f9fa;
+    }
+
+    .timeline-content {
+        padding-left: 0.5rem;
+    }
+
+    /* Lịch hẹn */
+    .appointment-item {
+        display: flex;
+        align-items: center;
+        padding: 1.25rem;
+        border-bottom: 1px solid #f1f1f1;
+    }
+
+        .appointment-item:last-child {
+            border-bottom: none;
+        }
+
+        .appointment-item.completed {
+            background-color: #f8f9fa;
+        }
+
+    .appointment-date {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-width: 80px;
+        margin-right: 1rem;
+        text-align: center;
+        border-radius: 8px;
+        background-color: #f8f9fa;
+        padding: 0.5rem;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+        .appointment-date .month {
+            font-size: 0.75rem;
+            color: #6c757d;
+            text-transform: uppercase;
+        }
+
+        .appointment-date .day {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #343a40;
+        }
+
+        .appointment-date .time {
+            font-size: 0.75rem;
+            color: #2575fc;
+        }
+
+    .appointment-info {
+        flex: 1;
+    }
+
+    .appointment-action {
+        width: 100px;
+        text-align: center;
+    }
+
+    /* Cài đặt */
+    .setting-item {
+        padding-bottom: 1rem;
+        margin-bottom: 1rem;
+        border-bottom: 1px solid #f1f1f1;
+    }
+
+        .setting-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+    /* Form switch */
+    .form-switch .form-check-input {
+        width: 3em;
+        height: 1.5em;
+        margin-top: 0;
+    }
+
+        .form-switch .form-check-input:checked {
+            background-color: #2575fc;
+            border-color: #2575fc;
+        }
+
 </style>
