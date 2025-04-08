@@ -15,18 +15,25 @@ namespace PhapClinicX.Controllers
             _context = context;
             _logger = logger;
         }
-        public IActionResult Index(int? categoryID)
+        public IActionResult Index(int? categoryID, int page = 1, int pageSize = 8)
         {
             ViewBag.ProductCategories = _context.ProductCategories.ToList();
 
-            var Products = _context.Products.Where(p => p.IsActive == true && p.IsNew ==true).OrderByDescending(p=> p.CreatedDate).Take(5).ToList();
-            ViewBag.Products = _context.Products
+            var query = _context.Products
                 .Where(p => (!categoryID.HasValue || p.CategoryId == categoryID.Value) && p.IsActive)
-                .Include(p => p.Category) // Load thêm dữ liệu danh mục nếu cần
-                .ToList();
+                .Include(p => p.Category)
+                .OrderByDescending(p => p.CreatedDate);
 
-            return View(Products);
+            int totalItems = query.Count();
+            var products = query.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+            ViewBag.CurrentPage = page;
+            ViewBag.TotalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+            ViewBag.SelectedCategoryID = categoryID;
+
+            return View(products);
         }
+
 
         //public IActionResult Index()
         //{

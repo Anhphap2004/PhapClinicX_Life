@@ -34,7 +34,7 @@
                                         <span>@(item.CreatedAt?.ToString("dd/MM/yyyy") ?? "Không có ngày")</span>
                                     </div>
                                 </div>
-                                <a asp-controller="DetailBlogPosts" asp-action="DetailBlog" asp-route-id="@item.CategoryId" class="blog-post-card__button">
+                                <a asp-controller="Blog" asp-action="Detail" asp-route-id="@item.CategoryId" class="blog-post-card__button">
                                     Đọc ngay <i class="fas fa-arrow-right"></i>
                                 </a>
                             </div>
@@ -114,32 +114,7 @@
                 </div>
                 <!-- Promo Banners with unique class names to avoid conflicts -->
                 <!-- Vertical Promotional Cards using Bootstrap classes only -->
-                <div class="container-fluid p-0 mt-auto">
-                    <div class="row g-2">
-                        <!-- g-2 adds small gutters between rows -->
-                        <!-- First promo item -->
-                        <div class="col-12">
-                            <div class="position-relative">
-                                <img src="https://i.pinimg.com/474x/2f/58/71/2f58711dcda6eb5fd48e4cd137132bd0.jpg" class="w-100 rounded-3" alt="COCOXIM">
-                                <div class="position-absolute bottom-0 start-0 w-100 bg-dark text-white text-center py-2">
-                                    <span class="fw-bold">Ưu đãi</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Second promo item -->
-                        <div class="col-12">
-                            <div class="position-relative">
-                                <img src="https://i.pinimg.com/474x/70/39/3e/70393e855d18d9b6da58676ad85e10b7.jpg" class="w-100 rounded-3" alt="COCOXIM">
-                                <div class="position-absolute bottom-0 start-0 w-100 bg-dark text-white text-center py-2">
-                                    <span class="fw-bold">Dịch vụ</span><br>
-                                </div>
-                            </div>
-                        </div>
-
-                      
-                    </div>
-                </div>
+                
             </div>
         </div>
     </div>
