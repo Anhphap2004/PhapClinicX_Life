@@ -1,0 +1,113 @@
+﻿@model PhapClinicX.Models.PhongKham
+@{
+    ViewData["Title"] = "Chi tiết";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3 d-flex justify-content-between align-items-center">
+        <h6 class="m-0 font-weight-bold text-primary">Chi tiết phòng khám</h6>
+        <div>
+            <a asp-action="Edit" asp-route-id="@Model?.PhongKhamId" class="btn btn-warning btn-sm">
+                <i class="fas fa-edit"></i> Sửa
+            </a>
+            <a asp-action="Index" class="btn btn-secondary btn-sm">
+                <i class="fas fa-list"></i> Về danh sách
+            </a>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                        <th class="bg-light" style="width: 25%">
+                            Tên phòng khám
+                        </th>
+                        <td>
+                            @Html.DisplayFor(model => model.TenPhongKham)
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="bg-light">
+                            Địa chỉ
+                        </th>
+                        <td>
+                            @Html.DisplayFor(model => model.DiaChi)
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="bg-light">
+                            Số điện thoại
+                        </th>
+                        <td>
+                            @Html.DisplayFor(model => model.SoDienThoai)
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="bg-light">
+                            Email
+                        </th>
+                        <td>
+                            @Html.DisplayFor(model => model.Email)
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="bg-light">
+                            Ngày thành lập
+                        </th>
+                        <td>
+                            @Html.DisplayFor(model => model.NgayThanhLap)
+                        </td>
+
+
+                    </tr>
+                    <tr>
+                        <th class="bg-light">
+                            Hình ảnh
+                        </th>
+                        <td>
+                            @if (!string.IsNullOrEmpty(Model?.Image))
+                            {
+                                <img src="~/assets/img/clinicbranch/@Model.Image" alt="Hình ảnh phòng khám" class="img-thumbnail" style="max-height: 200px" />
+                            }
+                            else
+                            {
+                                <span class="text-muted">Không có hình ảnh</span>
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="bg-light">
+                            Trạng thái
+                        </th>
+                        <td>
+                            @if (Model?.Isactive == true)
+                            {
+                                <span class="badge bg-success">Hoạt động</span>
+                            }
+                            else if (Model?.Isactive == false)
+                            {
+                                <span class="badge bg-danger">Không hoạt động</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">Chưa xác định</span>
+                            }
+                        </td>
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="mt-4">
+            <h5 class="font-weight-bold">Giới thiệu</h5>
+            <hr />
+            <div class="border p-3 rounded bg-white">
+                @Html.Raw(Model?.Introduce)
+            </div>
+        </div>
+    </div>
+</div>
+

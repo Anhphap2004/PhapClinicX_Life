@@ -1,0 +1,217 @@
+﻿@model PhapClinicX.Models.PhongKham
+@{
+    ViewData["Title"] = "Chỉnh sửa phòng khám";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid py-4">
+    <div class="card border-0 shadow-lg rounded-4">
+        <div class="card-header bg-gradient-primary text-white p-4 rounded-top-4 border-0">
+            <div class="d-flex justify-content-between align-items-center">
+                <h5 class="mb-0 fw-semibold">
+                    <i class="bi bi-pencil-square me-2"></i>Chỉnh sửa thông tin phòng khám
+                </h5>
+                <a asp-action="Index" class="btn btn-light btn-sm rounded-pill px-3">
+                    <i class="bi bi-arrow-left me-1"></i>Quay lại danh sách
+                </a>
+            </div>
+        </div>
+        <div class="card-body p-4">
+            <form asp-action="Edit" method="post" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger rounded-3 border border-danger p-3 mb-4"></div>
+                <input type="hidden" asp-for="PhongKhamId" />
+
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="card h-100 shadow-sm border-0 rounded-3">
+                            <div class="card-header bg-light py-3">
+                                <h6 class="mb-0 text-primary">Thông tin cơ bản</h6>
+                            </div>
+                            <div class="card-body p-4">
+                                <div class="mb-3">
+                                    <label asp-for="TenPhongKham" class="form-label fw-semibold">Tên phòng khám</label>
+                                    <div class="input-group mb-1">
+                                        <span class="input-group-text bg-light"><i class="bi bi-hospital"></i></span>
+                                        <input asp-for="TenPhongKham" class="form-control" placeholder="Nhập tên phòng khám" />
+                                    </div>
+                                    <span asp-validation-for="TenPhongKham" class="text-danger small"></span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label asp-for="DiaChi" class="form-label fw-semibold">Địa chỉ</label>
+                                    <div class="input-group mb-1">
+                                        <span class="input-group-text bg-light"><i class="bi bi-geo-alt"></i></span>
+                                        <input asp-for="DiaChi" class="form-control" placeholder="Nhập địa chỉ" />
+                                    </div>
+                                    <span asp-validation-for="DiaChi" class="text-danger small"></span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label asp-for="NgayThanhLap" class="form-label fw-semibold">Ngày thành lập</label>
+                                    <div class="input-group mb-1">
+                                        <span class="input-group-text bg-light"><i class="bi bi-calendar3"></i></span>
+                                        <input asp-for="NgayThanhLap" class="form-control" type="date" />
+                                    </div>
+                                    <span asp-validation-for="NgayThanhLap" class="text-danger small"></span>
+                                </div>
+
+                                <div class="form-check form-switch mb-3">
+                                    <input class="form-check-input" type="checkbox" asp-for="Isactive" id="activeSwitch">
+                                    <label class="form-check-label fw-semibold" for="activeSwitch">
+                                        <span class="badge bg-success" id="statusBadge">Đang hoạt động</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="card h-100 shadow-sm border-0 rounded-3">
+                            <div class="card-header bg-light py-3">
+                                <h6 class="mb-0 text-primary">Thông tin liên hệ & Giới thiệu</h6>
+                            </div>
+                            <div class="card-body p-4">
+                                <div class="mb-3">
+                                    <label asp-for="SoDienThoai" class="form-label fw-semibold">Số điện thoại</label>
+                                    <div class="input-group mb-1">
+                                        <span class="input-group-text bg-light"><i class="bi bi-telephone"></i></span>
+                                        <input asp-for="SoDienThoai" class="form-control" placeholder="Nhập số điện thoại" />
+                                    </div>
+                                    <span asp-validation-for="SoDienThoai" class="text-danger small"></span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label asp-for="Email" class="form-label fw-semibold">Email</label>
+                                    <div class="input-group mb-1">
+                                        <span class="input-group-text bg-light"><i class="bi bi-envelope"></i></span>
+                                        <input asp-for="Email" class="form-control" placeholder="Nhập email" />
+                                    </div>
+                                    <span asp-validation-for="Email" class="text-danger small"></span>
+                                </div>
+
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3 col-12">
+                        <label asp-for="Introduce" class="form-label fw-semibold">Giới thiệu</label>
+                        <textarea asp-for="Introduce" id="summernoteEditor" class="form-control" rows="4" placeholder="Nhập thông tin giới thiệu về phòng khám"></textarea>
+                        <span asp-validation-for="Introduce" class="text-danger small"></span>
+                    </div>
+                    <div class="col-12">
+                        <div class="card shadow-sm border-0 rounded-3">
+                            <div class="card-header bg-light py-3">
+                                <h6 class="mb-0 text-primary">Hình ảnh phòng khám</h6>
+                            </div>
+                            <div class="card-body p-4">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div class="mb-3">
+                                            <label asp-for="Image" class="form-label fw-semibold">Hình ảnh</label>
+                                            <input type="file" class="form-control" id="imageUpload" name="imageFile" />
+                                            <input type="hidden" asp-for="Image" />
+                                            <span asp-validation-for="Image" class="text-danger small"></span>
+                                            <div class="form-text">Chọn file ảnh có kích thước tối đa 2MB. Định dạng: JPG, PNG</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="text-center">
+                                            <label class="form-label fw-semibold">Ảnh hiện tại</label>
+                                            <div class="image-preview border rounded-3 p-2">
+                                                <img id="currentImage" src="~/assets/img/clinicbranch/@Model.Image"
+                                                     class="img-fluid rounded-3" alt="Hình ảnh phòng khám"
+                                                     style="height: 120px; object-fit: cover;" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center mt-4">
+                    <button type="submit" class="btn btn-primary px-5 py-2 rounded-pill shadow-sm me-2">
+                        <i class="bi bi-save me-1"></i>Lưu thay đổi
+                    </button>
+                    <a asp-action="Index" class="btn btn-outline-secondary px-4 py-2 rounded-pill">
+                        <i class="bi bi-x-circle me-1"></i>Hủy bỏ
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-lite.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#summernoteEditor').summernote({
+                placeholder: 'Nhập nội dung...',
+                tabsize: 2,
+                height: 300,
+                toolbar: [
+                    ['style', ['style']],
+                    ['font', ['bold', 'underline', 'clear']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['table', ['table']],
+                    ['insert', ['link', 'picture', 'video']],
+                    ['view', ['fullscreen', 'codeview', 'help']]
+                ]
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            // Cập nhật trạng thái hiển thị khi chuyển đổi nút kích hoạt
+            $('#activeSwitch').change(function() {
+                if($(this).is(':checked')) {
+                    $('#statusBadge').removeClass('bg-secondary').addClass('bg-success').text('Đang hoạt động');
+                } else {
+                    $('#statusBadge').removeClass('bg-success').addClass('bg-secondary').text('Tạm ngưng');
+                }
+            });
+
+            // Kích hoạt sự kiện để hiển thị trạng thái ban đầu
+            $('#activeSwitch').trigger('change');
+
+            // Xem trước hình ảnh khi chọn file
+            $('#imageUpload').change(function() {
+                if (this.files && this.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                        $('#currentImage').attr('src', e.target.result);
+                    }
+                    reader.readAsDataURL(this.files[0]);
+                }
+            });
+        });
+    </script>
+}
+
+<style>
+    .card {
+        transition: all 0.3s ease;
+    }
+
+    .form-control:focus, .form-check-input:focus {
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
+    }
+
+    .image-preview {
+        transition: all 0.3s ease;
+    }
+
+        .image-preview:hover {
+            transform: scale(1.02);
+        }
+
+    .bg-gradient-primary {
+        background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+    }
+</style>

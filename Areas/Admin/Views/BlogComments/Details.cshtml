@@ -25,20 +25,13 @@
 
                         <dt class="col-sm-4">Bài viết:</dt>
                         <dd class="col-sm-8">
-                            @if (Model.Blog != null)
-                            {
-                                @Html.DisplayFor(model => model.Blog.Title)
-                            }
-                           
+                            <i class="bi bi-file-earmark-text me-1"></i> @(Model.Blog?.Title ?? "<em class='text-muted'>Không có bài viết</em>")
+                        </dd>
+                        <dt class="col-sm-4"><i class="bi bi-person-circle me-1"></i> Người bình luận:</dt>
+                        <dd class="col-sm-8">
+                            @(Model.User?.FullName ?? "<em class='text-muted'>Không rõ</em>")
                         </dd>
 
-                        <dt class="col-sm-4">Người bình luận:</dt>
-                        <dd class="col-sm-8">
-                            @if (Model.User != null)
-                            {
-                                @Html.DisplayFor(model => model.User.FullName)
-                            }
-                        </dd>
                     </dl>
 
                     <div class="d-flex justify-content-between mt-3">

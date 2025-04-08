@@ -36,10 +36,15 @@
         <dd class="col-sm-9">@Html.DisplayFor(model => model.Viewcount)</dd>
 
         <dt class="col-sm-3 fw-bold">@Html.DisplayNameFor(model => model.Author)</dt>
-        <dd class="col-sm-9">@Html.DisplayFor(model => model.Author.UserId)</dd>
+        <dd class="col-sm-9">
+            @(Model.Author?.FullName ?? "<span class='text-muted'>Không xác định</span>")
+        </dd>
 
         <dt class="col-sm-3 fw-bold">@Html.DisplayNameFor(model => model.Category)</dt>
-        <dd class="col-sm-9">@Html.DisplayFor(model => model.Category.CategoryId)</dd>
+        <dd class="col-sm-9">
+            @(Model.Category?.CategoryName ?? "<span class='text-muted'>Không có danh mục</span>")
+        </dd>
+
     </dl>
 
     <form asp-action="Delete" class="mt-4">
