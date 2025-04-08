@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using PhapClinicX.Models;
 using Microsoft.EntityFrameworkCore;
+using PhapClinicX.Models;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 namespace PhapClinicX.Controllers
 {
     public class BlogController : Controller
@@ -10,11 +11,37 @@ namespace PhapClinicX.Controllers
         {
             _context = context;
         }
-        public IActionResult Index()
+        public IActionResult Index(int? categoryId, int page = 1)
         {
+            int pageSize = 8;
+
+            // Query ban đầu
+            var query = _context.Blogs.Include(p => p.Author).AsQueryable();
+
+            // Nếu có lọc theo category
+            if (categoryId.HasValue)
+            {
+                query = query.Where(p => p.CategoryId == categoryId.Value);
+            }
+
+            int totalItems = query.Count();
+
+            // Phân trang nè
+            var blogPosts = query
+                .OrderByDescending(p => p.CreatedAt)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+            // Gửi sang view
+            ViewBag.blogPosts = blogPosts;
             ViewBag.blogcategories = _context.BlogCategories.Where(p => p.IsActive == true).ToList();
+            ViewBag.CurrentPage = page;
+            ViewBag.TotalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+
             return View();
         }
+
 
         [Route("/blog/{id}.html")]
         public async Task <IActionResult> Detail(int? id)

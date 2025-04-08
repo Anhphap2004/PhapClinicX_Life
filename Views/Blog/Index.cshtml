@@ -1,8 +1,149 @@
 ﻿@{
     List<BlogCategory> blogcategories = ViewBag.blogcategories;
+    List<Blog> blogPosts = ViewBag.blogPosts;
 }
-@await Component.InvokeAsync("CategoryBlog")
-@await Component.InvokeAsync("Blog")
+<link href="~/assets/css/blog.css" rel="stylesheet" />
+<!-- Bài viết hiện thị theo danh mục -->
+<div class="container blog-content-area">
+    <div class="row">
+        <div class="col-lg-9">
+           
+            <div class="row">
+                <!-- Các bài viết - điều chỉnh thành 4 bài trên một hàng -->
+                @foreach (var item in blogPosts)
+                {
+                    <div class="col-md-3 col-sm-6 mb-4">
+                        <div class="blog-post-card">
+                            <div class="blog-post-card__image-container">
+                                <div class="blog-post-card__category">PhapLife</div>
+                                <img src="~/assets/img/blogs/@item.Image" alt="Bác sĩ" class="blog-post-card__image">
+                                <div class="blog-post-card__logo">
+                                    <img src="~/assets/img/logo/phaplife.png" alt="Logo">
+                                </div>
+                            </div>
+                            <div class="blog-post-card__content">
+                                <h2 class="blog-post-card__title">@item.Title</h2>
+                                <div class="blog-post-card__meta">
+                                    <div class="blog-post-card__author">
+                                        <img src="@Url.Content($"~/assets/img/team/{item.Author?.ProfileImage ?? "PhapLife.png"}")" alt="Tác giả" class="blog-post-card__author-avatar" />
+
+                                        <span>Bác sĩ</span>
+                                    </div>
+                                    <div class="blog-post-card__date">
+                                        <i class="far fa-calendar"></i>
+                                        <span>@(item.CreatedAt?.ToString("dd/MM/yyyy") ?? "Không có ngày")</span>
+                                    </div>
+                                </div>
+                                <a asp-controller="DetailBlogPosts" asp-action="DetailBlog" asp-route-id="@item.CategoryId" class="blog-post-card__button">
+                                    Đọc ngay <i class="fas fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <!-- Quảng cáo ở giữa bài viết -->
+            <div class="mid-page-ad">
+                <div class="ad-container">
+                    <div class="ad-content text-center">
+                        <h4>Lịch hẹn trực tuyến</h4>
+                        <p>Đặt lịch khám nhanh chóng và tiện lợi với đội ngũ bác sĩ chuyên nghiệp</p>
+      
+     <a asp-controller="Booking" asp-action="KhamBacSi" class="btn btn-primary ad-button" style="color: black;">
+                Đặt lịch ngay
+            </a>
+                    </div>
+                </div>
+            </div>
+       
+            <!-- Phân trang -->
+            <div class="dental-pagination d-flex justify-content-center mt-4">
+                @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                {
+                    <a asp-action="Index"
+                       asp-route-page="@i"
+                       class="dental-page d-flex align-items-center justify-content-center @(ViewBag.CurrentPage == i ? "dental-active" : "")">
+                        @i
+                    </a>
+                }
+            </div>
+
+        </div>
+
+        <!-- Improved Sidebar with better structure and image placeholders -->
+        <div class="col-lg-3">
+            <div class="dental-sidebar">
+                <!-- Services Widget -->
+                <div class="dental-sidebar-widget p-3 bg-white">
+                    <h3 class="dental-sidebar-title">Dịch vụ</h3>
+                    <ul class="dental-service-list list-unstyled">
+                        @foreach (var n in blogcategories)
+                        {
+                            <li>
+                                <a href="@Url.Action("Index", "Blog", new { categoryId = n.CategoryId })" class="dental-category-item text-decoration-none">
+                                    @n.CategoryName
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+                <!-- New Promo Banner -->
+                <div class="dental-sidebar-widget p-0 bg-white overflow-hidden">
+                    <img src="https://i.pinimg.com/474x/2f/28/cc/2f28cc5ef8271bc64a1481631983700a.jpg" alt="Khuyến mãi tháng 4" class="img-fluid" />
+                </div>
+                <!-- Ultrasound Service Ad Banner -->
+                <div class="dental-sidebar-ad">
+                    <h4>Dịch vụ siêu âm</h4>
+                    <p>Công nghệ hiện đại, chẩn đoán chính xác</p>
+                    <a href="#" class="dental-sidebar-ad-button">Tìm hiểu thêm</a>
+                </div>
+
+                <!-- Testimonials Widget -->
+                <div class="dental-sidebar-widget p-3 bg-white">
+                    <h3 class="dental-sidebar-title">Đánh giá</h3>
+                    <div class="dental-testimonial">
+                        <p>"Dịch vụ chăm sóc tận tình, bác sĩ giỏi và thân thiện."</p>
+                        <span>- Anhh Phapp</span>
+                    </div>
+                </div>
+
+                <!-- New Promo Banner -->
+                <div class="dental-sidebar-widget p-0 bg-white overflow-hidden">
+                    <img src="https://i.pinimg.com/474x/a6/84/a9/a684a94e54158783334b2242e6ecdc34.jpg" alt="Khuyến mãi tháng 4" class="img-fluid" />
+                </div>
+                <!-- Promo Banners with unique class names to avoid conflicts -->
+                <!-- Vertical Promotional Cards using Bootstrap classes only -->
+                <div class="container-fluid p-0 mt-auto">
+                    <div class="row g-2">
+                        <!-- g-2 adds small gutters between rows -->
+                        <!-- First promo item -->
+                        <div class="col-12">
+                            <div class="position-relative">
+                                <img src="https://i.pinimg.com/474x/2f/58/71/2f58711dcda6eb5fd48e4cd137132bd0.jpg" class="w-100 rounded-3" alt="COCOXIM">
+                                <div class="position-absolute bottom-0 start-0 w-100 bg-dark text-white text-center py-2">
+                                    <span class="fw-bold">Ưu đãi</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Second promo item -->
+                        <div class="col-12">
+                            <div class="position-relative">
+                                <img src="https://i.pinimg.com/474x/70/39/3e/70393e855d18d9b6da58676ad85e10b7.jpg" class="w-100 rounded-3" alt="COCOXIM">
+                                <div class="position-absolute bottom-0 start-0 w-100 bg-dark text-white text-center py-2">
+                                    <span class="fw-bold">Dịch vụ</span><br>
+                                </div>
+                            </div>
+                        </div>
+
+                      
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="container py-4">
     <!-- Header & Brand -->
     <div class="row mb-4">
