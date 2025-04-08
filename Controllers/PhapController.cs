@@ -21,7 +21,7 @@ namespace PhapClinicX.Controllers
 
             foreach (var user in users)
             {
-                if (!user.PasswordHash.StartsWith("$2a$")) // Nếu chưa mã hóa thì mới mã hóa
+                if (!string.IsNullOrEmpty(user.PasswordHash) && !user.PasswordHash.StartsWith("$2a$"))
                 {
                     user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(user.PasswordHash);
                 }
@@ -30,6 +30,7 @@ namespace PhapClinicX.Controllers
             await _context.SaveChangesAsync();
             return Ok("Đã cập nhật mật khẩu thành BCrypt thành công!");
         }
+
 
     }
 }
