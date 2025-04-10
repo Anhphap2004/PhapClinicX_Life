@@ -1,82 +1,61 @@
 ﻿@model PhapClinicX.Models.User
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Xóa người dùng";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Delete</h1>
+<div class="container mt-4">
+    <h2 class="text-center text-danger mb-4">🗑️ Xác nhận xóa người dùng</h2>
+    <p class="text-center text-muted mb-4">Bạn có chắc chắn muốn xóa người dùng này không? Hành động này không thể hoàn tác!</p>
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>User</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FullName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FullName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PasswordHash)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PasswordHash)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Phone)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Phone)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Address)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Address)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ProfileImage)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ProfileImage)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IsActive)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsActive)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CreatedAt)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CreatedAt)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Username)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Username)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Role)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Role.RoleId)
-        </dd>
-    </dl>
-    
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="UserId" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
-    </form>
+    <div class="card shadow-sm border-danger">
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3">Họ tên</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.FullName)</dd>
+
+                <dt class="col-sm-3">Email</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Email)</dd>
+
+                <dt class="col-sm-3">Số điện thoại</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Phone)</dd>
+
+                <dt class="col-sm-3">Địa chỉ</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Address)</dd>
+
+                <dt class="col-sm-3">Ảnh đại diện</dt>
+                <dd class="col-sm-9">
+                    <img src="@Url.Content(Model.ProfileImage != null ? $"~/assets/img/team/{Model.ProfileImage}" : "~/assets/img/default.jpg")"
+                         class="img-thumbnail"
+                         style="max-height: 120px;" />
+                </dd>
+
+
+                <dt class="col-sm-3">Trạng thái</dt>
+               
+                <dd class ="col-sm-9">
+                    @(Model.IsActive.HasValue
+                                        ? (Model.IsActive.Value ? "✅ Hoạt động" : "❌ Khoá")
+                                        : "⚠️ Chưa rõ")
+                </dd>
+                <dt class="col-sm-3">Ngày tạo</dt>
+                <dd class="col-sm-9">@Model.CreatedAt?.ToString("dd/MM/yyyy HH:mm")</dd>
+
+                <dt class="col-sm-3">Tên đăng nhập</dt>
+                <dd class="col-sm-9">@Model.Username</dd>
+
+                <dt class="col-sm-3">Quyền</dt>
+                <dd class="col-sm-9">@Model.Role?.RoleName</dd>
+            </dl>
+
+            <form asp-action="Delete" class="mt-4">
+                <input type="hidden" asp-for="UserId" />
+                <div class="d-flex justify-content-end">
+                    <input type="submit" value="🗑️ Xóa" class="btn btn-danger me-2" />
+                    <a asp-action="Index" class="btn btn-secondary">🔙 Quay lại</a>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
