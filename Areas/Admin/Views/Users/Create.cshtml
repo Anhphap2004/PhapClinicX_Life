@@ -1,68 +1,113 @@
 ﻿@model PhapClinicX.Models.User
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Tạo người dùng";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Create</h1>
+<div class="container mt-4">
+    <h2 class="text-center text-primary mb-4">📝 Tạo Người Dùng Mới</h2>
+    <form asp-action="Create" enctype="multipart/form-data" class="shadow p-4 rounded bg-light">
+        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
-<h4>User</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="FullName" class="control-label"></label>
+        <div class="row mb-3">
+            <label asp-for="FullName" class="col-sm-3 col-form-label ">Họ và Tên</label>
+            <div class="col-sm-9">
                 <input asp-for="FullName" class="form-control" />
                 <span asp-validation-for="FullName" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
+        </div>
+
+        <div class="row mb-3">
+            <label asp-for="Email" class="col-sm-3 col-form-label ">Email</label>
+            <div class="col-sm-9">
                 <input asp-for="Email" class="form-control" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="PasswordHash" class="control-label"></label>
-                <input asp-for="PasswordHash" class="form-control" />
+        </div>
+
+        <div class="row mb-3">
+            <label asp-for="PasswordHash" class="col-sm-3 col-form-label ">Mật khẩu</label>
+            <div class="col-sm-9">
+                <input asp-for="PasswordHash" type="password" class="form-control" />
                 <span asp-validation-for="PasswordHash" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Phone" class="control-label"></label>
+        </div>
+
+        <div class="row mb-3">
+            <label asp-for="Phone" class="col-sm-3 col-form-label ">Số điện thoại</label>
+            <div class="col-sm-9">
                 <input asp-for="Phone" class="form-control" />
                 <span asp-validation-for="Phone" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Address" class="control-label"></label>
+        </div>
+
+        <div class="row mb-3">
+            <label asp-for="Address" class="col-sm-3 col-form-label ">Địa chỉ</label>
+            <div class="col-sm-9">
                 <input asp-for="Address" class="form-control" />
                 <span asp-validation-for="Address" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="RoleId" class="control-label"></label>
-                <select asp-for="RoleId" class ="form-control" asp-items="ViewBag.RoleId"></select>
+        </div>
+
+        <div class="row mb-3">
+            <label asp-for="RoleId" class="col-sm-3 col-form-label ">Phân quyền</label>
+            <div class="col-sm-9">
+                <select asp-for="RoleId" class="form-select" asp-items="ViewBag.RoleId"></select>
             </div>
-            <div class="form-group">
-                <label asp-for="ProfileImage" class="control-label"></label>
-                <input asp-for="ProfileImage" class="form-control" />
+        </div>
+
+        <div class="row mb-3">
+            <label class="col-sm-3 col-form-label ">Ảnh đại diện</label>
+            <div class="col-sm-9">
+                <input type="file" id="imageUpload" class="form-control mb-2" accept="image/*" />
+                <input type="hidden" asp-for="ProfileImage" id="ImagePath" />
                 <span asp-validation-for="ProfileImage" class="text-danger"></span>
+                <img id="imagePreview" src="~/assets/img/default.jpg" class="img-thumbnail" style="max-width: 150px;" />
             </div>
-            <div class="form-group">
-                <label asp-for="Username" class="control-label"></label>
+        </div>
+
+        <div class="row mb-3">
+            <label asp-for="Username" class="col-sm-3 col-form-label ">Tên đăng nhập</label>
+            <div class="col-sm-9">
                 <input asp-for="Username" class="form-control" />
                 <span asp-validation-for="Username" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
+        </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+        <div class="row">
+            <div class="offset-sm-3 col-sm-9">
+                <button type="submit" class="btn btn-primary">✅ Tạo mới</button>
+                <a asp-action="Index" class="btn btn-secondary ms-2">🔙 Trở về</a>
+            </div>
+        </div>
+    </form>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        document.getElementById("imageUpload").addEventListener("change", function (event) {
+            let file = event.target.files[0];
+            if (file) {
+                let reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById("imagePreview").src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+
+                let formData = new FormData();
+                formData.append("file", file);
+
+                fetch("/Admin/Users/UploadImage", {
+                    method: "POST",
+                    body: formData
+                })
+                .then(response => response.text())
+                .then(imagePath => {
+                    document.getElementById("ImagePath").value = imagePath;
+                })
+                .catch(error => console.error("Lỗi upload ảnh:", error));
+            }
+        });
+    </script>
 }
