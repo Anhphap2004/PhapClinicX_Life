@@ -1,80 +1,113 @@
 ﻿@model PhapClinicX.Models.User
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Chỉnh sửa người dùng";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Edit</h1>
+<h1 class="mb-4">Chỉnh sửa người dùng</h1>
 
-<h4>User</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="UserId" />
-            <div class="form-group">
-                <label asp-for="FullName" class="control-label"></label>
-                <input asp-for="FullName" class="form-control" />
-                <span asp-validation-for="FullName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PasswordHash" class="control-label"></label>
-                <input asp-for="PasswordHash" class="form-control" />
-                <span asp-validation-for="PasswordHash" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Phone" class="control-label"></label>
-                <input asp-for="Phone" class="form-control" />
-                <span asp-validation-for="Phone" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Address" class="control-label"></label>
-                <input asp-for="Address" class="form-control" />
-                <span asp-validation-for="Address" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="RoleId" class="control-label"></label>
-                <select asp-for="RoleId" class="form-control" asp-items="ViewBag.RoleId"></select>
-                <span asp-validation-for="RoleId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ProfileImage" class="control-label"></label>
-                <input asp-for="ProfileImage" class="form-control" />
-                <span asp-validation-for="ProfileImage" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="IsActive" class="control-label"></label>
-                <input asp-for="IsActive" class="form-control" />
-                <span asp-validation-for="IsActive" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CreatedAt" class="control-label"></label>
-                <input asp-for="CreatedAt" class="form-control" />
-                <span asp-validation-for="CreatedAt" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Username" class="control-label"></label>
-                <input asp-for="Username" class="form-control" />
-                <span asp-validation-for="Username" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+<form asp-action="Edit" class="row g-3">
+    <input type="hidden" asp-for="UserId" />
+
+    <div class="col-md-6">
+        <label asp-for="FullName" class="form-label fw-bold">Họ và tên</label>
+        <input asp-for="FullName" class="form-control" />
+        <span asp-validation-for="FullName" class="text-danger"></span>
     </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+    <div class="col-md-6">
+        <label asp-for="Email" class="form-label fw-bold">Email</label>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div class="col-md-6">
+        <label asp-for="PasswordHash" class="form-label fw-bold">Mật khẩu</label>
+        <input asp-for="PasswordHash" class="form-control" />
+        <span asp-validation-for="PasswordHash" class="text-danger"></span>
+    </div>
+
+    <div class="col-md-6">
+        <label asp-for="Phone" class="form-label fw-bold">Số điện thoại</label>
+        <input asp-for="Phone" class="form-control" />
+        <span asp-validation-for="Phone" class="text-danger"></span>
+    </div>
+
+    <div class="col-md-6">
+        <label asp-for="Address" class="form-label fw-bold">Địa chỉ</label>
+        <input asp-for="Address" class="form-control" />
+        <span asp-validation-for="Address" class="text-danger"></span>
+    </div>
+
+    <div class="col-md-6">
+        <label asp-for="RoleId" class="form-label fw-bold">Vai trò</label>
+        <select asp-for="RoleId" class="form-select" asp-items="ViewBag.RoleId"></select>
+        <span asp-validation-for="RoleId" class="text-danger"></span>
+    </div>
+
+    <div class="col-md-12 text-center">
+        <label class="form-label fw-bold d-block">
+            <i class="fas fa-image"></i> Ảnh đại diện hiện tại
+        </label>
+        <img id="imagePreview" src="@Url.Content(Model.ProfileImage != null ? $"/assets/img/team/{Model.ProfileImage}" : "~/assets/img/default.jpg")" class="img-thumbnail mb-2" style="max-width: 200px;" />
+        <input type="file" id="imageUpload" class="form-control" accept="image/*" />
+        <input type="hidden" asp-for="ProfileImage" id="ImagePath" />
+        <span asp-validation-for="ProfileImage" class="text-danger"></span>
+    </div>
+
+    <div class="col-md-6">
+        <label asp-for="IsActive" class="form-label fw-bold">Trạng thái hoạt động</label>
+        <input asp-for="IsActive" class="form-control" />
+        <span asp-validation-for="IsActive" class="text-danger"></span>
+    </div>
+
+    <div class="col-md-6">
+        <label asp-for="CreatedAt" class="form-label fw-bold">Ngày tạo</label>
+        <input asp-for="CreatedAt" class="form-control" />
+        <span asp-validation-for="CreatedAt" class="text-danger"></span>
+    </div>
+
+    <div class="col-md-6">
+        <label asp-for="Username" class="form-label fw-bold">Tên đăng nhập</label>
+        <input asp-for="Username" class="form-control" />
+        <span asp-validation-for="Username" class="text-danger"></span>
+    </div>
+
+    <div class="col-12 mt-3">
+        <button type="submit" class="btn btn-success me-2">
+            💾 Lưu thay đổi
+        </button>
+        <a asp-action="Index" class="btn btn-secondary">
+            🔙 Quay lại danh sách
+        </a>
+    </div>
+</form>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        document.getElementById("imageUpload").addEventListener("change", function (event) {
+            let file = event.target.files[0];
+            if (file) {
+                let reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById("imagePreview").src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+
+                let formData = new FormData();
+                formData.append("file", file);
+
+                fetch("/Admin/Users/UploadImage", {
+                    method: "POST",
+                    body: formData
+                })
+                .then(response => response.text())
+                .then(imagePath => {
+                    document.getElementById("ImagePath").value = imagePath;
+                })
+                .catch(error => console.error("Lỗi upload ảnh:", error));
+            }
+        });
+    </script>
 }
