@@ -55,12 +55,16 @@
         <input type="hidden" asp-for="ProfileImage" id="ImagePath" />
         <span asp-validation-for="ProfileImage" class="text-danger"></span>
     </div>
-
     <div class="col-md-6">
-        <label asp-for="IsActive" class="form-label fw-bold">Trạng thái hoạt động</label>
-        <input asp-for="IsActive" class="form-control" />
+        <div class="form-check mt-2">
+            <input asp-for="IsActive" class="form-check-input" type="checkbox" />
+            <label asp-for="IsActive" class="form-check-label fw-bold">
+                Trạng thái hoạt động
+            </label>
+        </div>
         <span asp-validation-for="IsActive" class="text-danger"></span>
     </div>
+
 
     <div class="col-md-6">
         <label asp-for="CreatedAt" class="form-label fw-bold">Ngày tạo</label>
@@ -74,7 +78,7 @@
         <span asp-validation-for="Username" class="text-danger"></span>
     </div>
 
-    <div class="col-12 mt-3">
+    <div class="col-12 mt-3 mb-3">
         <button type="submit" class="btn btn-success me-2">
             💾 Lưu thay đổi
         </button>

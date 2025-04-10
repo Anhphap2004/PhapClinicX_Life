@@ -46,9 +46,7 @@
                     @(item.Role != null ? item.Role.RoleName : "— Không có quyền —")
                 </td>
                 <td>
-                    @(item.IsActive.HasValue
-                                    ? (item.IsActive.Value ? "✅ Hoạt động" : "❌ Khoá")
-                                    : "⚠️ Chưa rõ")
+                    @(item.IsActive ? "✅ Hoạt động" : "❌ Khoá")
             </td>
 
                 <td>
