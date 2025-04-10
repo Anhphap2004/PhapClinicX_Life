@@ -11,15 +11,15 @@
             <!-- Cột bên trái: Thông tin phòng khám -->
             <div class="col-md-6">
                 <div class="card mb-4">
-                    <div class="card-header bg-primary text-white">
-                        <h4>Thông Tin Phòng Khám</h4>
+                    <div class="card-header bg-success text-white">
+                        <h4 class="text-white">Thông Tin Phòng Khám</h4>
                     </div>
                     <div class="card-body">
-                        <p><strong>Tên phòng khám:</strong> Phòng Khám Đa Khoa ABC</p>
-                        <p><strong>Địa chỉ:</strong> 123 Đường ABC, Quận XYZ, Thành phố HCM</p>
-                        <p><strong>Số điện thoại:</strong> 0901234567</p>
-                        <p><strong>Email:</strong> contact@clinicabc.com</p>
-                        <p><strong>Mô tả:</strong> Phòng khám ABC cung cấp các dịch vụ y tế đa dạng, từ khám bệnh, chữa bệnh đến chăm sóc sức khỏe định kỳ. Đội ngũ bác sĩ chuyên nghiệp, trang thiết bị hiện đại đảm bảo sự an tâm cho bệnh nhân.</p>
+                        <p><strong>Tên phòng khám:</strong> Phòng Khám @Model.TenPhongKham</p>
+                        <p><strong>Địa chỉ:</strong> @Model.DiaChi</p>
+                        <p><strong>Số điện thoại:</strong> @Model.SoDienThoai</p>
+                        <p><strong>Email:</strong> @Model.Email</p>
+                        <p><strong>Mô tả:</strong>@Html.Raw(Model.Introduce) </p>
                     </div>
                 </div>
 
@@ -40,7 +40,7 @@
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-header bg-success text-white">
-                        <h4>Ảnh Phòng Khám</h4>
+                    <h4 class="text-white">Ảnh Phòng Khám</h4>
                     </div>
                     <div class="card-body text-center">
                         <img src="~/assets/img/clinicbranch/@Model.Image" alt="Ảnh phòng khám" class="img-fluid rounded">

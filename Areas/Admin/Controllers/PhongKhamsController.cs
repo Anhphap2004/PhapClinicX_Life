@@ -33,15 +33,24 @@ namespace PhapClinicX.Areas.Admin.Controllers
                 return NotFound();
             }
 
+            // Đợi truy vấn lấy danh sách appointment hoàn tất trước khi đi tiếp
+            var appointments = await _context.ClinicAppointments
+                .Include(c => c.PhongKham)
+                .Where(p => p.PhongKhamId == id)
+                .ToListAsync();
+
             var phongKham = await _context.PhongKhams
                 .FirstOrDefaultAsync(m => m.PhongKhamId == id);
+
             if (phongKham == null)
             {
                 return NotFound();
             }
 
+            ViewBag.clinicManagementContext = appointments;
             return View(phongKham);
         }
+
 
         // GET: Admin/PhongKhams/Create
         public IActionResult Create()
