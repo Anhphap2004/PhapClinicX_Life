@@ -3,6 +3,7 @@
 @{
     List<ProductCategory> ProductCategories = ViewBag.ProductCategories;
     var culture = new CultureInfo("vi-VN");
+    List<Product> ProductNew = ViewBag.ProductNew;
 }
 
 
@@ -286,7 +287,7 @@
             <i class="fas fa-fire"></i> Hotdeal Mới Nhất <i class="fas fa-fire"></i>
         </h2>
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-5 g-4">
-            @foreach (var p in Model)
+            @foreach (var p in ProductNew)
             {
                 string url = $"/san-pham/{p.Alias}-{p.ProductId}.html";
                 <div class="col">

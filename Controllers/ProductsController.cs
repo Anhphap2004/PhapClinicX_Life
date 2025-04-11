@@ -15,24 +15,42 @@ namespace PhapClinicX.Controllers
             _context = context;
             _logger = logger;
         }
-        public IActionResult Index(int? categoryID, int page = 1, int pageSize = 8)
+        public async Task<IActionResult> Index(int? categoryID, int page = 1, int pageSize = 8)
         {
-            ViewBag.ProductCategories = _context.ProductCategories.ToList();
+            // Lấy sản phẩm mới và đang hoạt động
+            ViewBag.ProductNew = await _context.Products
+                .Where(p => (p.IsNew ?? false) && (p.IsActive)).Take(5)
+                .ToListAsync();
 
+            // Lấy danh sách loại sản phẩm
+            ViewBag.ProductCategories = await _context.ProductCategories.ToListAsync();
+
+            // Tạo truy vấn sản phẩm lọc theo category (nếu có) và đang hoạt động
             var query = _context.Products
-                .Where(p => (!categoryID.HasValue || p.CategoryId == categoryID.Value) && p.IsActive)
+                .Where(p =>
+                    (!categoryID.HasValue || p.CategoryId == categoryID.Value)
+                    && (p.IsActive)
+                )
                 .Include(p => p.Category)
                 .OrderByDescending(p => p.CreatedDate);
 
-            int totalItems = query.Count();
-            var products = query.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+            // Đếm tổng số sản phẩm sau khi lọc
+            int totalItems = await query.CountAsync();
 
+            // Lấy sản phẩm theo trang (phân trang)
+            var products = await query
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            // Truyền thông tin phân trang và category hiện tại sang View
             ViewBag.CurrentPage = page;
             ViewBag.TotalPages = (int)Math.Ceiling((double)totalItems / pageSize);
             ViewBag.SelectedCategoryID = categoryID;
 
             return View(products);
         }
+
 
 
         //public IActionResult Index()
