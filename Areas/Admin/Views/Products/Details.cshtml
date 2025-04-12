@@ -1,116 +1,193 @@
 ﻿@model PhapClinicX.Models.Product
-
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Chi tiết";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Details</h1>
+<div class="container-fluid">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h4 class="mb-0">Chi tiết sản phẩm</h4>
+            <div>
+                <a asp-action="Edit" asp-route-id="@Model.ProductId" class="btn btn-light btn-sm">
+                    <i class="fas fa-edit"></i> Chỉnh sửa
+                </a>
+                <a asp-action="Index" class="btn btn-light btn-sm ms-2">
+                    <i class="fas fa-list"></i> Trở về danh sách
+                </a>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <!-- Cột trái -->
+                <div class="col-md-6">
+                    <div class="card mb-4">
+                        <div class="card-header bg-light">
+                            <h5 class="mb-0">Thông tin cơ bản</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row mb-3">
+                                <div class="col-md-12">
+                                    <h5 class="text-primary mb-0">@Html.DisplayFor(model => model.ProductName)</h5>
 
-<div>
-    <h4>Product</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ProductName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ProductName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Price)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Price)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Image)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Image)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Detail)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Detail)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Warranty)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Warranty)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IsActive)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsActive)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PriceSale)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PriceSale)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ProductSold)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ProductSold)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ProductImport)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ProductImport)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Alias)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Alias)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CreatedDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CreatedDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IsNew)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsNew)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IsBestSeller)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsBestSeller)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Star)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Star)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Category)
-        </dt>
-        <dd class="col-sm-10">
-            @(Model.Category != null ? Model.Category.CategoryId.ToString() : "Chưa phân loại")
-        </dd>
+                                    <p class="text-muted small">
+                                        Danh mục:   @Html.DisplayNameFor(model => model.Category)
+                                    </p>
+                                </div>
 
-    </dl>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <div class="mb-2">
+                                        <span class="fw-bold">Giá gốc:</span>
+                                        <span class="badge bg-secondary">@Html.DisplayFor(model => model.Price)</span>
+                                    </div>
+                                    <div class="mb-2">
+                                        <span class="fw-bold">Giá khuyến mãi:</span>
+                                        <span class="badge bg-success">@Html.DisplayFor(model => model.PriceSale)</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-2">
+                                        <span class="fw-bold">Bảo hành:</span>
+                                        <span>@Html.DisplayFor(model => model.Warranty)</span>
+                                    </div>
+                                    <div class="mb-2">
+                                        <span class="fw-bold">Trạng thái:</span>
+                                        @if (Model.IsActive)
+                                        {
+                                            <span class="badge bg-success">Kích hoạt</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-danger">Không kích hoạt</span>
+                                        }
+
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <span class="fw-bold">Mô tả:</span>
+                                <p>@Html.DisplayFor(model => model.Description)</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card mb-4">
+                        <div class="card-header bg-light">
+                            <h5 class="mb-0">Thông tin kho hàng</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-2">
+                                        <span class="fw-bold">Đã bán:</span>
+                                        <span>@Html.DisplayFor(model => model.ProductSold)</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-2">
+                                        <span class="fw-bold">Đã nhập:</span>
+                                        <span>@Html.DisplayFor(model => model.ProductImport)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cột phải -->
+                <div class="col-md-6">
+                    <div class="card mb-4">
+                        <div class="card-header bg-light">
+                            <h5 class="mb-0">Hình ảnh sản phẩm</h5>
+                        </div>
+                        <div class="card-body text-center">
+                            @if (!string.IsNullOrEmpty(Model.Image))
+                            {
+                                <img src="~/assets/img/product/@Model.Image" class="img-fluid rounded border"
+                                     style="max-height: 250px; object-fit: contain;" alt="@Model.ProductName" />
+                            }
+                            else
+                            {
+                                <div class="border rounded p-5 text-muted">
+                                    <i class="fas fa-image fa-4x mb-3"></i>
+                                    <p>Không có hình ảnh</p>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="card mb-4">
+                        <div class="card-header bg-light">
+                            <h5 class="mb-0">Thông tin bổ sung</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-2">
+                                        <span class="fw-bold">Định danh:</span>
+                                        <span>@Html.DisplayFor(model => model.Alias)</span>
+                                    </div>
+                                    <div class="mb-2">
+                                        <span class="fw-bold">Ngày tạo:</span>
+                                        <span>@Html.DisplayFor(model => model.CreatedDate)</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-2">
+                                        <span class="fw-bold">Gắn thẻ:</span>
+                                        <div class="mt-1">
+                                            @if (Model.IsNew)
+                                            {
+                                                <span class="badge bg-info me-1">Mới</span>
+                                            }
+                                            @if (Model.IsBestSeller)
+                                            {
+                                                <span class="badge bg-warning me-1">Bán chạy</span>
+                                            }
+                                        </div>
+                                    </div>
+                                    @for (int i = 1; i <= 5; i++)
+                                    {
+                                        if (i <= Model.Star)
+                                        {
+                                            <i class="fas fa-star text-warning"></i>
+                                        }
+                                        else
+                                        {
+                                            <i class="far fa-star text-warning"></i>
+                                        }
+                                    }
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chi tiết sản phẩm -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header bg-light">
+                            <h5 class="mb-0">Nội dung chi tiết</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="p-3 border rounded bg-white">
+                                @Html.Raw(Model.Detail)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.ProductId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+
+
+
