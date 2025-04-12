@@ -26,6 +26,36 @@ namespace PhapClinicX.Areas.Admin.Controllers
             return View(await clinicManagementContext.ToListAsync());
         }
 
+        [HttpPost]
+        public async Task<IActionResult> UploadImage(IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+            {
+                return BadRequest("Vui lòng chọn ảnh hợp lệ!");
+            }
+
+            // Tạo thư mục nếu chưa tồn tại
+            string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/assets/img/clinicbranch");
+            if (!Directory.Exists(uploadsFolder))
+            {
+                Directory.CreateDirectory(uploadsFolder);
+            }
+
+            // Tạo tên file duy nhất
+            string uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+            string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+            // Lưu file vào thư mục
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await file.CopyToAsync(stream);
+            }
+
+            // Trả về đường dẫn ảnh để lưu vào database
+            string imagePath = uniqueFileName;
+            return Ok(imagePath);
+        }
+
         // GET: Admin/Products/Details/5
         public async Task<IActionResult> Details(int? id)
         {
