@@ -54,11 +54,17 @@
                         <span asp-validation-for="NgayThanhLap" class="text-danger"></span>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label asp-for="Image" class="control-label"></label>
-                        <input asp-for="Image" class="form-control" />
-                        <span asp-validation-for="Image" class="text-danger"></span>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">
+                        <i class="fas fa-image"></i> Ảnh
+                    </label>
+                    <input type="file" id="imageUpload" class="form-control" accept="image/*" />
+                    <input type="hidden" asp-for="Image" id="ImagePath" />
+                    <span asp-validation-for="Image" class="text-danger"></span>
+
+                    <!-- Hiển thị ảnh xem trước -->
+                    <div class="mt-3">
+                        <img id="imagePreview" src="~/assets/img/default.jpg" class="img-fluid border rounded" style="max-width: 200px;" />
                     </div>
                 </div>
             </div>
@@ -67,7 +73,7 @@
                 <div class="col-md-12">
                     <div class="form-group form-check">
                         <label class="form-check-label">
-                            <input class="form-check-input" asp-for="Isactive" /> @Html.DisplayNameFor(model => model.Isactive)
+                            <input class="form-check-input" asp-for="Isactive" /> Hiển Thị
                         </label>
                     </div>
                 </div>
@@ -118,7 +124,30 @@
         });
     </script>
 
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+    <script>
+        document.getElementById("imageUpload").addEventListener("change", function (event) {
+            let file = event.target.files[0];
+            if (file) {
+                let reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById("imagePreview").src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+
+                // Gửi ảnh lên server
+                let formData = new FormData();
+                formData.append("file", file);
+
+                fetch("/Admin/PhongKhams/UploadImage", {
+                    method: "POST",
+                    body: formData
+                })
+                .then(response => response.text())
+                .then(imagePath => {
+                    document.getElementById("ImagePath").value = imagePath; // Gán đường dẫn ảnh vào input ẩn
+                })
+                .catch(error => console.error("Lỗi upload ảnh:", error));
+            }
+        });
+    </script>
 }

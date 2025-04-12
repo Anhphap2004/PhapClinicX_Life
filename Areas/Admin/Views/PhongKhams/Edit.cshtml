@@ -109,7 +109,7 @@
                                         <div class="mb-3">
                                             <label asp-for="Image" class="form-label fw-semibold">Hình ảnh</label>
                                             <input type="file" class="form-control" id="imageUpload" name="imageFile" />
-                                            <input type="hidden" asp-for="Image" />
+                                            <input type="hidden" asp-for="Image" id="ImagePath" />
                                             <span asp-validation-for="Image" class="text-danger small"></span>
                                             <div class="form-text">Chọn file ảnh có kích thước tối đa 2MB. Định dạng: JPG, PNG</div>
                                         </div>
@@ -190,6 +190,33 @@
                     reader.readAsDataURL(this.files[0]);
                 }
             });
+        });
+    </script>
+
+    <script>
+        document.getElementById("imageUpload").addEventListener("change", function (event) {
+            let file = event.target.files[0];
+            if (file) {
+                let reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById("imagePreview").src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+
+                // Gửi ảnh lên server
+                let formData = new FormData();
+                formData.append("file", file);
+
+                fetch("/Admin/PhongKhams/UploadImage", {
+                    method: "POST",
+                    body: formData
+                })
+                .then(response => response.text())
+                .then(imagePath => {
+                    document.getElementById("ImagePath").value = imagePath; // Gán đường dẫn ảnh vào input ẩn
+                })
+                .catch(error => console.error("Lỗi upload ảnh:", error));
+            }
         });
     </script>
 }
