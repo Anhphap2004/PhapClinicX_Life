@@ -242,12 +242,17 @@
                 </div>
 
                 <!-- Chọn số lượng và nút mua hàng -->
-                <div class="quantity-cart">
-                    <label for="quantity">Số lượng:</label>
-                    <input type="number" id="quantity" value="1" min="1" max="@Model.ProductImport">
-                    <button class="add-to-cart">Thêm vào giỏ hàng</button>
-                </div>
-
+               
+                <form asp-controller="Cart" asp-action="AddToCart" method="post" class="d-inline">
+                    <div class="quantity-cart">
+                        <input type="hidden" name="productId" value="@Model.ProductId" />
+                        <label for="quantity">Số lượng:</label>
+                        <input type="number" name="quantity" id="quantity" value="1" min="1" max="@Model.ProductImport">
+                        <button type="submit" class="add-to-cart">Thêm vào giỏ hàng</button>
+                    </div>
+                </form>
+               
+            
 
                 <!-- Danh mục món ăn -->
                 @foreach (var p in Category)

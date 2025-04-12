@@ -34,7 +34,7 @@
                                         <span>@(item.CreatedAt?.ToString("dd/MM/yyyy") ?? "Không có ngày")</span>
                                     </div>
                                 </div>
-                                <a asp-controller="Blog" asp-action="Detail" asp-route-id="@item.CategoryId" class="blog-post-card__button">
+                                <a asp-controller="Blog" asp-action="Detail" asp-route-id="@item.BlogId" class="blog-post-card__button">
                                     Đọc ngay <i class="fas fa-arrow-right"></i>
                                 </a>
                             </div>
