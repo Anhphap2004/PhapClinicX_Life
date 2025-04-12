@@ -19,7 +19,7 @@ namespace PhapClinicX.Controllers
         {
             // Lấy sản phẩm mới và đang hoạt động
             ViewBag.ProductNew = await _context.Products
-                .Where(p => (p.IsNew ?? false) && (p.IsActive)).Take(5)
+                .Where(p => (p.IsNew) && (p.IsActive)).Take(5)
                 .ToListAsync();
 
             // Lấy danh sách loại sản phẩm

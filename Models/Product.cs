@@ -33,9 +33,9 @@ public partial class Product
 
     public DateTime? CreatedDate { get; set; }
 
-    public bool? IsNew { get; set; }
+    public bool IsNew { get; set; }
 
-    public bool? IsBestSeller { get; set; }
+    public bool IsBestSeller { get; set; }
 
     public int? Star { get; set; }
 

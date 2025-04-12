@@ -35,7 +35,7 @@ namespace PhapClinicX.Areas.Admin.Controllers
             }
 
             // Tạo thư mục nếu chưa tồn tại
-            string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/assets/img/clinicbranch");
+            string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/assets/img/product");
             if (!Directory.Exists(uploadsFolder))
             {
                 Directory.CreateDirectory(uploadsFolder);
