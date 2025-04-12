@@ -1,0 +1,71 @@
+﻿@model PhapClinicX.Models.ProductComment
+
+@{
+    ViewData["Title"] = "Xoá bình luận";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-danger text-white">
+            <h4 class="mb-0">Xác nhận xoá bình luận</h4>
+        </div>
+        <div class="card-body">
+            <div class="alert alert-warning">
+                <strong>Bạn có chắc chắn muốn xoá bình luận này không?</strong><br />
+                Thao tác này không thể hoàn tác!
+            </div>
+
+            <dl class="row">
+                <dt class="col-sm-3">Nội dung</dt>
+                <dd class="col-sm-9">@Model.Comment </dd>
+
+                <dt class="col-sm-3">Ngày bình luận</dt>
+                <dd class="col-sm-9">@Model.CreatedAt?.ToString("dd/MM/yyyy HH:mm")</dd>
+
+                <dt class="col-sm-3">Hình ảnh</dt>
+                <dd class="col-sm-9">
+                    @if (!string.IsNullOrEmpty(Model.Image))
+                    {
+                        <img src="~/assets/img/product/@Model.Image" alt="Ảnh" class="img-thumbnail" style="max-height: 80px;" />
+                    }
+                    else
+                    {
+                        <span class="text-muted">Không có hình ảnh</span>
+                    }
+                </dd>
+
+                <dt class="col-sm-3">Đánh giá</dt>
+                <dd class="col-sm-9">
+                    @for (int i = 1; i <= 5; i++)
+                    {
+                        if (i <= Model.Star)
+                        {
+                            <i class="fas fa-star text-warning"></i>
+                        }
+                        else
+                        {
+                            <i class="far fa-star text-muted"></i>
+                        }
+                    }
+                </dd>
+
+                <dt class="col-sm-3">Sản phẩm</dt>
+                <dd class="col-sm-9">@Model.Product?.ProductName</dd>
+
+                <dt class="col-sm-3">Người bình luận</dt>
+                <dd class="col-sm-9">@Model.User?.FullName </dd>
+            </dl>
+
+            <form asp-action="Delete" class="mt-3">
+                <input type="hidden" asp-for="CommentId" />
+                <button type="submit" class="btn btn-danger me-2">
+                    <i class="fas fa-trash-alt"></i> Xoá
+                </button>
+                <a asp-action="Index" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Quay lại
+                </a>
+            </form>
+        </div>
+    </div>
+</div>

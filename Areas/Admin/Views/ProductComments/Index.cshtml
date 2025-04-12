@@ -1,0 +1,89 @@
+﻿@model IEnumerable<PhapClinicX.Models.ProductComment>
+
+@{
+    ViewData["Title"] = "Danh sách bình luận";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    int stt = 1;
+}
+
+<div class="container-fluid mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h4 class="mb-0">Danh sách bình luận sản phẩm</h4>
+            <a asp-action="Create" class="btn btn-light btn-sm">
+                <i class="fas fa-plus-circle"></i> Thêm bình luận
+            </a>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover align-middle">
+                    <thead class="table-light text-center">
+                        <tr>
+                            <th>STT</th>
+                            <th>Sản phẩm</th>
+                            <th>Hình ảnh</th>
+                            <th>Người bình luận</th>
+                            <th>Nội dung</th>
+                            <th>Đánh giá</th>
+                            <th>Ngày bình luận</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="text-center">@(stt++)</td>
+                                <td class="text-center">
+                                    @item.Product?.ProductName
+                                </td>
+                                <td class="text-center">
+                                    @if (!string.IsNullOrEmpty(item.Product?.Image))
+                                    {
+                                        <img src="~/assets/img/product/@item.Product.Image" alt="Ảnh" style="max-height: 60px;" class="img-thumbnail" />
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">Không ảnh</span>
+                                    }
+                                </td>
+                                <td class="text-center">
+                                    @item.User?.FullName 
+                                </td>
+                                <td class="text-center">
+                                    @(item.Comment ?? "<span class='text-muted'>Không có bình luận</span>")
+                                </td>
+                                <td class="text-center">
+                                    @for (int i = 1; i <= 5; i++)
+                                    {
+                                        if (i <= item.Star)
+                                        {
+                                            <i class="fas fa-star text-warning"></i>
+                                        }
+                                        else
+                                        {
+                                            <i class="far fa-star text-muted"></i>
+                                        }
+                                    }
+                                </td>
+
+                                <td class="text-center">
+                                    @(item.CreatedAt?.ToString("dd/MM/yyyy HH:mm") )
+                                </td>
+                                <td class="text-center">
+                                    <a asp-action="Details" asp-route-id="@item.CommentId" class="btn btn-sm btn-info me-1">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                    <a asp-action="Delete" asp-route-id="@item.CommentId" class="btn btn-sm btn-danger">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
