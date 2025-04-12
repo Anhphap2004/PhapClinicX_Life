@@ -1,72 +1,43 @@
 ﻿@model PhapClinicX.Models.PhongKham
 @{
     List<ClinicAppointment> clinicManagementContext = ViewBag.clinicManagementContext;
+    List<DoctorProfile> doctor = ViewBag.doctor;
     ViewData["Title"] = "Chi tiết";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
+<!-- CARD: Thông tin phòng khám -->
 <div class="card shadow mb-4">
     <div class="card-header py-3 d-flex justify-content-between align-items-center">
-        <h6 class="m-0 font-weight-bold text-primary">Chi tiết phòng khám</h6>
-        <div>
-            <a asp-action="Edit" asp-route-id="@Model?.PhongKhamId" class="btn btn-warning btn-sm">
-                <i class="fas fa-edit"></i> Sửa
-            </a>
-            <a asp-action="Index" class="btn btn-secondary btn-sm">
-                <i class="fas fa-list"></i> Về danh sách
-            </a>
-        </div>
+        <h6 class="m-0 font-weight-bold text-primary">🏥 Thông tin phòng khám</h6>
+        <button id="toggleClinicDetailsBtn" class="btn btn-primary btn-sm">👁️ Hiện chi tiết</button>
     </div>
-    <div class="card-body">
+    <div class="card-body" id="clinicDetailsSection" style="display: none;">
         <div class="table-responsive">
             <table class="table table-bordered">
                 <tbody>
                     <tr>
-                        <th class="bg-light" style="width: 25%">
-                            Tên phòng khám
-                        </th>
-                        <td>
-                            @Html.DisplayFor(model => model.TenPhongKham)
-                        </td>
+                        <th class="bg-light" style="width: 25%">Tên phòng khám</th>
+                        <td>@Html.DisplayFor(model => model.TenPhongKham)</td>
                     </tr>
                     <tr>
-                        <th class="bg-light">
-                            Địa chỉ
-                        </th>
-                        <td>
-                            @Html.DisplayFor(model => model.DiaChi)
-                        </td>
+                        <th class="bg-light">Địa chỉ</th>
+                        <td>@Html.DisplayFor(model => model.DiaChi)</td>
                     </tr>
                     <tr>
-                        <th class="bg-light">
-                            Số điện thoại
-                        </th>
-                        <td>
-                            @Html.DisplayFor(model => model.SoDienThoai)
-                        </td>
+                        <th class="bg-light">Số điện thoại</th>
+                        <td>@Html.DisplayFor(model => model.SoDienThoai)</td>
                     </tr>
                     <tr>
-                        <th class="bg-light">
-                            Email
-                        </th>
-                        <td>
-                            @Html.DisplayFor(model => model.Email)
-                        </td>
+                        <th class="bg-light">Email</th>
+                        <td>@Html.DisplayFor(model => model.Email)</td>
                     </tr>
                     <tr>
-                        <th class="bg-light">
-                            Ngày thành lập
-                        </th>
-                        <td>
-                            @Html.DisplayFor(model => model.NgayThanhLap)
-                        </td>
-
-
+                        <th class="bg-light">Ngày thành lập</th>
+                        <td>@Html.DisplayFor(model => model.NgayThanhLap)</td>
                     </tr>
                     <tr>
-                        <th class="bg-light">
-                            Hình ảnh
-                        </th>
+                        <th class="bg-light">Hình ảnh</th>
                         <td>
                             @if (!string.IsNullOrEmpty(Model?.Image))
                             {
@@ -79,9 +50,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <th class="bg-light">
-                            Trạng thái
-                        </th>
+                        <th class="bg-light">Trạng thái</th>
                         <td>
                             @if (Model?.Isactive == true)
                             {
@@ -96,61 +65,172 @@
                                 <span class="badge bg-secondary">Chưa xác định</span>
                             }
                         </td>
-
                     </tr>
                 </tbody>
             </table>
         </div>
+    </div>
+</div>
 
-        <div class="mt-4">
-            <h5 class="font-weight-bold">Giới thiệu</h5>
-            <hr />
-            <div class="border p-3 rounded bg-white">
-                @Html.Raw(Model?.Introduce)
-            </div>
+<!-- CARD: Giới thiệu -->
+<div class="card shadow mb-4">
+    <div class="card-header py-3 d-flex justify-content-between align-items-center">
+        <h6 class="m-0 font-weight-bold text-primary">📝 Giới thiệu</h6>
+        <button id="toggleIntroduceBtn" class="btn btn-primary btn-sm">👁️ Hiện giới thiệu</button>
+    </div>
+    <div class="card-body" id="introduceSection" style="display: none;">
+        <div class="border p-3 rounded bg-white">
+            @Html.Raw(Model?.Introduce)
         </div>
     </div>
 </div>
 
-<h1 class="mb-3">📅 Quản lý lịch hẹn</h1>
+<!-- CARD: Quản lý lịch hẹn -->
+<div class="card shadow mb-4">
+    <div class="card-header py-3 d-flex justify-content-between align-items-center">
+        <h6 class="m-0 font-weight-bold text-primary">📅 Quản lý lịch hẹn</h6>
+        <button id="toggleAppointmentsBtn" class="btn btn-primary btn-sm">👁️ Hiện lịch hẹn</button>
+    </div>
+    <div class="card-body" id="appointmentsSection" style="display: none;">
+        <div class="d-flex justify-content-end mb-3">
+            <a asp-action="Create" class="btn btn-success">➕ Tạo lịch hẹn mới</a>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover shadow-sm">
+                <thead class="table-dark text-center">
+                    <tr>
+                        <th>STT</th>
+                        <th>Họ và tên</th>
+                        <th>Số điện thoại</th>
+                        <th>Ngày & Giờ</th>
+                        <th>Trạng thái</th>
+                        <th>Phòng khám</th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        int appointmentCount = 1;
+                    }
+                    @foreach (var item in clinicManagementContext)
+                    {
+                        <tr>
+                            <td class="text-center">@(appointmentCount++)</td>
+                            <td>@item.Fullname</td>
+                            <td>@item.Phone</td>
+                            <td>@item.DateTime?.ToString("dd/MM/yyyy HH:mm")</td>
+                            <td class="text-center">
+                                @if (item.Status)
+                                {
+                                    <span class="badge bg-success">✅ Đã xác nhận</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger">❌ Chưa xác nhận</span>
+                                }
+                            </td>
+                            <td>@(item.PhongKham?.TenPhongKham ?? "Không có")</td>
+                            <td class="text-center">
+                                <a asp-controller="ClinicAppointments" asp-action="Edit" asp-route-id="@item.AppointmentId" class="btn btn-warning btn-sm">📝</a>
+                                <a asp-controller="ClinicAppointments" asp-action="Details" asp-route-id="@item.AppointmentId" class="btn btn-info btn-sm">ℹ️</a>
+                                <a asp-controller="ClinicAppointments" asp-action="Delete" asp-route-id="@item.AppointmentId" class="btn btn-danger btn-sm">🗑</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 
-<p>
-    <a asp-action="Create" class="btn btn-primary">➕ Tạo lịch hẹn mới</a>
-</p>
+<!-- CARD: Quản lý bác sĩ -->
+<div class="card shadow mb-4">
+    <div class="card-header py-3 d-flex justify-content-between align-items-center">
+        <h6 class="m-0 font-weight-bold text-primary">👨‍⚕️ Quản lý bác sĩ</h6>
+        <button id="toggleDoctorBtn" class="btn btn-primary btn-sm">👁️ Hiện danh sách</button>
+    </div>
+    <div class="card-body" id="doctorSection" style="display: none;">
+        <div class="d-flex justify-content-end mb-3">
+            <a asp-action="Create" class="btn btn-success">➕ Thêm bác sĩ</a>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover shadow-sm">
+                <thead class="table-dark text-center">
+                    <tr>
+                        <th>STT</th>
+                        <th>Họ tên</th>
+                        <th>Số điện thoại</th>
+                        <th>Chuyên ngành</th>
+                        <th>Kinh nghiệm</th>
+                        <th>Ảnh</th>
+                        <th>Phòng khám</th>
+                        <th>Lịch làm việc</th>
+                        <th>Trạng thái</th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        int doctorCount = 1;
+                    }
+                    @foreach (var item in doctor)
+                    {
+                        <tr>
+                            <td class="text-center">@(doctorCount++)</td>
+                            <td>@item.Fullname</td>
+                            <td>@item.Phone</td>
+                            <td>@item.Specialization</td>
+                            <td>@item.Experience năm</td>
+                            <td class="text-center">
+                                <img src="~/assets/img/team/@item.Image" class="rounded border shadow-sm" style="max-width: 80px;" />
+                            </td>
+                            <td>@(item.PhongKham?.TenPhongKham ?? "Chưa cập nhật")</td>
+                            <td>@item.WorkSchedule</td>
+                            <td class="text-center">
+                                @if (item.Isactive)
+                                {
+                                    <span class="badge bg-success">Hoạt động</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger">Tạm nghỉ</span>
+                                }
+                            </td>
+                            <td class="text-center">
+                                <a asp-action="Edit" asp-route-id="@item.DoctorId" class="btn btn-warning btn-sm">📝</a>
+                                <a asp-action="Details" asp-route-id="@item.DoctorId" class="btn btn-info btn-sm">ℹ️</a>
+                                <a asp-action="Delete" asp-route-id="@item.DoctorId" class="btn btn-danger btn-sm">🗑</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 
-<table class="table table-bordered table-hover shadow-sm">
-    <thead class="table-dark text-center">
-        <tr>
-            <th>STT</th>
-            <th>Họ và tên</th>
-            <th>Số điện thoại</th>
-            <th>Ngày & Giờ</th>
-            <th>Trạng thái</th>
-            <th>Phòng khám</th>
-            <th>Hành động</th>
-        </tr>
-    </thead>
-    @{
-        int p = 1;
-    }
-    <tbody>
-        @foreach (var item in clinicManagementContext)
-        {
-            <tr>
-                <td>@(p++)</td>
-                <td>@item.Fullname</td>
-                <td>@item.Phone</td>
-                <td>@item.DateTime?.ToString("dd/MM/yyyy HH:mm")</td>
-                <td class="text-center">
-                    @(item.Status ? "✅ Đã xác nhận" : "❌ Chưa xác nhận")
-                </td>
-                <td>@(item.PhongKham?.TenPhongKham ?? "Không có")</td>
-                <td class="text-center">
-                    <a asp-controller="ClinicAppointments" asp-action="Edit" asp-route-id="@item.AppointmentId" class="btn btn-warning btn-sm">📝 Chỉnh sửa</a>
-                    <a asp-controller="ClinicAppointments" asp-action="Details" asp-route-id="@item.AppointmentId" class="btn btn-info btn-sm">ℹ️ Chi tiết</a>
-                    <a asp-controller="ClinicAppointments" asp-action="Delete" asp-route-id="@item.AppointmentId" class="btn btn-danger btn-sm">🗑 Xóa</a>
-                </td>
-            </tr>
+@section Scripts {
+    <script>
+        function setupToggleSection(buttonId, sectionId, showText, hideText) {
+            const button = document.getElementById(buttonId);
+            const section = document.getElementById(sectionId);
+
+            button.addEventListener("click", function() {
+                if (section.style.display === "none" || section.style.display === "") {
+                    section.style.display = "block";
+                    button.textContent = hideText;
+                } else {
+                    section.style.display = "none";
+                    button.textContent = showText;
+                }
+            });
         }
-    </tbody>
-</table>
+
+        document.addEventListener("DOMContentLoaded", function() {
+            setupToggleSection("toggleClinicDetailsBtn", "clinicDetailsSection", "👁️ Hiện chi tiết", "🙈 Ẩn chi tiết");
+            setupToggleSection("toggleIntroduceBtn", "introduceSection", "👁️ Hiện giới thiệu", "🙈 Ẩn giới thiệu");
+            setupToggleSection("toggleAppointmentsBtn", "appointmentsSection", "👁️ Hiện lịch hẹn", "🙈 Ẩn lịch hẹn");
+            setupToggleSection("toggleDoctorBtn", "doctorSection", "👁️ Hiện danh sách", "🙈 Ẩn danh sách");
+        });
+    </script>
+}

@@ -46,7 +46,7 @@ namespace PhapClinicX.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-
+            ViewBag.doctor = await _context.DoctorProfiles.Include(p => p.PhongKham).Where(p => p.PhongKhamId == id).ToListAsync();
             ViewBag.clinicManagementContext = appointments;
             return View(phongKham);
         }
