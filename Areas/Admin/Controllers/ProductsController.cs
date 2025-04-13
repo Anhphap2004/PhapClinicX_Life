@@ -22,7 +22,7 @@ namespace PhapClinicX.Areas.Admin.Controllers
         // GET: Admin/Products
         public async Task<IActionResult> Index()
         {
-            var clinicManagementContext = _context.Products.Include(p => p.Category).OrderByDescending(p=>p.IsNew);
+            var clinicManagementContext = _context.Products.Include(p => p.Category).OrderByDescending(p=>p.CreatedDate);
             return View(await clinicManagementContext.ToListAsync());
         }
 

@@ -5,90 +5,107 @@
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<div class="card shadow-lg p-4">
-    <h2 class="text-primary text-uppercase mb-4"><i class="fas fa-plus-circle"></i> Thêm Bài Viết</h2>
+<div class="container-fluid">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0"><i class="fas fa-plus-circle"></i> Thêm Bài Viết</h4>
+        </div>
+        <div class="card-body">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
 
-    <form asp-action="Create">
-        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+                <div class="row">
+                    <!-- Left Column -->
+                    <div class="col-md-6">
+                        <div class="card mb-4">
+                            <div class="card-header bg-light">
+                                <h5 class="mb-0">Thông tin cơ bản</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <label asp-for="CategoryId" class="form-label fw-bold">
+                                        <i class="fas fa-folder"></i> Chọn Danh Mục
+                                    </label>
+                                    <select asp-for="CategoryId" class="form-select" asp-items="ViewBag.CategoryId">
+                                        <option value="">-- Chọn danh mục --</option>
+                                    </select>
+                                    <span asp-validation-for="CategoryId" class="text-danger"></span>
+                                </div>
 
-        <div class="row">
-            <!-- Cột 1 -->
-            <div class="col-md-6">
-                <div class="mb-3">
-                    <label asp-for="CategoryId" class="form-label fw-bold">
-                        <i class="fas fa-folder"></i> Chọn Danh Mục
-                    </label>
-                    <select asp-for="CategoryId" class="form-select" asp-items="ViewBag.CategoryId">
-                        <option value="">-- Chọn danh mục --</option>
-                    </select>
-                    <span asp-validation-for="CategoryId" class="text-danger"></span>
-                </div>
+                                <div class="mb-3">
+                                    <label asp-for="Title" class="form-label fw-bold">
+                                        <i class="fas fa-heading"></i> Tiêu Đề
+                                    </label>
+                                    <input asp-for="Title" class="form-control" placeholder="Nhập tiêu đề bài viết..." />
+                                    <span asp-validation-for="Title" class="text-danger"></span>
+                                </div>
 
-                <div class="mb-3">
-                    <label asp-for="Title" class="form-label fw-bold">
-                        <i class="fas fa-heading"></i> Tiêu Đề
-                    </label>
-                    <input asp-for="Title" class="form-control" placeholder="Nhập tiêu đề bài viết..." />
-                    <span asp-validation-for="Title" class="text-danger"></span>
-                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">
+                                        <i class="fas fa-image"></i> Ảnh
+                                    </label>
+                                    <input type="file" id="imageUpload" class="form-control" accept="image/*" />
+                                    <input type="hidden" asp-for="Image" id="ImagePath" />
+                                    <span asp-validation-for="Image" class="text-danger"></span>
 
-                <div class="mb-3">
-                    <label class="form-label fw-bold">
-                        <i class="fas fa-image"></i> Ảnh
-                    </label>
-                    <input type="file" id="imageUpload" class="form-control" accept="image/*" />
-                    <input type="hidden" asp-for="Image" id="ImagePath" />
-                    <span asp-validation-for="Image" class="text-danger"></span>
+                                    <div class="mt-3 text-center">
+                                        <img id="imagePreview" src="~/assets/img/default.jpg" class="img-fluid border rounded" style="max-height: 200px; object-fit: contain;" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-                    <!-- Hiển thị ảnh xem trước -->
-                    <div class="mt-3">
-                        <img id="imagePreview" src="~/assets/img/default.jpg" class="img-fluid border rounded" style="max-width: 200px;" />
+                    <!-- Right Column -->
+                    <div class="col-md-6">
+                        <div class="card mb-4">
+                            <div class="card-header bg-light">
+                                <h5 class="mb-0">Thông tin nội dung</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <label asp-for="AuthorId" class="form-label fw-bold">
+                                        <i class="fas fa-user"></i> Chọn Tác Giả
+                                    </label>
+                                    <select asp-for="AuthorId" class="form-select" asp-items="ViewBag.AuthorId">
+                                        <option value="">-- Chọn tác giả --</option>
+                                    </select>
+                                    <span asp-validation-for="AuthorId" class="text-danger"></span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label asp-for="ExtraContent" class="form-label fw-bold">
+                                        <i class="fas fa-info-circle"></i> Nội Dung Bổ Sung
+                                    </label>
+                                    <textarea asp-for="ExtraContent" id="summernoteEditor" class="form-control"></textarea>
+                                    <span asp-validation-for="ExtraContent" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-            </div>
-
-            <!-- Cột 2 -->
-            <div class="col-md-6">
-                <div class="mb-3">
-                    <label asp-for="AuthorId" class="form-label fw-bold">
-                        <i class="fas fa-user"></i> Chọn Tác Giả
-                    </label>
-                    <select asp-for="AuthorId" class="form-select" asp-items="ViewBag.AuthorId">
-                        <option value="">-- Chọn tác giả --</option>
-                    </select>
-                    <span asp-validation-for="AuthorId" class="text-danger"></span>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="d-flex justify-content-between">
+                            <a asp-action="Index" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-left"></i> Quay Về
+                            </a>
+                            <button type="submit" class="btn btn-success">
+                                <i class="fas fa-save"></i> Lưu Bài Viết
+                            </button>
+                        </div>
+                    </div>
                 </div>
-
-                <div class="mb-3">
-                    <label asp-for="ExtraContent" class="form-label fw-bold">
-                        <i class="fas fa-info-circle"></i> Nội Dung Bổ Sung
-                    </label>
-                    <input asp-for="ExtraContent" id="summernoteEditor" class="form-control" placeholder="Nhập nội dung bổ sung..." />
-                    <span asp-validation-for="ExtraContent" class="text-danger"></span>
-                </div>
-
-               
-            </div>
+            </form>
         </div>
-
-        <!-- Nút hành động -->
-        <div class="d-flex justify-content-center mt-4">
-            <button type="submit" class="btn btn-success me-2">
-                <i class="fas fa-save"></i> Lưu
-            </button>
-            <a asp-action="Index" class="btn btn-secondary">
-                <i class="fas fa-arrow-left"></i> Quay Lại
-            </a>
-        </div>
-    </form>
+    </div>
 </div>
 
 @section Scripts {
-    <!-- Summernote JS -->
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-lite.min.js"></script>
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             $('#summernoteEditor').summernote({
                 placeholder: 'Nhập nội dung...',
                 tabsize: 2,
@@ -104,8 +121,7 @@
                 ]
             });
         });
-    </script>
-    <script>
+
         document.getElementById("imageUpload").addEventListener("change", function (event) {
             let file = event.target.files[0];
             if (file) {
@@ -115,7 +131,6 @@
                 };
                 reader.readAsDataURL(file);
 
-                // Gửi ảnh lên server
                 let formData = new FormData();
                 formData.append("file", file);
 
@@ -123,13 +138,12 @@
                     method: "POST",
                     body: formData
                 })
-                .then(response => response.text())
-                .then(imagePath => {
-                    document.getElementById("ImagePath").value = imagePath; // Gán đường dẫn ảnh vào input ẩn
-                })
-                .catch(error => console.error("Lỗi upload ảnh:", error));
+                    .then(response => response.text())
+                    .then(imagePath => {
+                        document.getElementById("ImagePath").value = imagePath;
+                    })
+                    .catch(error => console.error("Lỗi upload ảnh:", error));
             }
         });
     </script>
-
 }

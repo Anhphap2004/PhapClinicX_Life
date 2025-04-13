@@ -5,59 +5,92 @@
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<h1 class="text-center text-primary">Chỉnh sửa Blog</h1>
-<hr />
-<div class="row justify-content-center">
-    <div class="col-md-6 p-4 shadow rounded bg-light">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="BlogId" />
+<div class="container-fluid">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0 text-center">Chỉnh sửa Blog</h4>
+        </div>
+        <div class="card-body">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="BlogId" />
 
-            <div class="mb-3">
-                <label asp-for="CategoryId" class="form-label fw-bold">Thể loại</label>
-                <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
-                <span asp-validation-for="CategoryId" class="text-danger"></span>
-            </div>
+                <div class="row">
+                    <!-- Left Column -->
+                    <div class="col-md-6">
+                        <div class="card mb-4">
+                            <div class="card-header bg-light">
+                                <h5 class="mb-0">Thông Tin Cơ Bản</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <label asp-for="CategoryId" class="form-label fw-bold">Thể loại</label>
+                                    <select asp-for="CategoryId" class="form-select" asp-items="ViewBag.CategoryId"></select>
+                                    <span asp-validation-for="CategoryId" class="text-danger"></span>
+                                </div>
 
-            <div class="mb-3">
-                <label asp-for="Title" class="form-label fw-bold">Tiêu đề</label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
-            </div>
+                                <div class="mb-3">
+                                    <label asp-for="Title" class="form-label fw-bold">Tiêu đề</label>
+                                    <input asp-for="Title" class="form-control" />
+                                    <span asp-validation-for="Title" class="text-danger"></span>
+                                </div>
 
-            <div class="mb-3">
-                <label asp-for="Content" class="form-label fw-bold">Nội dung</label>
-                <textarea asp-for="Content" class="form-control" id="summernoteEditor"></textarea>
-                <span asp-validation-for="Content" class="text-danger"></span>
-            </div>
+                                <div class="mb-3">
+                                    <label asp-for="AuthorId" class="form-label fw-bold">Tác giả</label>
+                                    <select asp-for="AuthorId" class="form-select" asp-items="ViewBag.AuthorId"></select>
+                                    <span asp-validation-for="AuthorId" class="text-danger"></span>
+                                </div>
 
-            <div class="mb-3 text-center">
-                <label class="form-label fw-bold">
-                    <i class="fas fa-image"></i> Ảnh hiện tại
-                </label>
-                <div>
-                    <img id="imagePreview" src="@Url.Content(Model.Image != null ? $"/assets/img/blogs/{Model.Image}" : "~/assets/img/default.jpg")" class="img-thumbnail" style="max-width: 200px;" />
+                                <div class="form-check mb-3">
+                                    <input type="checkbox" asp-for="IsActive" class="form-check-input" />
+                                    <label asp-for="IsActive" class="form-check-label fw-bold ms-2"></label>
+                                    <span asp-validation-for="IsActive" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column -->
+                    <div class="col-md-6">
+                        <div class="card mb-4">
+                            <div class="card-header bg-light">
+                                <h5 class="mb-0">Nội dung và Hình ảnh</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <label asp-for="Content" class="form-label fw-bold">Nội dung</label>
+                                    <textarea asp-for="Content" class="form-control" id="summernoteEditor"></textarea>
+                                    <span asp-validation-for="Content" class="text-danger"></span>
+                                </div>
+
+                                <div class="mb-3 text-center">
+                                    <label class="form-label fw-bold">
+                                        <i class="fas fa-image"></i> Ảnh hiện tại
+                                    </label>
+                                    <div>
+                                        <img id="imagePreview" src="@Url.Content(Model.Image != null ? $"/assets/img/blogs/{Model.Image}" : "~/assets/img/default.jpg")" class="img-thumbnail" style="max-width: 200px;" />
+                                    </div>
+                                    <input type="file" id="imageUpload" class="form-control mt-2" accept="image/*" />
+                                    <input type="hidden" asp-for="Image" id="ImagePath" />
+                                    <span asp-validation-for="Image" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <input type="file" id="imageUpload" class="form-control mt-2" accept="image/*" />
-                <input type="hidden" asp-for="Image" id="ImagePath" />
-                <span asp-validation-for="Image" class="text-danger"></span>
-            </div>
 
-            <div class="mb-3">
-                <label asp-for="AuthorId" class="form-label fw-bold">Tác giả</label>
-                <select asp-for="AuthorId" class="form-control" asp-items="ViewBag.AuthorId"></select>
-                <span asp-validation-for="AuthorId" class="text-danger"></span>
-            </div>
-            <div class="form-check mb-3">
-                <input type="checkbox" asp-for="IsActive" class="form-check-input" />
-                <label asp-for="IsActive" class="form-check-label fw-bold ms-2"></label>
-                <span asp-validation-for="IsActive" class="text-danger"></span>
-            </div>
-            <div class="d-flex justify-content-between">
-                <a asp-action="Index" class="btn btn-outline-secondary">Quay lại</a>
-                <input type="submit" value="Lưu" class="btn btn-primary" />
-            </div>
-        </form>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="d-flex justify-content-between">
+                            <a asp-action="Index" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-left"></i> Quay lại
+                            </a>
+                            <input type="submit" value="Lưu" class="btn btn-primary" />
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 

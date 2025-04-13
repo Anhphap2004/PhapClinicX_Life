@@ -1,61 +1,142 @@
 ﻿@model PhapClinicX.Models.Discount
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Tạo Mã Giảm Giá";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<h1 class="text-primary">Tạo Mã Giảm Giá</h1>
 
 <div class="card shadow p-4">
     <h4 class="text-secondary">Thông tin mã giảm giá</h4>
     <hr />
-    <div class="row">
-        <div class="col-md-6">
-            <form asp-action="Create">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <form asp-action="Create">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-                <div class="mb-3">
-                    <label asp-for="DiscountName" class="form-label fw-bold">Tên mã giảm giá</label>
-                    <input asp-for="DiscountName" class="form-control" placeholder="Nhập tên mã giảm giá" />
-                    <span asp-validation-for="DiscountName" class="text-danger"></span>
-                </div>
+        <input type="hidden" asp-for="Image" id="ImagePath" />
 
-                <div class="mb-3">
-                    <label asp-for="DiscountPercent" class="form-label fw-bold">Phần trăm giảm</label>
-                    <input asp-for="DiscountPercent" type="number" step="0.01" class="form-control" placeholder="Nhập phần trăm giảm (VD: 10.5)" />
-                    <span asp-validation-for="DiscountPercent" class="text-danger"></span>
-                </div>
-
-                <div class="mb-3">
-                    <label asp-for="Image" class="form-label fw-bold">Hình ảnh</label>
-                    <input asp-for="Image" type="file" class="form-control" accept="image/*" />
-                    <span asp-validation-for="Image" class="text-danger"></span>
-                </div>
-
-                <div class="mb-3">
-                    <label asp-for="StartDate" class="form-label fw-bold">Ngày bắt đầu</label>
-                    <input asp-for="StartDate" type="datetime-local" class="form-control" />
-                    <span asp-validation-for="StartDate" class="text-danger"></span>
-                </div>
-
-                <div class="mb-3">
-                    <label asp-for="EndDate" class="form-label fw-bold">Ngày kết thúc</label>
-                    <input asp-for="EndDate" type="datetime-local" class="form-control" />
-                    <span asp-validation-for="EndDate" class="text-danger"></span>
-                </div>
-
-                <div class="d-flex justify-content-between mt-3">
-                    <a asp-action="Index" class="btn btn-secondary">⬅ Quay lại</a>
-                    <button type="submit" class="btn btn-primary">✅ Tạo mới</button>
-                </div>
-            </form>
+        <div class="mb-3">
+            <label asp-for="DiscountName" class="form-label fw-bold">Tên mã giảm giá</label>
+            <input asp-for="DiscountName" class="form-control" placeholder="Nhập tên mã giảm giá" />
+            <span asp-validation-for="DiscountName" class="text-danger"></span>
         </div>
-    </div>
+
+        <div class="mb-3">
+            <label asp-for="DiscountPercent" class="form-label fw-bold">Phần trăm giảm</label>
+            <input asp-for="DiscountPercent" type="number" step="0.01" class="form-control" placeholder="Nhập phần trăm giảm (VD: 10.5)" />
+            <span asp-validation-for="DiscountPercent" class="text-danger"></span>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header bg-light">
+                <h5 class="mb-0">Hình ảnh sản phẩm</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">
+                                <i class="fas fa-image"></i> Chọn ảnh
+                            </label>
+                            <input type="file" id="imageUpload" class="form-control" accept="image/*" />
+                            <span asp-validation-for="Image" class="text-danger"></span>
+                            <div class="form-text">Chọn ảnh JPG, PNG, tối đa 2MB</div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <label class="form-label fw-semibold">Ảnh xem trước</label>
+                        <div class="image-preview border rounded p-2">
+                            <img id="imagePreview" src="~/assets/img/default.jpg"
+                                 class="img-fluid rounded" alt="Preview"
+                                 style="height: 120px; object-fit: cover;" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header bg-light">
+                <h5 class="mb-0">Chi Tiết Sản Phẩm</h5>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <label asp-for="Detail" class="form-label">Chi Tiết</label>
+                    <textarea asp-for="Detail" id="summernoteEditor" class="form-control"></textarea>
+                    <span asp-validation-for="Detail" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="StartDate" class="form-label fw-bold">Ngày bắt đầu</label>
+            <input asp-for="StartDate" type="datetime-local" class="form-control" />
+            <span asp-validation-for="StartDate" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="EndDate" class="form-label fw-bold">Ngày kết thúc</label>
+            <input asp-for="EndDate" type="datetime-local" class="form-control" />
+            <span asp-validation-for="EndDate" class="text-danger"></span>
+        </div>
+
+        <div class="form-check mb-3">
+            <input asp-for="IsActive" class="form-check-input" type="checkbox" />
+            <label asp-for="IsActive" class="form-check-label fw-bold">Áp dụng</label>
+            <span asp-validation-for="IsActive" class="text-danger"></span>
+        </div>
+
+        <div class="d-flex justify-content-between mt-3">
+            <a asp-action="Index" class="btn btn-secondary">⬅ Quay lại</a>
+            <button type="submit" class="btn btn-primary">✅ Tạo mới</button>
+        </div>
+    </form>
 </div>
 
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+    <!-- Summernote JS -->
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-lite.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#summernoteEditor').summernote({
+                placeholder: 'Nhập nội dung...',
+                tabsize: 2,
+                height: 300,
+                toolbar: [
+                    ['style', ['style']],
+                    ['font', ['bold', 'underline', 'clear']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['table', ['table']],
+                    ['insert', ['link', 'picture', 'video']],
+                    ['view', ['fullscreen', 'codeview', 'help']]
+                ]
+            });
+        });
+    </script>
+    <script>
+        document.getElementById("imageUpload").addEventListener("change", function (event) {
+            let file = event.target.files[0];
+            if (file) {
+                let reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById("imagePreview").src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+
+                // Gửi ảnh lên server
+                let formData = new FormData();
+                formData.append("file", file);
+
+                fetch("/Admin/Discounts/UploadImage", {
+                    method: "POST",
+                    body: formData
+                })
+                .then(response => response.text())
+                .then(imagePath => {
+                    document.getElementById("ImagePath").value = imagePath;
+                })
+                .catch(error => console.error("Lỗi upload ảnh:", error));
+            }
+        });
+    </script>
 }

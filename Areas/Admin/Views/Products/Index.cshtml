@@ -44,7 +44,9 @@
                 <td>
                     <img src="~/assets/img/product/@item.Image" alt="Ảnh sản phẩm" class="img-thumbnail" style="max-width: 100px; height: auto;">
                 </td>
-                <td>@Html.DisplayFor(modelItem => item.Warranty)</td>
+             
+              
+                <td>@(string.IsNullOrEmpty(item.Warranty) ? "Không bảo hành" : item.Warranty)</td>
                 <td>
                     @if (item.IsActive)
                     {

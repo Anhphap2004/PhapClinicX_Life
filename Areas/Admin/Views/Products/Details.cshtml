@@ -41,11 +41,13 @@
                                 <div class="col-md-6">
                                     <div class="mb-2">
                                         <span class="fw-bold">Giá gốc:</span>
-                                        <span class="badge bg-secondary">@Html.DisplayFor(model => model.Price)</span>
+                                        <span class="badge bg-secondary">@Model.Price.ToString("N0") đồng</span>
+
                                     </div>
                                     <div class="mb-2">
                                         <span class="fw-bold">Giá khuyến mãi:</span>
-                                        <span class="badge bg-success">@Html.DisplayFor(model => model.PriceSale)</span>
+                                        <span class="badge bg-success">@Model.PriceSale?.ToString("N0") đồng</span>
+
                                     </div>
                                 </div>
                                 <div class="col-md-6">
