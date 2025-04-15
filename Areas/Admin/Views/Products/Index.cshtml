@@ -1,87 +1,133 @@
 ﻿@model IEnumerable<PhapClinicX.Models.Product>
-
 @{
     ViewData["Title"] = "Danh sách sản phẩm";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<h1 class="text-center my-4">Danh sách sản phẩm</h1>
+<div class="container-fluid p-3">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="text-secondary mb-0">Danh sách sản phẩm</h5>
+        <a type="button" class="btn btn-primary btn-sm" asp-action="Create">
+            <i class="fa fa-plus me-1"></i>Thêm mới
+        </a>
+    </div>
 
-<p>
-    <a asp-action="Create" class="btn btn-primary">Thêm mới</a>
-</p>
+    <!-- Ô tìm kiếm -->
+    <div class="mb-3">
+        <input type="text" id="searchInput" class="form-control" placeholder="🔍 Tìm theo tên sản phẩm..." onkeyup="filterProducts()">
+    </div>
 
-<table class="table table-bordered table-hover text-center">
-    <thead class="table-dark">
-        <tr>
-            <th>STT</th>
-            <th>Sản Phẩm</th>
-            <th>Giá Cả</th>
-            <th>Hình ảnh</th>
-            <th>Bảo Hành</th>
-            <th>Trạng thái</th>
-            <th>Giá Giảm</th>
-            <th>SL Đã Bán</th>
-            <th>SL Nhập vào</th>
-            <th>Mới</th>
-            <th>Bán chạy</th>
-            <th>Đánh giá</th>
-            <th>Danh Mục</th>
-            <th>Hành động</th>
-        </tr>
-    </thead>
-    <tbody>
-        @{
-            int stt = 1;
+    <div class="card border-0 shadow-sm">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr class="bg-light">
+                            <th class="py-2 text-center" style="width: 40px;">STT</th>
+                            <th class="py-2">Sản Phẩm</th>
+                            <th class="py-2">Danh Mục</th>
+                            <th class="py-2 text-end">Giá</th>
+                            <th class="py-2 text-center" style="width: 80px;">Ảnh</th>
+                            <th class="py-2 text-center">Bảo Hành</th>
+                            <th class="py-2 text-center">Trạng thái</th>
+                            <th class="py-2 text-end">Giá Giảm</th>
+                            <th class="py-2 text-center">Đã Bán</th>
+                            <th class="py-2 text-center">Nhập vào</th>
+                            <th class="py-2 text-center" style="width: 120px;">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            int stt = 1;
+                        }
+                        @foreach (var item in Model)
+                        {
+                            <tr data-name="@(item.ProductName != null ? item.ProductName.ToLower() : "")">
+                                <td class="text-center align-middle">@stt</td>
+                                <td class="align-middle">
+                                    <div>@item.ProductName</div>
+                                    <div class="mt-1">
+                                        @for (int i = 0; i < item.Star; i++)
+                                        {
+                                            <i class="fa fa-star text-warning"></i>
+                                        }
+                                        @if (item.IsNew)
+                                        {
+                                            <span class="badge ms-1" style="background-color: #8ecae6;">Mới</span>
+                                        }
+                                        @if (item.IsBestSeller)
+                                        {
+                                            <span class="badge ms-1" style="background-color: #ffb703; color: #333;">Bán chạy</span>
+                                        }
+                                    </div>
+                                </td>
+                                <td>@item.Category?.CategoryName</td>
+                                <td class="text-end align-middle">@string.Format("{0:#,##0} ₫", item.Price)</td>
+                                <td class="text-center align-middle">
+                                    <img src="~/assets/img/product/@item.Image" alt="@item.ProductName"
+                                         class="img-fluid rounded" style="max-height: 50px; width: auto;">
+                                </td>
+                                <td class="text-center align-middle">
+                                    @(string.IsNullOrEmpty(item.Warranty) ? "-" : item.Warranty)
+                                </td>
+                                <td class="text-center align-middle">
+                                    @if (item.IsActive)
+                                    {
+                                        <span class="badge" style="background-color: #e9f5db; color: #588157;">Hiển thị</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge" style="background-color: #ffe5e5; color: #bc4749;">Ẩn</span>
+                                    }
+                                </td>
+                                <td class="text-end align-middle">
+                                    @if (item.PriceSale > 0)
+                                    {
+                                        @string.Format("{0:#,##0} ₫", item.PriceSale)
+                                    }
+                                    else
+                                    {
+                                        <span>-</span>
+                                    }
+                                </td>
+                                <td class="text-center align-middle">@item.ProductSold</td>
+                                <td class="text-center align-middle">@item.ProductImport</td>
+                                <td class="text-center align-middle">
+                                    <div class="btn-group btn-group-sm">
+                                        <a href="@Url.Action("Edit", new { id = item.ProductId })"
+                                           class="btn btn-outline-secondary">
+                                            <i class="fa fa-edit"></i>
+                                        </a>
+                                        <a href="@Url.Action("Details", new { id = item.ProductId })"
+                                           class="btn btn-outline-secondary">
+                                            <i class="fa fa-info-circle"></i>
+                                        </a>
+                                        <a href="@Url.Action("Delete", new { id = item.ProductId })"
+                                           class="btn btn-outline-secondary">
+                                            <i class="fa fa-trash"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            stt++;
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function filterProducts() {
+            const input = document.getElementById("searchInput").value.toLowerCase();
+            const rows = document.querySelectorAll("tbody tr");
+
+            rows.forEach(row => {
+                const name = row.getAttribute("data-name");
+                row.style.display = name.includes(input) ? "" : "none";
+            });
         }
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@stt</td>
-                <td>@Html.DisplayFor(modelItem => item.ProductName)</td>
-                <td>@string.Format("{0:N0} VNĐ", item.Price)</td>
-
-                <td>
-                    <img src="~/assets/img/product/@item.Image" alt="Ảnh sản phẩm" class="img-thumbnail" style="max-width: 100px; height: auto;">
-                </td>
-             
-              
-                <td>@(string.IsNullOrEmpty(item.Warranty) ? "Không bảo hành" : item.Warranty)</td>
-                <td>
-                    @if (item.IsActive)
-                    {
-                        <span class="badge bg-success">Hiển Thị</span>
-                    }
-                    else
-                    {
-                        <span class="badge bg-danger">Không Hiển Thị</span>
-                    }
-                </td>
-                <td>@string.Format("{0:N0} VNĐ", item.PriceSale)</td>
-
-                <td>@Html.DisplayFor(modelItem => item.ProductSold)</td>
-                <td>@Html.DisplayFor(modelItem => item.ProductImport)</td>
-                <td>
-                    @if (item.IsNew ==true)
-                    {
-                        <span class="badge bg-info">Mới</span>
-                    }
-                </td>
-                <td>
-                    @if (item.IsBestSeller ==true)
-                    {
-                        <span class="badge bg-warning">Bán chạy</span>
-                    }
-                </td>
-                <td>@Html.DisplayFor(modelItem => item.Star) ⭐</td>
-                <td>@(item.Category != null ? item.Category.CategoryName : "Không có danh mục")</td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.ProductId" class="btn btn-sm btn-warning">Sửa</a>
-                    <a asp-action="Details" asp-route-id="@item.ProductId" class="btn btn-sm btn-info">Chi tiết</a>
-                    <a asp-action="Delete" asp-route-id="@item.ProductId" class="btn btn-sm btn-danger">Xóa</a>
-                </td>
-            </tr>
-            stt++;
-        }
-    </tbody>
-</table>
+    </script>
+}

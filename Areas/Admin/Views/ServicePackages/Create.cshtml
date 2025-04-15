@@ -5,82 +5,200 @@
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<h1 class="text-center">Tạo Gói Dịch Vụ</h1>
+<style>
+    .form-container {
+        background-color: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+        transition: transform 0.3s ease;
+    }
 
-<div class="row justify-content-center">
-    <div class="col-md-6">
-        <div class="card shadow-lg p-4">
-            <h4 class="text-center">Nhập thông tin gói dịch vụ</h4>
-            <hr />
-            <form asp-action="Create" enctype="multipart/form-data">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        .form-container:hover {
+            transform: translateY(-5px);
+        }
 
-                <div class="form-group mb-3">
-                    <label asp-for="PackageName" class="form-label"></label>
-                    <input asp-for="PackageName" class="form-control" placeholder="Nhập tên gói dịch vụ..." />
-                    <span asp-validation-for="PackageName" class="text-danger"></span>
-                </div>
+    .form-label {
+        font-weight: 600;
+        color: #2c3e50;
+        margin-bottom: 8px;
+    }
 
-                <div class="form-group row mb-3">
-                    <label class="col-sm-4 col-form-label fw-bold">Ảnh</label>
-                    <div class="col-sm-8">
-                        <input type="file" id="imageUpload" class="form-control" accept="image/*" />
-                        <input type="hidden" asp-for="Image" id="ImagePath" />
-                        <span asp-validation-for="Image" class="text-danger"></span>
+    .form-control, .form-check-input {
+        border-radius: 6px;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
 
-                        <div class="mt-3 text-center">
-                            <img id="imagePreview" src="~/assets/img/default.jpg" class="border rounded" style="max-width: 150px;" />
+        .form-control:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 8px rgba(0, 123, 255, 0.2);
+        }
+
+    .img-preview {
+        border-radius: 8px;
+        object-fit: cover;
+        max-width: 100%;
+        transition: transform 0.3s ease;
+    }
+
+        .img-preview:hover {
+            transform: scale(1.05);
+        }
+
+    .btn-custom {
+        padding: 8px 20px;
+        font-size: 0.9rem;
+        border-radius: 6px;
+        transition: all 0.3s ease;
+    }
+
+        .btn-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+
+    .form-check-label {
+        font-size: 0.9rem;
+        color: #495057;
+    }
+
+    h1 {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #2c3e50;
+        margin-bottom: 2rem;
+    }
+
+    .form-row {
+        align-items: center;
+        margin-bottom: 1.5rem;
+    }
+
+    .error-message {
+        font-size: 0.85rem;
+        margin-top: 5px;
+    }
+</style>
+
+<div class="container py-5">
+    <h1 class="text-center">Tạo Gói Dịch Vụ</h1>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-10 col-md-12">
+            <div class="form-container">
+                <form asp-action="Create" enctype="multipart/form-data">
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-4 text-center"></div>
+
+                    <div class="row form-row">
+                        <div class="col-md-3">
+                            <label asp-for="PackageName" class="form-label">Tên gói dịch vụ</label>
+                        </div>
+                        <div class="col-md-9">
+                            <input asp-for="PackageName" class="form-control" placeholder="Nhập tên gói dịch vụ..." />
+                            <span asp-validation-for="PackageName" class="text-danger error-message"></span>
                         </div>
                     </div>
-                </div>
 
-                <div class="form-group mb-3">
-                    <label asp-for="Image" class="form-label"></label>
-                    <input asp-for="Image" type="file" class="form-control" accept="image/*" />
-                    <span asp-validation-for="Image" class="text-danger"></span>
-                </div>
+                    <div class="row form-row">
+                        <div class="col-md-3">
+                            <label class="form-label">Ảnh</label>
+                        </div>
+                        <div class="col-md-9">
+                            <input type="file" id="imageUpload" class="form-control" accept="image/*" />
+                            <input type="hidden" asp-for="Image" id="ImagePath" />
+                            <span asp-validation-for="Image" class="text-danger error-message"></span>
+                            <div class="mt-3 text-center">
+                                <img id="imagePreview" src="~/assets/img/default.jpg" alt="Ảnh xem trước" class="img-preview" style="max-width: 150px; max-height: 150px;" />
+                            </div>
+                        </div>
+                    </div>
 
-                <div class="form-group mb-3">
-                    <label asp-for="Title" class="form-label"></label>
-                    <input asp-for="Title" class="form-control" placeholder="Nhập tiêu đề gói dịch vụ..." />
-                    <span asp-validation-for="Title" class="text-danger"></span>
-                </div>
+                    <div class="row form-row">
+                        <div class="col-md-3">
+                            <label asp-for="Title" class="form-label">Tiêu đề</label>
+                        </div>
+                        <div class="col-md-9">
+                            <input asp-for="Title" class="form-control" placeholder="Nhập tiêu đề gói dịch vụ..." />
+                            <span asp-validation-for="Title" class="text-danger error-message"></span>
+                        </div>
+                    </div>
 
-                <div class="form-group mb-3">
-                    <label asp-for="Date" class="form-label"></label>
-                    <input asp-for="Date" type="date" class="form-control" />
-                    <span asp-validation-for="Date" class="text-danger"></span>
-                </div>
+                    <div class="row form-row">
+                        <div class="col-md-3">
+                            <label asp-for="Detail" class="form-label">Chi tiết</label>
+                        </div>
+                        <div class="col-md-9">
+                            <textarea asp-for="Detail" id="summernoteEditor" class="form-control" placeholder="Nhập chi tiết gói dịch vụ..."></textarea>
+                            <span asp-validation-for="Detail" class="text-danger error-message"></span>
+                        </div>
+                    </div>
 
-                <div class="form-check">
-                    <input asp-for="IsActive" class="form-check-input" type="checkbox" />
-                    <label asp-for="IsActive" class="form-check-label">Hoạt động</label> 
-                    <span asp-validation-for="IsActive" class="text-danger"></span>
-                </div>
-               
+                    <div class="row form-row">
+                        <div class="col-md-3">
+                            <label asp-for="Date" class="form-label">Ngày</label>
+                        </div>
+                        <div class="col-md-9">
+                            <input asp-for="Date" type="date" class="form-control" />
+                            <span asp-validation-for="Date" class="text-danger error-message"></span>
+                        </div>
+                    </div>
 
+                    <div class="row form-row">
+                        <div class="col-md-3">
+                            <label asp-for="IsActive" class="form-label">Trạng thái</label>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="form-check">
+                                <input asp-for="IsActive" class="form-check-input" type="checkbox" />
+                                <label asp-for="IsActive" class="form-check-label">Hoạt động</label>
+                                <span asp-validation-for="IsActive" class="text-danger error-message"></span>
+                            </div>
+                        </div>
+                    </div>
 
-                <div class="d-flex justify-content-between">
-                    <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
-                    <input type="submit" value="Tạo mới" class="btn btn-primary" />
-                </div>
-            </form>
+                    <div class="d-flex justify-content-end gap-3 mt-4">
+                        <a asp-action="Index" class="btn btn-secondary btn-custom">Quay lại</a>
+                        <button type="submit" class="btn btn-primary btn-custom">Tạo mới</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>
 
 @section Scripts {
+    <!-- Summernote CSS and JS -->
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-lite.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-lite.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#summernoteEditor').summernote({
+                placeholder: 'Nhập chi tiết gói dịch vụ...',
+                tabsize: 2,
+                height: 200,
+                toolbar: [
+                    ['style', ['style']],
+                    ['font', ['bold', 'underline', 'clear']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['table', ['table']],
+                    ['insert', ['link', 'picture', 'video']],
+                    ['view', ['fullscreen', 'codeview', 'help']]
+                ]
+            });
+        });
+    </script>
     <script>
         document.getElementById("imageUpload").addEventListener("change", function (event) {
-            let file = event.target.files[0];
+            const file = event.target.files[0];
             if (file) {
-                let reader = new FileReader();
+                const reader = new FileReader();
                 reader.onload = function (e) {
                     document.getElementById("imagePreview").src = e.target.result;
                 };
                 reader.readAsDataURL(file);
 
-                let formData = new FormData();
+                const formData = new FormData();
                 formData.append("file", file);
 
                 fetch("/Admin/ServicePackages/UploadImage", {
@@ -95,5 +213,7 @@
             }
         });
     </script>
-
+    <!-- Client-side validation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.validate/1.19.5/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.validate.unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
 }
