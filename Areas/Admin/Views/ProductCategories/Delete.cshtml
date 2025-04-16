@@ -1,0 +1,50 @@
+﻿@model PhapClinicX.Models.ProductCategory
+
+@{
+    ViewData["Title"] = "Xoá danh mục";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="card shadow-sm">
+        <div class="card-header bg-danger text-white d-flex justify-content-between align-items-center">
+            <h4 class="mb-0">🗑️ Xác nhận xoá danh mục</h4>
+            <a asp-action="Index" class="btn btn-light btn-sm ms-2">
+                <i class="fas fa-list"></i> Trở về danh sách
+            </a>
+        </div>
+
+        <div class="card-body">
+            <p class="text-danger fw-bold">⚠️ Bạn có chắc chắn muốn xoá danh mục này không? Hành động này không thể hoàn tác.</p>
+
+            <dl class="row">
+                <dt class="col-sm-3">Tên danh mục</dt>
+                <dd class="col-sm-9">@Model.CategoryName</dd>
+
+                <dt class="col-sm-3">Trạng thái</dt>
+                <dd class="col-sm-9">
+                    @if (Model.IsActive ==true)
+                    {
+                        <span class="badge bg-success"><i class="fas fa-check-circle"></i> Kích hoạt</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-secondary"><i class="fas fa-times-circle"></i> Không kích hoạt</span>
+                    }
+                </dd>
+            </dl>
+        </div>
+
+        <div class="card-footer bg-light d-flex justify-content-between">
+            <form asp-action="Delete" onsubmit="return confirm('Bạn có chắc chắn muốn xoá danh mục này không?');">
+                <input type="hidden" asp-for="CategoryId" />
+                <button type="submit" class="btn btn-danger">
+                    <i class="fas fa-trash-alt"></i> Xoá danh mục
+                </button>
+            </form>
+            <a asp-action="Index" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Quay lại
+            </a>
+        </div>
+    </div>
+</div>

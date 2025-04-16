@@ -1,0 +1,39 @@
+﻿@model PhapClinicX.Models.ServiceCategory
+
+@{
+    ViewData["Title"] = "Chỉnh sửa danh mục dịch vụ";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h2 class="text-center my-4">Chỉnh sửa danh mục dịch vụ</h2>
+
+<div class="container">
+    <div class="card shadow p-4 rounded">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+            <input type="hidden" asp-for="CategoryId" />
+
+            <div class="form-group">
+                <label asp-for="CategoryName" class="font-weight-bold">Tên danh mục</label>
+                <input asp-for="CategoryName" class="form-control" placeholder="Nhập tên danh mục..." />
+                <span asp-validation-for="CategoryName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mt-3">
+                <label asp-for="Description" class="font-weight-bold">Mô tả</label>
+                <input asp-for="Description" class="form-control" placeholder="Nhập mô tả..." />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group mt-3">
+                <label asp-for="UpdatedAt" class="font-weight-bold">Ngày cập nhật</label>
+                <input asp-for="UpdatedAt" class="form-control" type="datetime-local" />
+                <span asp-validation-for="UpdatedAt" class="text-danger"></span>
+            </div>
+
+            <div class="form-group d-flex justify-content-between align-items-center mt-4">
+                <a asp-action="Index" class="btn btn-secondary">← Quay lại danh sách</a>
+                <input type="submit" value="Lưu thay đổi" class="btn btn-primary px-4" />
+            </div>
+        </form>
+    </div>
+</div>

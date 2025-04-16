@@ -1,0 +1,81 @@
+﻿@model IEnumerable<PhapClinicX.Models.ServiceCategory>
+@{
+    ViewData["Title"] = "Danh mục dịch vụ";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid p-3">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="text-secondary mb-0">Danh mục dịch vụ</h5>
+        <button type="button" class="btn btn-primary btn-sm" onclick="location.href='@Url.Action("Create")'">
+            <i class="fa fa-plus me-1"></i>Thêm mới
+        </button>
+    </div>
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr class="bg-light">
+                            <th class="py-2 text-center" style="width: 40px;">STT</th>
+                            <th class="py-2">Tên danh mục</th>
+                            <th class="py-2">Mô tả</th>
+                            <th class="py-2 text-center">Ngày tạo</th>
+                            <th class="py-2 text-center">Cập nhật</th>
+                            <th class="py-2 text-center" style="width: 120px;">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            int stt = 1;
+                        }
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="text-center align-middle">@(stt++)</td>
+                                <td class="align-middle">@item.CategoryName</td>
+                                <td class="align-middle">
+                                    @if (!string.IsNullOrEmpty(item.Description))
+                                    {
+                                        <div class="text-truncate" style="max-width: 300px;" title="@item.Description">
+                                            @item.Description
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted small">Không có mô tả</span>
+                                    }
+                                </td>
+                                <td class="text-center align-middle">
+                                    <div>@item.CreatedAt?.ToString("dd/MM/yyyy")</div>
+                                    <small class="text-muted">@item.CreatedAt?.ToString("HH:mm")</small>
+                                </td>
+                                <td class="text-center align-middle">
+                                    <div>@item.UpdatedAt?.ToString("dd/MM/yyyy")</div>
+                                    <small class="text-muted">@item.UpdatedAt?.ToString("HH:mm")</small>
+                                </td>
+                                <td class="text-center align-middle">
+                                    <div class="btn-group btn-group-sm">
+                                        <a href="@Url.Action("Edit", new { id = item.CategoryId })"
+                                           class="btn btn-outline-secondary">
+                                            <i class="fa fa-edit"></i>
+                                        </a>
+                                        <a href="@Url.Action("Details", new { id = item.CategoryId })"
+                                           class="btn btn-outline-secondary">
+                                            <i class="fa fa-eye"></i>
+                                        </a>
+                                        <a href="@Url.Action("Delete", new { id = item.CategoryId })"
+                                           class="btn btn-outline-secondary">
+                                            <i class="fa fa-trash"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

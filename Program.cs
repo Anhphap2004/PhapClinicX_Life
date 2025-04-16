@@ -18,7 +18,7 @@ builder.Services.AddSession(options =>
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
-
+builder.WebHost.UseUrls("http://localhost:44340", "http://0.0.0.0:44340");
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -1,72 +1,114 @@
 ﻿@model IEnumerable<PhapClinicX.Models.Discount>
-
 @{
     ViewData["Title"] = "Danh sách khuyến mãi";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container mt-4">
-    <h2 class="text-primary text-center">🎉 Danh sách Voucher 🎉</h2>
-    <div class="d-flex justify-content-end mb-3">
-        <a asp-action="Create" class="btn btn-success"><i class="fas fa-plus"></i> Thêm mới</a>
+<div class="container-fluid p-0">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="m-0">Danh sách khuyến mãi</h4>
+        <a asp-action="Create" class="btn btn-primary">
+            <i class="fas fa-plus me-1"></i> Thêm mới
+        </a>
     </div>
+  
+    <div class="card">
+        <div class="card-body p-0">
+            <!-- Ô tìm kiếm -->
+            <div class="mb-3">
+                <input type="text" id="searchInput" class="form-control" placeholder="🔍 Tìm theo tên ..." onkeyup="filterProducts()">
+            </div>
 
-    <div class="table-responsive">
-        <table class="table table-bordered table-hover shadow-sm">
-            <thead class="table-dark">
-                <tr>
-                    <th>Tên khuyến mãi</th>
-                    <th>Giảm giá (%)</th>
-                    <th>Hình ảnh</th>
-                    <th>Ngày bắt đầu</th>
-                    <th>Ngày kết thúc</th>
-                    <th>Trạng thái</th>
-                    <th>Hành động</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>@Html.DisplayFor(modelItem => item.DiscountName)</td>
-                        <td>@item.DiscountPercent.ToString("0.##")%</td>
-
-                        <td>
-                            @if (!string.IsNullOrEmpty(item.Image))
-                            {
-                                <img src="~/assets/img/voucher/@item.Image" alt="Ảnh khuyến mãi" class="img-thumbnail" width="80">
-                            }
-                            else
-                            {
-                                <span class="text-muted">Không có ảnh</span>
-                            }
-                        </td>
-                        <td>@item.StartDate.ToString("dd/MM/yyyy")</td>
-                        <td>@item.EndDate.ToString("dd/MM/yyyy")</td>
-                        <td>
-                            @if (item.IsActive)
-                            {
-                                <span class="badge bg-success">Đang hoạt động</span>
-                            }
-                            else
-                            {
-                                <span class="badge bg-danger">Không hoạt động</span>
-                            }
-                        </td>
-                        <td>
-                            <a asp-action="Edit" asp-route-id="@item.DiscountId" class="btn btn-warning btn-sm">
-                                <i class="fas fa-edit"></i> Sửa
-                            </a>
-                            <a asp-action="Details" asp-route-id="@item.DiscountId" class="btn btn-info btn-sm">
-                                <i class="fas fa-eye"></i> Xem
-                            </a>
-                            <a asp-action="Delete" asp-route-id="@item.DiscountId" class="btn btn-danger btn-sm">
-                                <i class="fas fa-trash"></i> Xóa
-                            </a>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr class="bg-light">
+                            <th scope="col" class="ps-3">STT</th>
+                            <th scope="col">Tên khuyến mãi</th>
+                            <th scope="col">Danh Mục</th>
+                            <th scope="col">Giảm giá</th>
+                            <th scope="col">Ảnh</th>
+                            <th scope="col">Hiệu lực</th>
+                            <th scope="col">Trạng thái</th>
+                            <th scope="col">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            int index = 1;
+                        }
+                        @foreach (var item in Model)
+                        {
+                            <tr data-name="@(item.DiscountName != null ? item.DiscountName.ToLower() : "")">
+                                <td class="ps-3">@(index++)</td>
+                                <td>
+                                    @item.DiscountName
+                                   
+                                </td>
+                                <td>Khuyến mãi</td>
+                                <td>@item.DiscountPercent.ToString("0.##")%</td>
+                                <td>
+                                    @if (!string.IsNullOrEmpty(item.Image))
+                                    {
+                                        <img src="~/assets/img/voucher/@item.Image" alt="Ảnh khuyến mãi" class="img-thumbnail" width="50" height="50">
+                                    }
+                                    else
+                                    {
+                                        <img src="~/assets/img/placeholder.png" alt="No image" width="50" height="50">
+                                    }
+                                </td>
+                                <td>@item.StartDate.ToString("dd/MM/yyyy") - @item.EndDate.ToString("dd/MM/yyyy")</td>
+                                <td>
+                                    <span class="badge @(item.IsActive ? "bg-success" : "bg-danger") text-white">
+                                        @(item.IsActive ? "Hiển Thị" : "Ẩn")
+                                    </span>
+                                </td>
+                                <td>
+                                    <div class="d-flex">
+                                        <a asp-action="Edit" asp-route-id="@item.DiscountId" class="btn btn-sm btn-outline-secondary me-1">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a asp-action="Details" asp-route-id="@item.DiscountId" class="btn btn-sm btn-outline-info me-1">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <a asp-action="Delete" asp-route-id="@item.DiscountId" class="btn btn-sm btn-outline-danger">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
+
+<style>
+    .table > :not(caption) > * > * {
+        padding: 0.75rem 0.5rem;
+        vertical-align: middle;
+    }
+
+    .table tbody tr:hover {
+        background-color: #f8f9fa;
+    }
+
+    .badge {
+        font-weight: normal;
+        padding: 0.35em 0.65em;
+    }
+</style>
+
+<script>
+    function filterProducts() {
+        const input = document.getElementById("searchInput").value.toLowerCase();
+        const rows = document.querySelectorAll("tbody tr");
+
+        rows.forEach(row => {
+            const name = row.getAttribute("data-name");
+            row.style.display = name.includes(input) ? "" : "none";
+        });
+    }
+</script>

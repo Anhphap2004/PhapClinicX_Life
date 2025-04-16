@@ -1,0 +1,40 @@
+﻿@model PhapClinicX.Models.ServiceCategory
+
+@{
+    ViewData["Title"] = "Xóa danh mục dịch vụ";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h2 class="text-center my-4 text-danger">⚠️ Xác nhận xóa danh mục</h2>
+
+<div class="container">
+    <div class="card shadow p-4 rounded">
+        <p class="text-danger font-weight-bold">Bạn có chắc chắn muốn xóa danh mục này không?</p>
+
+        <dl class="row">
+            <dt class="col-sm-3">Tên danh mục</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.CategoryName)</dd>
+
+            <dt class="col-sm-3">Mô tả</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.Description)</dd>
+
+            <dt class="col-sm-3">Ngày tạo</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.CreatedAt)</dd>
+
+            <dt class="col-sm-3">Ngày cập nhật</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.UpdatedAt)</dd>
+        </dl>
+
+        <form asp-action="Delete" class="mt-4">
+            <input type="hidden" asp-for="CategoryId" />
+            <div class="d-flex justify-content-between">
+                <button type="submit" class="btn btn-danger px-4">
+                    🗑️ Xóa
+                </button>
+                <a asp-action="Index" class="btn btn-secondary">
+                    ← Quay lại danh sách
+                </a>
+            </div>
+        </form>
+    </div>
+</div>

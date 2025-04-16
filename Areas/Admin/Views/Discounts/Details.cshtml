@@ -45,10 +45,12 @@
                 <span class="badge bg-danger">Ngừng áp dụng</span>
             }
         </dd>
+        <dt class="col-sm-3 fw-bold">Thông tin chi tiết:</dt>
+        <dd class="col-sm-9">@Html.Raw(Model.Detail)</dd>
     </dl>
 </div>
 
-<div class="d-flex justify-content-between mt-3">
+<div class="d-flex justify-content-between mt-3 mb-3">
     <a asp-action="Index" class="btn btn-secondary">⬅ Quay lại</a>
     <a asp-action="Edit" asp-route-id="@Model?.DiscountId" class="btn btn-primary">✏ Chỉnh sửa</a>
 </div>

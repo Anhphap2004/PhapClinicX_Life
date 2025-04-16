@@ -22,7 +22,7 @@ namespace PhapClinicX.Areas.Admin.Controllers
         // GET: Admin/ServicePackages
         public async Task<IActionResult> Index()
         {
-            return View(await _context.ServicePackages.ToListAsync());
+            return View(await _context.ServicePackages.Include(p=>p.Category).ToListAsync());
         }
 
         // GET: Admin/ServicePackages/Details/5

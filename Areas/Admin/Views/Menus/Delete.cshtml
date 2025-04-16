@@ -6,43 +6,51 @@
 }
 
 <div class="container mt-4">
-    <div class="card shadow-lg border-danger">
+    <div class="card border border-danger shadow-sm">
         <div class="card-header bg-danger text-white">
-            <h3 class="mb-0">Xóa Menu</h3>
+            <h4 class="mb-0 text-center">⚠️ XÁC NHẬN XÓA MENU</h4>
         </div>
+
         <div class="card-body">
-            <h5 class="text-danger">Bạn có chắc chắn muốn xóa menu này không?</h5>
+            <p class="text-danger fs-5 text-center fw-semibold">
+                Bạn chắc chắn muốn xoá menu này chứ? Hành động này <u>không thể hoàn tác</u>!
+            </p>
             <hr />
+
             <dl class="row">
-                <dt class="col-sm-3 fw-bold">@Html.DisplayNameFor(model => model.MenuName)</dt>
-                <dd class="col-sm-9">@Html.DisplayFor(model => model.MenuName)</dd>
+                <dt class="col-sm-4 fw-bold">Tên Menu</dt>
+                <dd class="col-sm-8">@Html.DisplayFor(model => model.MenuName)</dd>
 
-                <dt class="col-sm-3 fw-bold">@Html.DisplayNameFor(model => model.Url)</dt>
-                <dd class="col-sm-9">@Html.DisplayFor(model => model.Url)</dd>
+                <dt class="col-sm-4 fw-bold">URL</dt>
+                <dd class="col-sm-8">@Html.DisplayFor(model => model.Url)</dd>
 
-                <dt class="col-sm-3 fw-bold">@Html.DisplayNameFor(model => model.Position)</dt>
-                <dd class="col-sm-9">@Html.DisplayFor(model => model.Position)</dd>
+                <dt class="col-sm-4 fw-bold">Vị trí</dt>
+                <dd class="col-sm-8">@Html.DisplayFor(model => model.Position)</dd>
 
-                <dt class="col-sm-3 fw-bold">@Html.DisplayNameFor(model => model.IsActive)</dt>
-                <dd class="col-sm-9">
-                    @(Model.IsActive ? "Đang hoạt động" : "Không hoạt động")
+                <dt class="col-sm-4 fw-bold">Trạng thái</dt>
+                <dd class="col-sm-8">
+                    <span class="badge @(Model.IsActive ? "bg-success" : "bg-secondary")">
+                        @(Model.IsActive ? "Đang hoạt động" : "Không hoạt động")
+                    </span>
                 </dd>
 
-                <dt class="col-sm-3 fw-bold">@Html.DisplayNameFor(model => model.Parent)</dt>
-                <dd class="col-sm-9">
-                    @(Model.Parent != null ? Model.Parent.MenuName : "Không có")
+                <dt class="col-sm-4 fw-bold">Menu cha</dt>
+                <dd class="col-sm-8">
+                    @(Model.Parent != null ? Model.Parent.MenuName : "<i>Không có</i>")
                 </dd>
             </dl>
         </div>
-        <div class="card-footer text-end">
-            <form asp-action="Delete">
+
+        <div class="card-footer d-flex justify-content-between">
+            <a asp-action="Index" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left"></i> Quay lại
+            </a>
+
+            <form asp-action="Delete" class="d-inline">
                 <input type="hidden" asp-for="MenuId" />
                 <button type="submit" class="btn btn-danger">
-                    <i class="bi bi-trash"></i> Xóa
+                    <i class="bi bi-trash"></i> Xác nhận xoá
                 </button>
-                <a asp-action="Index" class="btn btn-secondary">
-                    <i class="bi bi-arrow-left"></i> Quay lại
-                </a>
             </form>
         </div>
     </div>

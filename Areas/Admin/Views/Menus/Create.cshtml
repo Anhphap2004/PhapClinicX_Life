@@ -1,45 +1,60 @@
 ﻿@model PhapClinicX.Models.Menu
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Thêm Menu";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
 <div class="container mt-4">
-    <div class="card shadow-sm">
+    <div class="card shadow-sm border-0">
         <div class="card-header bg-danger text-white">
-            <h4 class="mb-0">Create Menu</h4>
+            <h4 class="mb-0">🌟 Thêm Menu Mới</h4>
         </div>
+
         <div class="card-body">
             <form asp-action="Create">
                 <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
 
-                <div class="mb-3">
-                    <label asp-for="MenuName" class="form-label fw-bold"></label>
-                    <input asp-for="MenuName" class="form-control" />
-                    <span asp-validation-for="MenuName" class="text-danger"></span>
+                <div class="row">
+                    <!-- Menu Name -->
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="MenuName" class="form-label fw-bold">Tên Menu</label>
+                        <input asp-for="MenuName" class="form-control" placeholder="Nhập tên menu..." />
+                        <span asp-validation-for="MenuName" class="text-danger"></span>
+                    </div>
+
+                    <!-- URL -->
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Url" class="form-label fw-bold">Đường Dẫn</label>
+                        <input asp-for="Url" class="form-control" placeholder="Nhập đường dẫn (VD: /home/index)" />
+                        <span asp-validation-for="Url" class="text-danger"></span>
+                    </div>
                 </div>
 
-                <div class="mb-3">
-                    <label asp-for="Url" class="form-label fw-bold"></label>
-                    <input asp-for="Url" class="form-control" />
-                    <span asp-validation-for="Url" class="text-danger"></span>
+                <div class="row">
+                    <!-- Position -->
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Position" class="form-label fw-bold">Vị Trí</label>
+                        <input asp-for="Position" class="form-control" placeholder="VD: 1, 2, 3..." />
+                        <span asp-validation-for="Position" class="text-danger"></span>
+                    </div>
+
+                    <!-- Parent Menu -->
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="ParentId" class="form-label fw-bold">Menu Cha</label>
+                        <select asp-for="ParentId" class="form-select" asp-items="ViewBag.ParentId">
+                            <option value="">-- Không có (Menu chính) --</option>
+                        </select>
+                    </div>
                 </div>
 
-                <div class="mb-3">
-                    <label asp-for="Position" class="form-label fw-bold"></label>
-                    <input asp-for="Position" class="form-control" />
-                    <span asp-validation-for="Position" class="text-danger"></span>
-                </div>
-
-                <div class="mb-3">
-                    <label asp-for="ParentId" class="form-label fw-bold"></label>
-                    <select asp-for="ParentId" class="form-control" asp-items="ViewBag.ParentId"></select>
-                </div>
-
-                <div class="d-flex justify-content-between">
-                    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
-                    <button type="submit" class="btn btn-primary">Create</button>
+                <div class="d-flex justify-content-between mt-4">
+                    <a asp-action="Index" class="btn btn-secondary">
+                        ⬅ Quay lại
+                    </a>
+                    <button type="submit" class="btn btn-success">
+                        ✅ Thêm mới
+                    </button>
                 </div>
             </form>
         </div>

@@ -1,0 +1,31 @@
+﻿@model PhapClinicX.Models.ServiceCategory
+
+@{
+    ViewData["Title"] = "Chi tiết danh mục dịch vụ";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h2 class="text-center my-4">Chi tiết danh mục dịch vụ</h2>
+
+<div class="container">
+    <div class="card shadow p-4 rounded">
+        <dl class="row">
+            <dt class="col-sm-3">Tên danh mục</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.CategoryName)</dd>
+
+            <dt class="col-sm-3">Mô tả</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.Description)</dd>
+
+            <dt class="col-sm-3">Ngày tạo</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.CreatedAt)</dd>
+
+            <dt class="col-sm-3">Ngày cập nhật</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.UpdatedAt)</dd>
+        </dl>
+
+        <div class="d-flex justify-content-between mt-4">
+            <a asp-action="Edit" asp-route-id="@Model?.CategoryId" class="btn btn-warning">✏️ Sửa</a>
+            <a asp-action="Index" class="btn btn-secondary">← Quay lại danh sách</a>
+        </div>
+    </div>
+</div>
