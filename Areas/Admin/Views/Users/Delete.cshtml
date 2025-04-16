@@ -1,58 +1,73 @@
 ﻿@model PhapClinicX.Models.User
 
 @{
-    ViewData["Title"] = "Xóa người dùng";
+    ViewData["Title"] = "Xoá người dùng";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container mt-4">
-    <h2 class="text-center text-danger mb-4">🗑️ Xác nhận xóa người dùng</h2>
-    <p class="text-center text-muted mb-4">Bạn có chắc chắn muốn xóa người dùng này không? Hành động này không thể hoàn tác!</p>
+<div class="container-fluid px-0">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="m-0 text-danger"><i class="fas fa-user-times me-1"></i> Xác nhận xoá người dùng</h4>
+        <a asp-action="Index" class="btn btn-outline-secondary">
+            <i class="fas fa-list me-1"></i> Quay lại danh sách
+        </a>
+    </div>
 
-    <div class="card shadow-sm border-danger">
+    <div class="alert alert-warning d-flex align-items-center" role="alert">
+        <i class="fas fa-exclamation-triangle me-2 fs-4"></i>
+        Bạn có chắc chắn muốn xoá người dùng này? Hành động này không thể hoàn tác.
+    </div>
+
+    <div class="card shadow-sm">
         <div class="card-body">
-            <dl class="row">
-                <dt class="col-sm-3">Họ tên</dt>
-                <dd class="col-sm-9">@Html.DisplayFor(model => model.FullName)</dd>
-
-                <dt class="col-sm-3">Email</dt>
-                <dd class="col-sm-9">@Html.DisplayFor(model => model.Email)</dd>
-
-                <dt class="col-sm-3">Số điện thoại</dt>
-                <dd class="col-sm-9">@Html.DisplayFor(model => model.Phone)</dd>
-
-                <dt class="col-sm-3">Địa chỉ</dt>
-                <dd class="col-sm-9">@Html.DisplayFor(model => model.Address)</dd>
-
-                <dt class="col-sm-3">Ảnh đại diện</dt>
-                <dd class="col-sm-9">
-                    <img src="@Url.Content(Model.ProfileImage != null ? $"~/assets/img/team/{Model.ProfileImage}" : "~/assets/img/default.jpg")"
-                         class="img-thumbnail"
-                         style="max-height: 120px;" />
-                </dd>
-
-
-                <dt class="col-sm-3">Trạng thái</dt>
-               
-                <dd class ="col-sm-9">
-                    @(Model.IsActive ? "✅ Hoạt động" : "❌ Khoá")
-                </dd>
-                <dt class="col-sm-3">Ngày tạo</dt>
-                <dd class="col-sm-9">@Model.CreatedAt?.ToString("dd/MM/yyyy HH:mm")</dd>
-
-                <dt class="col-sm-3">Tên đăng nhập</dt>
-                <dd class="col-sm-9">@Model.Username</dd>
-
-                <dt class="col-sm-3">Quyền</dt>
-                <dd class="col-sm-9">@Model.Role?.RoleName</dd>
-            </dl>
-
-            <form asp-action="Delete" class="mt-4">
-                <input type="hidden" asp-for="UserId" />
-                <div class="d-flex justify-content-end">
-                    <input type="submit" value="🗑️ Xóa" class="btn btn-danger me-2" />
-                    <a asp-action="Index" class="btn btn-secondary">🔙 Quay lại</a>
+            <div class="row">
+                <!-- Avatar -->
+                <div class="col-md-4 text-center border-end">
+                    <img src="~/assets/img/team/@Model.ProfileImage" class="img-thumbnail rounded mb-3"
+                         style="max-height: 200px; object-fit: cover;" />
+                    <p class="fw-bold">@Model.FullName</p>
+                    <span class="badge bg-@(Model.IsActive ? "success" : "danger")">
+                        @(Model.IsActive ? "Đang hoạt động" : "Đã vô hiệu")
+                    </span>
                 </div>
+
+                <!-- Thông tin chi tiết -->
+                <div class="col-md-8">
+                    <dl class="row">
+                        <dt class="col-sm-4">Tên đăng nhập</dt>
+                        <dd class="col-sm-8">@Model.Username</dd>
+
+                        <dt class="col-sm-4">Email</dt>
+                        <dd class="col-sm-8">@Model.Email</dd>
+
+                        <dt class="col-sm-4">Số điện thoại</dt>
+                        <dd class="col-sm-8">@Model.Phone</dd>
+
+                        <dt class="col-sm-4">Địa chỉ</dt>
+                        <dd class="col-sm-8">@Model.Address</dd>
+
+                        <dt class="col-sm-4">Ngày tạo</dt>
+                        <dd class="col-sm-8">@Model.CreatedAt?.ToString("dd/MM/yyyy HH:mm")</dd>
+
+                        <dt class="col-sm-4">Quyền</dt>
+                        <dd class="col-sm-8">@Model.Role?.RoleName</dd>
+
+                        <dt class="col-sm-4">Mã hoá mật khẩu</dt>
+                        <dd class="col-sm-8 text-muted small">@Model.PasswordHash</dd>
+                    </dl>
+                </div>
+            </div>
+
+            <hr class="my-4" />
+
+            <form asp-action="Delete" class="d-flex justify-content-between align-items-center">
+                <input type="hidden" asp-for="UserId" />
+                <button type="submit" class="btn btn-danger">
+                    <i class="fas fa-trash me-1"></i> Xoá người dùng
+                </button>
+                <a asp-action="Index" class="btn btn-outline-secondary">
+                    <i class="fas fa-times me-1"></i> Huỷ bỏ
+                </a>
             </form>
         </div>
     </div>

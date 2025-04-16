@@ -91,18 +91,44 @@ namespace PhapClinicX.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Ảnh đã được upload trước đó → chỉ lấy đường dẫn từ input
+                // Kiểm tra Username hoặc Email đã tồn tại chưa
+                bool isDuplicate = _context.Users.Any(u => u.Username == user.Username || u.Email == user.Email);
+
+                if (isDuplicate)
+                {
+                    ModelState.AddModelError(string.Empty, "Tên đăng nhập hoặc Email đã tồn tại. Vui lòng chọn thông tin khác.");
+                    ViewData["RoleId"] = new SelectList(_context.Roles, "RoleId", "RoleName", user.RoleId);
+                    return View(user);
+                }
+
+                // Mã hoá mật khẩu
+                var hashedPassword = BCrypt.Net.BCrypt.HashPassword(user.PasswordHash);
+                user.PasswordHash = hashedPassword;
+
+                // Trạng thái kích hoạt
+                user.IsActive = true;
+
+                // Ảnh mặc định nếu chưa chọn
                 if (string.IsNullOrEmpty(user.ProfileImage))
                 {
-                    user.ProfileImage = "/assets/img/default.jpg"; // Ảnh mặc định nếu không chọn ảnh
+                    user.ProfileImage = "PhapLife.png";
                 }
+
+                // Ngày tạo nếu chưa có
+                if (user.CreatedAt == default(DateTime))
+                {
+                    user.CreatedAt = DateTime.Now;
+                }
+
                 _context.Add(user);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             ViewData["RoleId"] = new SelectList(_context.Roles, "RoleId", "RoleName", user.RoleId);
             return View(user);
         }
+
 
         // GET: Admin/Users/Edit/5
         public async Task<IActionResult> Edit(int? id)

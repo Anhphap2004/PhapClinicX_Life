@@ -1,94 +1,135 @@
 ﻿@model PhapClinicX.Models.User
 
 @{
-    ViewData["Title"] = "Chỉnh sửa người dùng";
+    ViewData["Title"] = "Edit";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<h1 class="mb-4">Chỉnh sửa người dùng</h1>
-
-<form asp-action="Edit" class="row g-3">
-    <input type="hidden" asp-for="UserId" />
-
-    <div class="col-md-6">
-        <label asp-for="FullName" class="form-label fw-bold">Họ và tên</label>
-        <input asp-for="FullName" class="form-control" />
-        <span asp-validation-for="FullName" class="text-danger"></span>
-    </div>
-
-    <div class="col-md-6">
-        <label asp-for="Email" class="form-label fw-bold">Email</label>
-        <input asp-for="Email" class="form-control" />
-        <span asp-validation-for="Email" class="text-danger"></span>
-    </div>
-
-    <div class="col-md-6">
-        <label asp-for="PasswordHash" class="form-label fw-bold">Mật khẩu</label>
-        <input asp-for="PasswordHash" class="form-control" />
-        <span asp-validation-for="PasswordHash" class="text-danger"></span>
-    </div>
-
-    <div class="col-md-6">
-        <label asp-for="Phone" class="form-label fw-bold">Số điện thoại</label>
-        <input asp-for="Phone" class="form-control" />
-        <span asp-validation-for="Phone" class="text-danger"></span>
-    </div>
-
-    <div class="col-md-6">
-        <label asp-for="Address" class="form-label fw-bold">Địa chỉ</label>
-        <input asp-for="Address" class="form-control" />
-        <span asp-validation-for="Address" class="text-danger"></span>
-    </div>
-
-    <div class="col-md-6">
-        <label asp-for="RoleId" class="form-label fw-bold">Vai trò</label>
-        <select asp-for="RoleId" class="form-select" asp-items="ViewBag.RoleId"></select>
-        <span asp-validation-for="RoleId" class="text-danger"></span>
-    </div>
-
-    <div class="col-md-12 text-center">
-        <label class="form-label fw-bold d-block">
-            <i class="fas fa-image"></i> Ảnh đại diện hiện tại
-        </label>
-        <img id="imagePreview" src="@Url.Content(Model.ProfileImage != null ? $"/assets/img/team/{Model.ProfileImage}" : "~/assets/img/default.jpg")" class="img-thumbnail mb-2" style="max-width: 200px;" />
-        <input type="file" id="imageUpload" class="form-control" accept="image/*" />
-        <input type="hidden" asp-for="ProfileImage" id="ImagePath" />
-        <span asp-validation-for="ProfileImage" class="text-danger"></span>
-    </div>
-    <div class="col-md-6">
-        <div class="form-check mt-2">
-            <input asp-for="IsActive" class="form-check-input" type="checkbox" />
-            <label asp-for="IsActive" class="form-check-label fw-bold">
-                Trạng thái hoạt động
-            </label>
-        </div>
-        <span asp-validation-for="IsActive" class="text-danger"></span>
-    </div>
-
-
-    <div class="col-md-6">
-        <label asp-for="CreatedAt" class="form-label fw-bold">Ngày tạo</label>
-        <input asp-for="CreatedAt" class="form-control" />
-        <span asp-validation-for="CreatedAt" class="text-danger"></span>
-    </div>
-
-    <div class="col-md-6">
-        <label asp-for="Username" class="form-label fw-bold">Tên đăng nhập</label>
-        <input asp-for="Username" class="form-control" />
-        <span asp-validation-for="Username" class="text-danger"></span>
-    </div>
-
-    <div class="col-12 mt-3 mb-3">
-        <button type="submit" class="btn btn-success me-2">
-            💾 Lưu thay đổi
-        </button>
-        <a asp-action="Index" class="btn btn-secondary">
-            🔙 Quay lại danh sách
+<div class="container-fluid p-0">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="m-0">Sửa người dùng </h4>
+        <a asp-action="Index" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left me-1"></i> Quay lại
         </a>
     </div>
-</form>
+
+    <div class="card">
+        <div class="card-body">
+            <form asp-action="Edit" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                <input type="hidden" asp-for="UserId" />
+                <div class="row">
+                    <!-- Left Column - User Information -->
+                    <div class="col-md-8">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="FullName" class="form-label fw-semibold">Họ tên</label>
+                                    <input asp-for="FullName" class="form-control" placeholder="Nhập họ tên đầy đủ" />
+                                    <span asp-validation-for="FullName" class="text-danger small"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="Username" class="form-label fw-semibold">Tên đăng nhập</label>
+                                    <input asp-for="Username" class="form-control" placeholder="Nhập tên đăng nhập" />
+                                    <span asp-validation-for="Username" class="text-danger small"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="Email" class="form-label fw-semibold">Email</label>
+                                    <input asp-for="Email" class="form-control" placeholder="example@email.com" />
+                                    <span asp-validation-for="Email" class="text-danger small"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="Phone" class="form-label fw-semibold">Số điện thoại</label>
+                                    <input asp-for="Phone" class="form-control" placeholder="Nhập số điện thoại" />
+                                    <span asp-validation-for="Phone" class="text-danger small"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="PasswordHash" class="form-label fw-semibold">Mật khẩu</label>
+                                    <input asp-for="PasswordHash" type="password" class="form-control" placeholder="••••••••" />
+                                    <span asp-validation-for="PasswordHash" class="text-danger small"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="RoleId" class="form-label fw-semibold">Quyền</label>
+                                    <select asp-for="RoleId" class="form-select" asp-items="ViewBag.RoleId">
+                                        <option value="">-- Chọn quyền --</option>
+                                    </select>
+                                    <span asp-validation-for="RoleId" class="text-danger small"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <div class="mb-3">
+                                    <label asp-for="Address" class="form-label fw-semibold">Địa chỉ</label>
+                                    <textarea asp-for="Address" class="form-control" rows="3" placeholder="Nhập địa chỉ đầy đủ"></textarea>
+                                    <span asp-validation-for="Address" class="text-danger small"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+           
+                    <!-- Right Column - Profile Image -->
+                    <div class="col-md-4 border-start">
+                        <div class="mb-3 text-center">
+                            <label class="form-label fw-semibold d-block">
+                                <i class="fas fa-image me-1"></i> Ảnh đại diện
+                            </label>
+                            <div class="mb-3 mt-4">
+                                <img id="imagePreview" src="~/assets/img/team/@Model.ProfileImage" class="img-thumbnail rounded"
+                                     style="max-height: 200px; max-width: 200px; object-fit: cover;" />
+                            </div>
+                            <div class="mt-3">
+                                <input type="file" id="imageUpload" class="form-control" accept="image/*" />
+                                <input type="hidden" asp-for="ProfileImage" id="ImagePath" />
+                                <span asp-validation-for="ProfileImage" class="text-danger small"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-semibold d-block">Trạng thái hoạt động</label>
+                    <div class="form-check form-switch">
+                        <input asp-for="IsActive" class="form-check-input" type="checkbox" id="isActiveSwitch" onchange="updateStatusLabel()">
+                        <label class="form-check-label" for="isActiveSwitch" id="isActiveLabel">
+                            @(Model.IsActive ? "Đang hoạt động" : "Ngưng hoạt động")
+                        </label>
+                    </div>
+                </div>
+
+                <hr class="my-4" />
+
+                <div class="d-flex justify-content-end">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save me-1"></i> Lưu Thông Tin
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 @section Scripts {
+    <script>
+        function updateStatusLabel() {
+            const checkbox = document.getElementById("isActiveSwitch");
+            const label = document.getElementById("isActiveLabel");
+            label.innerText = checkbox.checked ? "Đang hoạt động" : "Ngưng hoạt động";
+        }
+    </script>
     <script>
         document.getElementById("imageUpload").addEventListener("change", function (event) {
             let file = event.target.files[0];
@@ -99,6 +140,7 @@
                 };
                 reader.readAsDataURL(file);
 
+                // Gửi ảnh lên server
                 let formData = new FormData();
                 formData.append("file", file);
 
@@ -108,7 +150,7 @@
                 })
                 .then(response => response.text())
                 .then(imagePath => {
-                    document.getElementById("ImagePath").value = imagePath;
+                    document.getElementById("ImagePath").value = imagePath; // Gán đường dẫn ảnh vào input ẩn
                 })
                 .catch(error => console.error("Lỗi upload ảnh:", error));
             }
