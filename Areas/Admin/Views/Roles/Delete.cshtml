@@ -1,0 +1,48 @@
+﻿@model PhapClinicX.Models.Role
+
+@{
+    ViewData["Title"] = "Xoá vai trò";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4 class="text-danger m-0">
+            <i class="fas fa-trash-alt me-2"></i> Xác nhận xoá vai trò
+        </h4>
+        <a asp-action="Index" class="btn btn-outline-secondary">
+            <i class="fas fa-list me-1"></i> Quay lại danh sách
+        </a>
+    </div>
+
+    <div class="alert alert-warning d-flex align-items-center mb-4" role="alert">
+        <i class="fas fa-exclamation-triangle me-3 fs-4"></i>
+        <div class="fs-6">
+            Bạn có chắc chắn muốn xoá vai trò này không? <strong>Hành động này không thể hoàn tác!</strong>
+        </div>
+    </div>
+
+    <div class="card shadow-sm border-0 rounded-3">
+        <div class="card-body px-4 py-4">
+            <dl class="row gy-2">
+                <dt class="col-sm-3">Tên vai trò:</dt>
+                <dd class="col-sm-9">@Model.RoleName</dd>
+
+                <dt class="col-sm-3">Mô tả:</dt>
+                <dd class="col-sm-9">@Model.Description</dd>
+            </dl>
+
+            <hr class="my-4" />
+
+            <form asp-action="Delete" class="d-flex justify-content-between flex-wrap gap-2">
+                <input type="hidden" asp-for="RoleId" />
+                <button type="submit" class="btn btn-danger px-4">
+                    <i class="fas fa-trash me-2"></i> Xoá
+                </button>
+                <a asp-action="Index" class="btn btn-outline-secondary px-4">
+                    <i class="fas fa-times me-2"></i> Huỷ bỏ
+                </a>
+            </form>
+        </div>
+    </div>
+</div>
