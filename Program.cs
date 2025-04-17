@@ -14,7 +14,7 @@ builder.Services.AddScoped<IMenuService, MenuService>();
 
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromDays(30); 
+    options.IdleTimeout = TimeSpan.FromDays(30);
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
