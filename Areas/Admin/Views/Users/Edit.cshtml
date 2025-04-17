@@ -105,7 +105,7 @@
                     <div class="form-check form-switch">
                         <input asp-for="IsActive" class="form-check-input" type="checkbox" id="isActiveSwitch" onchange="updateStatusLabel()">
                         <label class="form-check-label" for="isActiveSwitch" id="isActiveLabel">
-                            @(Model.IsActive ? "Đang hoạt động" : "Ngưng hoạt động")
+                            @(Model.IsActive == true ? "Đang hoạt động" : "Ngưng hoạt động")
                         </label>
                     </div>
                 </div>

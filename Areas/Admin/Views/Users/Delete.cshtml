@@ -26,8 +26,8 @@
                     <img src="~/assets/img/team/@Model.ProfileImage" class="img-thumbnail rounded mb-3"
                          style="max-height: 200px; object-fit: cover;" />
                     <p class="fw-bold">@Model.FullName</p>
-                    <span class="badge bg-@(Model.IsActive ? "success" : "danger")">
-                        @(Model.IsActive ? "Đang hoạt động" : "Đã vô hiệu")
+                    <span class="badge bg-@(Model.IsActive == true ? "success" : "danger")">
+                        @(Model.IsActive == true ? "Đang hoạt động" : "Đã vô hiệu")
                     </span>
                 </div>
 

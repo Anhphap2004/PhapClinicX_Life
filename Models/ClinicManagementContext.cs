@@ -23,6 +23,8 @@ public partial class ClinicManagementContext : DbContext
 
     public virtual DbSet<BlogComment> BlogComments { get; set; }
 
+    public virtual DbSet<BranchProduct> BranchProducts { get; set; }
+
     public virtual DbSet<Cart> Carts { get; set; }
 
     public virtual DbSet<ClinicAppointment> ClinicAppointments { get; set; }
@@ -73,7 +75,7 @@ public partial class ClinicManagementContext : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
-
+   
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -172,6 +174,26 @@ public partial class ClinicManagementContext : DbContext
                 .HasConstraintName("FK__BlogComme__user___5CD6CB2B");
         });
 
+        modelBuilder.Entity<BranchProduct>(entity =>
+        {
+            entity.HasKey(e => new { e.ProductId, e.PhongKhamId }).HasName("PK__BranchPr__1732D8368E4B3492");
+
+            entity.ToTable("BranchProduct");
+
+            entity.Property(e => e.PhongKhamId).HasColumnName("PhongKhamID");
+            entity.Property(e => e.Quantity).HasDefaultValue(0);
+
+            entity.HasOne(d => d.PhongKham).WithMany(p => p.BranchProducts)
+                .HasForeignKey(d => d.PhongKhamId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__BranchPro__Phong__0662F0A3");
+
+            entity.HasOne(d => d.Product).WithMany(p => p.BranchProducts)
+                .HasForeignKey(d => d.ProductId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__BranchPro__Produ__056ECC6A");
+        });
+
         modelBuilder.Entity<Cart>(entity =>
         {
             entity.HasKey(e => e.CartId).HasName("PK__Cart__2EF52A27C3454EDA");
@@ -179,6 +201,9 @@ public partial class ClinicManagementContext : DbContext
             entity.ToTable("Cart");
 
             entity.Property(e => e.CartId).HasColumnName("cart_id");
+            entity.Property(e => e.IsCheckedOut)
+                .HasDefaultValue(false)
+                .HasColumnName("is_checked_out");
             entity.Property(e => e.ProductId).HasColumnName("product_id");
             entity.Property(e => e.Quantity).HasColumnName("quantity");
             entity.Property(e => e.UserId).HasColumnName("user_id");
@@ -342,6 +367,10 @@ public partial class ClinicManagementContext : DbContext
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime")
                 .HasColumnName("created_at");
+            entity.Property(e => e.InvoiceType).HasMaxLength(50);
+            entity.Property(e => e.Method) // 👈 Dòng mới nè
+                .HasMaxLength(50)
+                .HasColumnName("method");
             entity.Property(e => e.PhongKhamId).HasColumnName("PhongKhamID");
             entity.Property(e => e.Status)
                 .HasMaxLength(50)
@@ -361,21 +390,29 @@ public partial class ClinicManagementContext : DbContext
                 .HasConstraintName("FK__Invoices__user_i__6E01572D");
         });
 
+
         modelBuilder.Entity<InvoiceDetail>(entity =>
         {
             entity.HasKey(e => e.DetailId).HasName("PK__InvoiceD__38E9A22458F37023");
+
+            entity.ToTable(tb => tb.HasTrigger("trg_UpdateProductSold"));
 
             entity.Property(e => e.DetailId).HasColumnName("detail_id");
             entity.Property(e => e.InvoiceId).HasColumnName("invoice_id");
             entity.Property(e => e.Price)
                 .HasColumnType("decimal(10, 2)")
                 .HasColumnName("price");
+            entity.Property(e => e.ProductId).HasColumnName("product_id");
             entity.Property(e => e.Quantity).HasColumnName("quantity");
             entity.Property(e => e.ServiceId).HasColumnName("service_id");
 
             entity.HasOne(d => d.Invoice).WithMany(p => p.InvoiceDetails)
                 .HasForeignKey(d => d.InvoiceId)
                 .HasConstraintName("FK__InvoiceDe__invoi__70DDC3D8");
+
+            entity.HasOne(d => d.Product).WithMany(p => p.InvoiceDetails)
+                .HasForeignKey(d => d.ProductId)
+                .HasConstraintName("FK_InvoiceDetails_Products");
         });
 
         modelBuilder.Entity<KhoaKham>(entity =>
@@ -436,23 +473,34 @@ public partial class ClinicManagementContext : DbContext
 
         modelBuilder.Entity<Payment>(entity =>
         {
-            entity.HasKey(e => e.PaymentId).HasName("PK__Payments__ED1FC9EA3AF59D27");
+            entity.HasKey(e => e.PaymentId).HasName("PK__Payments__ED1FC9EAE5273B39");
 
             entity.Property(e => e.PaymentId).HasColumnName("payment_id");
             entity.Property(e => e.Amount)
-                .HasColumnType("decimal(10, 2)")
+                .HasColumnType("decimal(18, 2)")
                 .HasColumnName("amount");
+            entity.Property(e => e.CreatedAt)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime")
+                .HasColumnName("created_at");
             entity.Property(e => e.InvoiceId).HasColumnName("invoice_id");
             entity.Property(e => e.Method)
                 .HasMaxLength(50)
                 .HasColumnName("method");
             entity.Property(e => e.Status)
                 .HasMaxLength(50)
+                .HasDefaultValue("Đã thanh toán")
                 .HasColumnName("status");
+            entity.Property(e => e.UserId).HasColumnName("user_id");
 
             entity.HasOne(d => d.Invoice).WithMany(p => p.Payments)
                 .HasForeignKey(d => d.InvoiceId)
-                .HasConstraintName("FK__Payments__invoic__73BA3083");
+                .HasConstraintName("FK_Payments_Invoices");
+
+            entity.HasOne(d => d.User).WithMany(p => p.Payments)
+                .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.SetNull)
+                .HasConstraintName("FK_Payments_Users");
         });
 
         modelBuilder.Entity<PhongKham>(entity =>

@@ -143,11 +143,11 @@
                                     <div class="mb-2">
                                         <span class="fw-bold">Gắn thẻ:</span>
                                         <div class="mt-1">
-                                            @if (Model.IsNew)
+                                            @if (Model.IsNew == true)
                                             {
                                                 <span class="badge bg-info me-1">Mới</span>
                                             }
-                                            @if (Model.IsBestSeller)
+                                            @if (Model.IsBestSeller == true)
                                             {
                                                 <span class="badge bg-warning me-1">Bán chạy</span>
                                             }

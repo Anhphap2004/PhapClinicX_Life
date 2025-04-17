@@ -1,0 +1,39 @@
+﻿@model PhapClinicX.Models.Invoice
+@{
+    ViewData["Title"] = "Chuyển khoản ngân hàng";
+    var bankName = "Ngân hàng VietinBank";
+    var accountNumber = "105601309204";
+    var accountName = "NGUYEN BA PHAP";
+ 
+}
+
+<div class="container mt-5">
+    <div class="card shadow-lg p-4 rounded-4">
+        <h2 class="text-center text-primary mb-4">🏦 Thanh toán chuyển khoản ngân hàng</h2>
+
+        <div class="alert alert-info text-center">
+            Vui lòng chuyển khoản theo thông tin dưới đây và ghi **mã đơn hàng: <strong>@Model.InvoiceId</strong>** trong nội dung chuyển khoản.
+        </div>
+
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <h5 class="mb-3">📌 Thông tin chuyển khoản:</h5>
+                <ul class="list-group list-group-flush fs-5">
+                    <li class="list-group-item"><strong>Ngân hàng:</strong> @bankName</li>
+                    <li class="list-group-item"><strong>Số tài khoản:</strong> <span class="text-danger">@accountNumber</span></li>
+                    <li class="list-group-item"><strong>Chủ tài khoản:</strong> @accountName</li>
+                    <li class="list-group-item"><strong>Số tiền cần chuyển:</strong> <span class="text-success fw-bold">@Model.TotalAmount?.ToString("N0") VNĐ</span></li>
+                    <li class="list-group-item"><strong>Nội dung chuyển khoản:</strong> THANH TOAN HOA DON @Model.InvoiceId</li>
+                </ul>
+            </div>
+            <div class="col-md-6 text-center">
+                <h5 class="mb-3">📷 Quét mã để chuyển nhanh:</h5>
+                <img src="~/assets/img/QRPHAP.jpg" alt="QR Chuyển khoản" class="img-fluid rounded border border-2 border-success p-2" style="max-width: 300px;">
+            </div>
+        </div>
+
+        <div class="text-center mt-5">
+            <a href="/" class="btn btn-primary rounded-pill px-4 py-2">🏠 Quay về trang chủ</a>
+        </div>
+    </div>
+</div>

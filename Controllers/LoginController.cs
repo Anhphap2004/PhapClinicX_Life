@@ -36,7 +36,7 @@ namespace PhapClinicX.Controllers
             }
 
             // Tìm người dùng theo Username
-            var check = _context.Users.FirstOrDefault(m => m.Username == user.Username && m.IsActive);
+            var check = _context.Users.FirstOrDefault(m => m.Username == user.Username && m.IsActive == true);
 
             // Kiểm tra tài khoản tồn tại không
             if (check == null)

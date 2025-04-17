@@ -16,7 +16,7 @@ namespace PhapClinicX.Controllers
             {
                 return NotFound();
             }
-            var user = await _context.Users.Where(p=>p.IsActive).FirstOrDefaultAsync(m => m.UserId == id);
+            var user = await _context.Users.Where(p=>p.IsActive == true).FirstOrDefaultAsync(m => m.UserId == id);
             return View(user);
         }
     

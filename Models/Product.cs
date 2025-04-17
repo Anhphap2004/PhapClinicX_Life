@@ -33,15 +33,19 @@ public partial class Product
 
     public DateTime? CreatedDate { get; set; }
 
-    public bool IsNew { get; set; }
+    public bool? IsNew { get; set; }
 
-    public bool IsBestSeller { get; set; }
+    public bool? IsBestSeller { get; set; }
 
     public int? Star { get; set; }
+
+    public virtual ICollection<BranchProduct> BranchProducts { get; set; } = new List<BranchProduct>();
 
     public virtual ICollection<Cart> Carts { get; set; } = new List<Cart>();
 
     public virtual ProductCategory? Category { get; set; }
+
+    public virtual ICollection<InvoiceDetail> InvoiceDetails { get; set; } = new List<InvoiceDetail>();
 
     public virtual ICollection<ProductComment> ProductComments { get; set; } = new List<ProductComment>();
 }

@@ -64,8 +64,8 @@
                                 <td>@(item.Role != null ? item.Role.RoleName : "")</td>
                                 <td>@item.CreatedAt?.ToString("dd/MM/yyyy")</td>
                                 <td>
-                                    <span class="badge @(item.IsActive ? "bg-success" : "bg-danger") text-white">
-                                        @(item.IsActive ? "Hiển Thị" : "Ẩn")
+                                    <span class="badge @(item.IsActive == true ? "bg-success" : "bg-danger") text-white">
+                                        @(item.IsActive == true ? "Hiển Thị" : "Ẩn")
                                     </span>
                                 </td>
                                 <td>

@@ -169,12 +169,14 @@
                         </div>
                     </div>
 
-                    <!-- Thanh toán -->
-                    <div class="mt-3">
-                        <a href="@Url.Action("Checkout", "Order")" class="btn btn-primary w-100 btn-lg">
-                            <i class="bi bi-credit-card me-2"></i>Tiến hành thanh toán
-                        </a>
-                    </div>
+                    <form asp-action="Checkout" asp-controller="Cart" method="post">
+                        <div class="mt-3">
+                            <button type="submit" class="btn btn-primary w-100 btn-lg">
+                                <i class="bi bi-credit-card me-2"></i>Tiến hành thanh toán
+                            </button>
+                        </div>
+                    </form>
+
                 </div>
             </div>
 

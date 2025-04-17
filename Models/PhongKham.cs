@@ -23,6 +23,8 @@ public partial class PhongKham
 
     public string? Introduce { get; set; }
 
+    public virtual ICollection<BranchProduct> BranchProducts { get; set; } = new List<BranchProduct>();
+
     public virtual ICollection<ClinicAppointment> ClinicAppointments { get; set; } = new List<ClinicAppointment>();
 
     public virtual ICollection<DoanhThuPhongKham> DoanhThuPhongKhams { get; set; } = new List<DoanhThuPhongKham>();

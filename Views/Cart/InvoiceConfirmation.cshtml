@@ -1,0 +1,72 @@
+﻿@model PhapClinicX.Models.Invoice
+@{
+    ViewData["Title"] = "Xác nhận đơn hàng";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4 text-success">🧾 Xác nhận đơn hàng</h2>
+
+    <div class="card shadow p-4 rounded-4">
+        <h5 class="mb-3 text-primary">🛒 Danh sách sản phẩm:</h5>
+        <table class="table table-bordered">
+            <thead class="table-light">
+                <tr>
+                    <th>Sản phẩm</th>
+                    <th>Số lượng</th>
+                    <th>Đơn giá</th>
+                    <th>Thành tiền</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.InvoiceDetails)
+                {
+                    <tr>
+                        <td>
+                            @(
+                                                    item.ProductId != null && ((Dictionary<int, string>)ViewBag.ProductNames).ContainsKey(item.ProductId.Value)
+                                                    ? ((Dictionary<int, string>)ViewBag.ProductNames)[item.ProductId.Value]
+                                                    : "Không tìm thấy"
+                                                    )
+                    </td>
+                    <td>@item.Quantity</td>
+                    <td>@item.Price?.ToString("N0") VNĐ</td>
+                    <td>@(((item.Quantity ?? 0) * (item.Price ?? 0)).ToString("N0")) VNĐ</td>
+                </tr>
+                                }
+            </tbody>
+        </table>
+
+        <div class="text-end mt-3">
+            <p>🧾 Tiền sản phẩm: <strong>@ViewBag.ProductTotal.ToString("N0") VNĐ</strong></p>
+            <p>🚚 Phí vận chuyển: <strong>@ViewBag.ShippingFee.ToString("N0") VNĐ</strong></p>
+            <h5>Tổng tiền: <span class="text-danger fw-bold">@Model.TotalAmount?.ToString("N0") VNĐ</span></h5>
+        </div>
+
+        <form asp-action="ConfirmPayment" method="post" class="mt-4">
+            <h5 class="text-secondary">📍 Chọn nơi nhận hàng (chi nhánh):</h5>
+            <div class="mb-3">
+                <select name="phongKhamId" class="form-select" required>
+                    <option disabled selected value="">-- Chọn chi nhánh nhận hàng --</option>
+                    @foreach (var branch in ViewBag.ListPhongKham)
+                    {
+                        <option value="@branch.PhongKhamId">@branch.TenPhongKham - @branch.DiaChi</option>
+                    }
+                </select>
+            </div>
+
+            <h5 class="text-secondary">💳 Chọn phương thức thanh toán:</h5>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="method" value="Tiền mặt" checked>
+                <label class="form-check-label">💵 Tiền mặt</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="method" value="Chuyển khoản">
+                <label class="form-check-label">🏦 Chuyển khoản ngân hàng</label>
+            </div>
+
+            <button type="submit" class="btn btn-success mt-4 px-4 py-2 rounded-pill">
+                ✅ Xác nhận thanh toán
+            </button>
+        </form>
+    </div>
+</div>

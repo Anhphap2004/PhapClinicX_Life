@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using PhapClinicX.Models;
 using System.Linq;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace PhapClinicX.Controllers
 {
@@ -15,7 +16,12 @@ namespace PhapClinicX.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
+        public IActionResult Success()
+        {
+            return View();
+        }
+
+        public async Task<IActionResult> Index()
         {
             int? userId = HttpContext.Session.GetInt32("UserId");
             if (userId == null)
@@ -23,66 +29,58 @@ namespace PhapClinicX.Controllers
                 return RedirectToAction("Index", "Login");
             }
 
-            var cartItems = _context.Carts
+            var cartItems = await _context.Carts
                 .Include(c => c.Product)
                 .Where(c => c.UserId == userId)
-                .ToList();
+                .ToListAsync();
 
-            // Lấy các sản phẩm liên quan
-            GetRelatedProducts();
+            await GetRelatedProducts(userId);
 
-            // Tính phí vận chuyển (có thể điều chỉnh theo logic của bạn)
             decimal cartTotal = cartItems.Sum(item => (item.Product?.PriceSale ?? 0) * (item.Quantity ?? 0));
             ViewBag.ShippingFee = cartTotal >= 1000000 ? 0 : 30000;
-
-            // Lấy giảm giá từ session nếu có
             ViewBag.Discount = HttpContext.Session.GetInt32("DiscountAmount") ?? 0;
 
             return View(cartItems);
         }
 
-        private void GetRelatedProducts()
+        private async Task GetRelatedProducts(int? userId)
         {
-            int? userId = HttpContext.Session.GetInt32("UserId");
             if (userId == null) return;
 
-            // Lấy các category id của sản phẩm trong giỏ hàng
-            var cartCategoryIds = _context.Carts
+            var cartCategoryIds = await _context.Carts
                 .Where(c => c.UserId == userId)
                 .Join(_context.Products,
                       c => c.ProductId,
                       p => p.ProductId,
                       (c, p) => p.CategoryId)
                 .Distinct()
-                .ToList();
+                .ToListAsync();
 
-            // Lấy các sản phẩm cùng category không có trong giỏ hàng
-            var cartProductIds = _context.Carts
+            var cartProductIds = await _context.Carts
                 .Where(c => c.UserId == userId)
                 .Select(c => c.ProductId)
-                .ToList();
+                .ToListAsync();
 
-            var relatedProducts = _context.Products
+            var relatedProducts = await _context.Products
                 .Where(p => cartCategoryIds.Contains(p.CategoryId) && !cartProductIds.Contains(p.ProductId))
                 .OrderByDescending(p => p.PriceSale)
                 .Take(4)
-                .ToList();
+                .ToListAsync();
 
             ViewBag.RelatedProducts = relatedProducts;
         }
 
         [HttpPost]
-        public IActionResult AddToCart(int productId, int quantity = 1)
+        public async Task<IActionResult> AddToCart(int productId, int quantity = 1)
         {
             int? userId = HttpContext.Session.GetInt32("UserId");
             if (userId == null)
             {
-                // Chưa đăng nhập thì đá về trang đăng nhập
                 return RedirectToAction("Index", "Login");
             }
 
-            var existingCartItem = _context.Carts
-                .FirstOrDefault(c => c.UserId == userId && c.ProductId == productId);
+            var existingCartItem = await _context.Carts
+                .FirstOrDefaultAsync(c => c.UserId == userId && c.ProductId == productId);
 
             if (existingCartItem != null)
             {
@@ -99,12 +97,12 @@ namespace PhapClinicX.Controllers
                 _context.Carts.Add(cartItem);
             }
 
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return RedirectToAction("Index", "Cart");
         }
 
         [HttpPost]
-        public IActionResult UpdateQuantity(int cartId, int quantity)
+        public async Task<IActionResult> UpdateQuantity(int cartId, int quantity)
         {
             int? userId = HttpContext.Session.GetInt32("UserId");
             if (userId == null)
@@ -112,7 +110,7 @@ namespace PhapClinicX.Controllers
                 return Json(new { success = false, message = "Vui lòng đăng nhập để thực hiện thao tác này" });
             }
 
-            var cartItem = _context.Carts.FirstOrDefault(c => c.CartId == cartId && c.UserId == userId);
+            var cartItem = await _context.Carts.FirstOrDefaultAsync(c => c.CartId == cartId && c.UserId == userId);
             if (cartItem == null)
             {
                 return Json(new { success = false, message = "Không tìm thấy sản phẩm trong giỏ hàng" });
@@ -127,12 +125,12 @@ namespace PhapClinicX.Controllers
                 cartItem.Quantity = quantity;
             }
 
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return Json(new { success = true });
         }
 
         [HttpPost]
-        public IActionResult RemoveItem(int cartId)
+        public async Task<IActionResult> RemoveItem(int cartId)
         {
             int? userId = HttpContext.Session.GetInt32("UserId");
             if (userId == null)
@@ -140,20 +138,20 @@ namespace PhapClinicX.Controllers
                 return Json(new { success = false, message = "Vui lòng đăng nhập để thực hiện thao tác này" });
             }
 
-            var cartItem = _context.Carts.FirstOrDefault(c => c.CartId == cartId && c.UserId == userId);
+            var cartItem = await _context.Carts.FirstOrDefaultAsync(c => c.CartId == cartId && c.UserId == userId);
             if (cartItem == null)
             {
                 return Json(new { success = false, message = "Không tìm thấy sản phẩm trong giỏ hàng" });
             }
 
             _context.Carts.Remove(cartItem);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             return Json(new { success = true });
         }
 
         [HttpPost]
-        public IActionResult ClearCart()
+        public async Task<IActionResult> ClearCart()
         {
             int? userId = HttpContext.Session.GetInt32("UserId");
             if (userId == null)
@@ -163,9 +161,8 @@ namespace PhapClinicX.Controllers
 
             var cartItems = _context.Carts.Where(c => c.UserId == userId);
             _context.Carts.RemoveRange(cartItems);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
-            // Xóa mã giảm giá nếu có
             HttpContext.Session.Remove("DiscountAmount");
             HttpContext.Session.Remove("CouponCode");
 
@@ -173,7 +170,7 @@ namespace PhapClinicX.Controllers
         }
 
         [HttpPost]
-        public IActionResult ApplyCoupon(string code)
+        public async Task<IActionResult> ApplyCoupon(string code)
         {
             int? userId = HttpContext.Session.GetInt32("UserId");
             if (userId == null)
@@ -186,54 +183,181 @@ namespace PhapClinicX.Controllers
                 return Json(new { success = false, message = "Vui lòng nhập mã giảm giá" });
             }
 
-            // Kiểm tra mã giảm giá trong database
-            var coupon = _context.Discounts
-                .FirstOrDefault(c => c.Code == code && c.IsActive && DateTime.Now >= c.StartDate && DateTime.Now <= c.EndDate);
+            var coupon = await _context.Discounts
+                .FirstOrDefaultAsync(c => c.Code == code && c.IsActive && DateTime.Now >= c.StartDate && DateTime.Now <= c.EndDate);
 
             if (coupon == null)
             {
                 return Json(new { success = false, message = "Mã giảm giá không hợp lệ hoặc đã hết hạn" });
             }
 
-            // Lưu thông tin giảm giá vào session
             HttpContext.Session.SetInt32("DiscountAmount", (int)coupon.DiscountPercent);
             HttpContext.Session.SetString("CouponCode", code);
 
             return Json(new { success = true, message = "Áp dụng mã giảm giá thành công" });
         }
 
-        public IActionResult Checkout()
+        [HttpPost]
+        public async Task<IActionResult> Checkout()
         {
-            int? userId = HttpContext.Session.GetInt32("UserId");
+            var userId = HttpContext.Session.GetInt32("UserId");
             if (userId == null)
             {
                 return RedirectToAction("Index", "Login");
             }
 
-            var cartItems = _context.Carts
-                .Include(c => c.Product)
-                .Where(c => c.UserId == userId)
-                .ToList();
+            // Lấy danh sách tên sản phẩm để hiển thị trong View
+            var productNames = await _context.Products
+                .ToDictionaryAsync(p => p.ProductId, p => p.ProductName);
 
-            if (cartItems.Count == 0)
+            ViewBag.ProductNames = productNames;
+
+            var cartItems = await _context.Carts
+                .Where(c => c.UserId == userId && c.IsCheckedOut == false)
+                .Include(c => c.Product)
+                .ToListAsync();
+
+            if (!cartItems.Any())
             {
-                TempData["ErrorMessage"] = "Giỏ hàng của bạn đang trống. Vui lòng thêm sản phẩm vào giỏ hàng.";
+                TempData["Error"] = "Giỏ hàng trống.";
                 return RedirectToAction("Index");
             }
 
-            // Lấy thông tin người dùng để điền sẵn vào form checkout
-            var user = _context.Users.Find(userId);
-            ViewBag.User = user;
+            // Tính tổng tiền hàng
+            var total = cartItems.Sum(c => (c.Quantity ?? 0) * (c.Product?.PriceSale ?? 0));
 
-            // Tính phí vận chuyển
-            decimal cartTotal = cartItems.Sum(item => (item.Product?.PriceSale ?? 0) * (item.Quantity ?? 0));
-            ViewBag.ShippingFee = cartTotal >= 1000000 ? 0 : 30000;
+            // Tính phí ship (miễn phí nếu tổng >= 1 triệu)
+            decimal shippingFee = total >= 1000000 ? 0 : 30000;
 
-            // Lấy giảm giá từ session nếu có
-            ViewBag.Discount = HttpContext.Session.GetInt32("DiscountAmount") ?? 0;
-            ViewBag.CouponCode = HttpContext.Session.GetString("CouponCode");
+            // Tổng cộng thanh toán
+            var finalTotal = total + shippingFee;
 
-            return View(cartItems);
+            // Lấy danh sách chi nhánh để chọn khi thanh toán
+            ViewBag.ListPhongKham = await _context.PhongKhams
+                .Where(p => p.Isactive == true)
+                .ToListAsync();
+
+            // Truyền dữ liệu phụ trợ ra View
+            ViewBag.ShippingFee = shippingFee;
+            ViewBag.ProductTotal = total;
+            ViewBag.FinalTotal = finalTotal;
+
+            // Tạo hóa đơn tạm để hiển thị
+            var invoice = new Invoice
+            {
+                UserId = userId,
+                CreatedAt = DateTime.Now,
+                Status = "Chờ thanh toán",
+                TotalAmount = finalTotal,
+                InvoiceType = "Product",
+                InvoiceDetails = cartItems.Select(c => new InvoiceDetail
+                {
+                    ProductId = c.ProductId,
+                    Quantity = c.Quantity,
+                    Price = c.Product?.PriceSale ?? 0
+                }).ToList()
+            };
+
+            return View("InvoiceConfirmation", invoice);
         }
+        public async Task<IActionResult> BankTransfer(int id)
+        {
+            var invoice = await _context.Invoices
+                .Include(i => i.User)
+                .FirstOrDefaultAsync(i => i.InvoiceId == id);
+
+            if (invoice == null)
+            {
+                return NotFound();
+            }
+
+            return View(invoice);
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> ConfirmPayment(string method, int phongKhamId)
+        {
+            var userId = HttpContext.Session.GetInt32("UserId");
+            if (userId == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+
+            var cartItems = await _context.Carts
+                .Where(c => c.UserId == userId && c.IsCheckedOut == false)
+                .Include(c => c.Product)
+                .ToListAsync();
+
+            if (!cartItems.Any())
+            {
+                TempData["Error"] = "Không có sản phẩm nào trong giỏ hàng.";
+                return RedirectToAction("Index");
+            }
+
+            // Tính tiền
+            decimal cartTotal = cartItems.Sum(item => (item.Product?.PriceSale ?? 0) * (item.Quantity ?? 0));
+            decimal shippingFee = cartTotal >= 1_000_000 ? 0 : 30_000;
+            decimal finalTotal = cartTotal + shippingFee;
+
+            // Tạo hóa đơn
+            var invoice = new Invoice
+            {
+                UserId = userId,
+                CreatedAt = DateTime.Now,
+                Status = "Đã thanh toán",
+                TotalAmount = finalTotal,
+                PhongKhamId = phongKhamId,
+                InvoiceType = "Sản phẩm",
+                Method = method // ✅ Ghi lại phương thức thanh toán
+            };
+
+            await _context.Invoices.AddAsync(invoice);
+            await _context.SaveChangesAsync();
+
+            // Thêm chi tiết hóa đơn
+            foreach (var item in cartItems)
+            {
+                var detail = new InvoiceDetail
+                {
+                    InvoiceId = invoice.InvoiceId,
+                    ProductId = item.ProductId,
+                    Quantity = item.Quantity,
+                    Price = item.Product?.PriceSale ?? 0
+                };
+                await _context.InvoiceDetails.AddAsync(detail);
+            }
+
+            await _context.SaveChangesAsync();
+
+            // Ghi thanh toán
+            var payment = new Payment
+            {
+                InvoiceId = invoice.InvoiceId,
+                UserId = userId,
+                Amount = finalTotal,
+                Method = method,
+                Status = "Đã thanh toán",
+                CreatedAt = DateTime.Now
+            };
+
+            await _context.Payments.AddAsync(payment);
+            await _context.SaveChangesAsync();
+
+            // Xóa giỏ hàng
+            _context.Carts.RemoveRange(cartItems);
+            await _context.SaveChangesAsync();
+
+            // 👉 Nếu là chuyển khoản thì chuyển hướng đến trang hướng dẫn thanh toán ngân hàng
+            if (method == "Chuyển khoản")
+            {
+                return RedirectToAction("BankTransfer", new { id = invoice.InvoiceId });
+            }
+
+            return RedirectToAction("Success", "Cart");
+        }
+
+       
+
     }
 }
