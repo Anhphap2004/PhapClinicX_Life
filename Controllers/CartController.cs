@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PhapClinicX.Models;
-using System.Linq;
+using PhapClinicX.Models.Vnpay;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.WebUtilities;
 
 namespace PhapClinicX.Controllers
 {
@@ -16,10 +18,12 @@ namespace PhapClinicX.Controllers
             _context = context;
         }
 
-        public IActionResult Success()
+        public IActionResult Success(string message)
         {
+            ViewBag.Message = message;
             return View();
         }
+
 
         public async Task<IActionResult> Index()
         {
@@ -305,11 +309,11 @@ namespace PhapClinicX.Controllers
             {
                 UserId = userId,
                 CreatedAt = DateTime.Now,
-                Status = "Đã thanh toán",
+                Status = "Chờ thanh toán", // Thay đổi status ban đầu thành "Chờ thanh toán"
                 TotalAmount = finalTotal,
                 PhongKhamId = phongKhamId,
                 InvoiceType = "Sản phẩm",
-                Method = method // ✅ Ghi lại phương thức thanh toán
+                Method = method
             };
 
             await _context.Invoices.AddAsync(invoice);
@@ -330,28 +334,65 @@ namespace PhapClinicX.Controllers
 
             await _context.SaveChangesAsync();
 
-            // Ghi thanh toán
-            var payment = new Payment
-            {
-                InvoiceId = invoice.InvoiceId,
-                UserId = userId,
-                Amount = finalTotal,
-                Method = method,
-                Status = "Đã thanh toán",
-                CreatedAt = DateTime.Now
-            };
-
-            await _context.Payments.AddAsync(payment);
-            await _context.SaveChangesAsync();
-
             // Xóa giỏ hàng
             _context.Carts.RemoveRange(cartItems);
             await _context.SaveChangesAsync();
 
-            // 👉 Nếu là chuyển khoản thì chuyển hướng đến trang hướng dẫn thanh toán ngân hàng
-            if (method == "Chuyển khoản")
+            // Nếu là chuyển khoản thì chuyển hướng đến trang hướng dẫn thanh toán ngân hàng
+            if (method == "ChuyenKhoan")
             {
+                // Cập nhật trạng thái cho phương thức chuyển khoản
+                invoice.Status = "Chờ xác nhận thanh toán";
+                await _context.SaveChangesAsync();
+
                 return RedirectToAction("BankTransfer", new { id = invoice.InvoiceId });
+            }
+
+            if (method == "VNPAY")
+            {
+                // Ghi thanh toán với trạng thái "Đang xử lý"
+                var payment = new Payment
+                {
+                    InvoiceId = invoice.InvoiceId,
+                    UserId = userId,
+                    Amount = finalTotal,
+                    Method = method,
+                    Status = "Đang xử lý",
+                    CreatedAt = DateTime.Now
+                };
+
+                await _context.Payments.AddAsync(payment);
+                await _context.SaveChangesAsync();
+
+                // Gửi orderId là số nguyên, không có dấu #
+                string orderId = invoice.InvoiceId.ToString();
+
+                return RedirectToAction("CreatePaymentUrlVnpay", "Payment", new
+                {
+                    amount = finalTotal,
+                    orderId = orderId, // Gửi orderId dạng số nguyên không có ký tự đặc biệt
+                    description = $"Thanh toán đơn hàng {orderId} tại PhapClinicX"
+                });
+            }
+            else // Các phương thức khác (tiền mặt, v.v.)
+            {
+                // Ghi thanh toán
+                var payment = new Payment
+                {
+                    InvoiceId = invoice.InvoiceId,
+                    UserId = userId,
+                    Amount = finalTotal,
+                    Method = method,
+                    Status = "Đã thanh toán",
+                    CreatedAt = DateTime.Now
+                };
+
+                await _context.Payments.AddAsync(payment);
+                await _context.SaveChangesAsync();
+
+                // Cập nhật trạng thái hóa đơn
+                invoice.Status = "Đã thanh toán";
+                await _context.SaveChangesAsync();
             }
 
             return RedirectToAction("Success", "Cart");

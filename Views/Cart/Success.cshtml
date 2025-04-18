@@ -1,7 +1,18 @@
 ﻿<div class="container text-center mt-5">
     <div class="card shadow-lg p-5 rounded-4 border-0">
         <h2 class="text-success mb-4">🎉 Thanh toán thành công!</h2>
-        <p class="fs-5 text-muted">Cảm ơn bạn đã tin tưởng và lựa chọn phòng khám <strong>Pháp</strong>. 💚</p>
+
+        @if (!string.IsNullOrEmpty(ViewBag.Message))
+        {
+            <p class="fs-5 text-muted">@ViewBag.Message</p>
+        }
+        else
+        {
+            <p class="fs-5 text-muted">
+                Cảm ơn bạn đã tin tưởng và lựa chọn phòng khám <strong>Pháp</strong>. 💚
+            </p>
+        }
+
         <p class="fs-6">
             Chúng tôi sẽ liên hệ bạn sớm để xác nhận lịch hẹn hoặc giao hàng tận nơi. <br />
             Chúc bạn luôn khỏe mạnh và tràn đầy năng lượng! 🌟
