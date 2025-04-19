@@ -48,4 +48,6 @@ public partial class Product
     public virtual ICollection<InvoiceDetail> InvoiceDetails { get; set; } = new List<InvoiceDetail>();
 
     public virtual ICollection<ProductComment> ProductComments { get; set; } = new List<ProductComment>();
+
+    public virtual ICollection<Revenue> Revenues { get; set; } = new List<Revenue>();
 }

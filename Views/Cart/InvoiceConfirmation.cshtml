@@ -3,75 +3,508 @@
     ViewData["Title"] = "Xác nhận đơn hàng";
 }
 
-<div class="container mt-5">
-    <h2 class="text-center mb-4 text-success">🧾 Xác nhận đơn hàng</h2>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<style>
+    :root {
+        --primary-color: #2c6e49;
+        --secondary-color: #4d908e;
+        --accent-color: #f6bd60;
+        --light-color: #f8f9fa;
+        --dark-color: #343a40;
+    }
 
-    <div class="card shadow p-4 rounded-4">
-        <h5 class="mb-3 text-primary">🛒 Danh sách sản phẩm:</h5>
-        <table class="table table-bordered">
-            <thead class="table-light">
-                <tr>
-                    <th>Sản phẩm</th>
-                    <th>Số lượng</th>
-                    <th>Đơn giá</th>
-                    <th>Thành tiền</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model.InvoiceDetails)
-                {
-                    <tr>
-                        <td>
-                            @(
-                                                    item.ProductId != null && ((Dictionary<int, string>)ViewBag.ProductNames).ContainsKey(item.ProductId.Value)
-                                                    ? ((Dictionary<int, string>)ViewBag.ProductNames)[item.ProductId.Value]
-                                                    : "Không tìm thấy"
-                                                    )
-                    </td>
-                    <td>@item.Quantity</td>
-                    <td>@item.Price?.ToString("N0") VNĐ</td>
-                    <td>@(((item.Quantity ?? 0) * (item.Price ?? 0)).ToString("N0")) VNĐ</td>
-                </tr>
-                                }
-            </tbody>
-        </table>
+    .order-header {
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        color: white;
+        border-radius: 0 0 20px 20px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        margin-bottom: 2rem;
+        padding: 2rem 0;
+    }
 
-        <div class="text-end mt-3">
-            <p>🧾 Tiền sản phẩm: <strong>@ViewBag.ProductTotal.ToString("N0") VNĐ</strong></p>
-            <p>🚚 Phí vận chuyển: <strong>@ViewBag.ShippingFee.ToString("N0") VNĐ</strong></p>
-            <h5>Tổng tiền: <span class="text-danger fw-bold">@Model.TotalAmount?.ToString("N0") VNĐ</span></h5>
-        </div>
+    .order-card {
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+        margin-bottom: 2rem;
+    }
 
-        <form asp-action="ConfirmPayment" method="post" class="mt-4">
-            <h5 class="text-secondary">📍 Chọn nơi nhận hàng (chi nhánh):</h5>
-            <div class="mb-3">
-                <select name="phongKhamId" class="form-select" required>
-                    <option disabled selected value="">-- Chọn chi nhánh nhận hàng --</option>
-                    @foreach (var branch in ViewBag.ListPhongKham)
-                    {
-                        <option value="@branch.PhongKhamId">@branch.TenPhongKham - @branch.DiaChi</option>
-                    }
-                </select>
-            </div>
+        .order-card .card-header {
+            background-color: rgba(44, 110, 73, 0.05);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            padding: 1.25rem 1.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
 
-            <h5 class="text-secondary">💳 Chọn phương thức thanh toán:</h5>
-            <div class="form-check">
-                <input class="form-check-input" type="radio" name="method" value="TienMat" checked>
-                <label class="form-check-label">💵 Tiền mặt</label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="radio" name="method" value="ChuyenKhoan">
-                <label class="form-check-label">🏦 Chuyển khoản ngân hàng</label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="radio" name="method" value="VNPAY">
-                <label class="form-check-label">🏧 Thanh toán qua VNPAY</label>
-            </div>
+        .order-card .card-body {
+            padding: 1.5rem;
+        }
 
-            <button type="submit" class="btn btn-success mt-4 px-4 py-2 rounded-pill">
-                ✅ Xác nhận thanh toán
-            </button>
-        </form>
+    .section-title {
+        display: flex;
+        align-items: center;
+        font-weight: 600;
+        color: var(--primary-color);
+        margin-bottom: 1.2rem;
+    }
 
+        .section-title i {
+            margin-right: 10px;
+            font-size: 1.1rem;
+        }
+
+    .table thead th {
+        background-color: rgba(44, 110, 73, 0.05);
+        color: var(--primary-color);
+        font-weight: 600;
+        border-color: rgba(0,0,0,0.05);
+    }
+
+    .table td {
+        vertical-align: middle;
+    }
+
+    .price-info {
+        background-color: #f8f9fa;
+        border-radius: 12px;
+        padding: 1.25rem;
+    }
+
+    .price-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 0.75rem;
+    }
+
+    .price-total {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #e63946;
+        padding-top: 1rem;
+        margin-top: 0.75rem;
+        border-top: 1px dashed rgba(0,0,0,0.1);
+    }
+
+    .user-info {
+        background-color: rgba(77, 144, 142, 0.05);
+        border-radius: 12px;
+        padding: 1.25rem;
+    }
+
+    .user-detail {
+        margin-bottom: 0.5rem;
+    }
+
+        .user-detail strong {
+            color: var(--dark-color);
+            width: 120px;
+            display: inline-block;
+        }
+
+    .payment-option {
+        background: white;
+        border: 1px solid rgba(0,0,0,0.1);
+        border-radius: 10px;
+        padding: 1rem;
+        margin-bottom: 1rem;
+        transition: all 0.2s ease;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+    }
+
+        .payment-option:hover {
+            border-color: var(--secondary-color);
+            box-shadow: 0 3px 8px rgba(0,0,0,0.05);
+        }
+
+        .payment-option.selected {
+            border-color: var(--primary-color);
+            background-color: rgba(44, 110, 73, 0.05);
+        }
+
+        .payment-option .icon {
+            width: 40px;
+            height: 40px;
+            background-color: rgba(44, 110, 73, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: var(--primary-color);
+            font-size: 1.1rem;
+        }
+
+        .payment-option .details {
+            flex: 1;
+        }
+
+        .payment-option .title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            color: var(--dark-color);
+        }
+
+        .payment-option .description {
+            font-size: 0.875rem;
+            color: #6c757d;
+            margin: 0;
+        }
+
+        .payment-option .radio {
+            margin: 0 10px;
+        }
+
+    .branch-select {
+        border: 1px solid rgba(0,0,0,0.1);
+        border-radius: 8px;
+        padding: 0.75rem 1rem;
+        width: 100%;
+    }
+
+        .branch-select:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 0.2rem rgba(77, 144, 142, 0.25);
+        }
+
+        .branch-select.is-invalid {
+            border-color: #dc3545;
+            padding-right: calc(1.5em + 0.75rem);
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right calc(0.375em + 0.1875rem) center;
+            background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+        }
+
+    .invalid-feedback {
+        display: none;
+        width: 100%;
+        margin-top: 0.25rem;
+        font-size: 0.875em;
+        color: #dc3545;
+    }
+
+        .invalid-feedback.show {
+            display: block;
+        }
+
+    .btn-success {
+        background-color: var(--primary-color);
+        border-color: var(--primary-color);
+        padding: 0.75rem 2rem;
+        font-weight: 600;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+        .btn-success:hover {
+            background-color: #255d3d;
+            border-color: #255d3d;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(44, 110, 73, 0.3);
+        }
+
+    .toast-container {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 9999;
+    }
+
+    .toast {
+        background-color: #fff;
+        border-left: 4px solid var(--primary-color);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        max-width: 350px;
+    }
+
+    .toast-error {
+        border-left-color: #dc3545;
+    }
+
+    .toast-icon {
+        margin-right: 0.75rem;
+        font-size: 1.25rem;
+        color: #dc3545;
+    }
+
+    .toast-message {
+        flex: 1;
+    }
+</style>
+
+<div class="order-header text-center py-4">
+    <div class="container">
+        <h2 class="mb-0"><i class="fas fa-receipt me-2"></i>Xác nhận đơn hàng</h2>
     </div>
 </div>
+
+<div class="container">
+    <div class="order-card">
+        <div class="card-header">
+            <h5 class="mb-0"><i class="fas fa-shopping-cart me-2"></i>Danh sách sản phẩm</h5>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-bordered mb-0">
+                    <thead>
+                        <tr>
+                            <th>Sản phẩm</th>
+                            <th>Hình Ảnh</th>
+                            <th>Số lượng</th>
+                            <th>Đơn giá</th>
+                            <th>Thành tiền</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.InvoiceDetails)
+                        {
+                            <tr>
+                                <td>
+                                    @(
+                                                                    item.ProductId != null && ((Dictionary<int, string>)ViewBag.ProductNames).ContainsKey(item.ProductId.Value)
+                                                                    ? ((Dictionary<int, string>)ViewBag.ProductNames)[item.ProductId.Value]
+                                                                    : "Không tìm thấy"
+                                                                    )
+                            </td>
+                            <td>
+                                @if (item.ProductId != null && ((Dictionary<int, string>)ViewBag.ProductImages).ContainsKey(item.ProductId.Value))
+                                    {
+                                        <img src="~/assets/img/product/@(((Dictionary<int, string>)ViewBag.ProductImages)[item.ProductId.Value])"
+                                             alt="Ảnh sản phẩm"
+                                             class="img-thumbnail rounded-3"
+                                             style="max-width: 100px; height: auto;">
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">Không có ảnh</span>
+                                    }
+                                </td>
+                                <td>@item.Quantity</td>
+                                <td>@item.Price?.ToString("N0") VNĐ</td>
+                                <td>@(((item.Quantity ?? 0) * (item.Price ?? 0)).ToString("N0")) VNĐ</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <form asp-action="ConfirmPayment" method="post" id="paymentForm" onsubmit="return validateForm()">
+        <div class="row">
+            <div class="col-lg-7">
+                <div class="order-card">
+                    <div class="card-header">
+                        <h5 class="mb-0"><i class="fas fa-user me-2"></i>Thông tin giao hàng</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="user-info mb-4">
+                            <div class="user-detail">
+                                <strong>Họ tên:</strong> @ViewBag.UserName
+                            </div>
+                            <div class="user-detail">
+                                <strong>Điện thoại:</strong> @ViewBag.UserPhone
+                            </div>
+                            <div class="user-detail">
+                                <strong>Địa chỉ:</strong> @ViewBag.UserAddress
+                            </div>
+                        </div>
+
+                        <input type="hidden" name="selectedPayment" id="selectedPayment" value="TienMat">
+
+                        <h5 class="section-title mt-4">
+                            <i class="fas fa-map-marker-alt"></i>
+                            Chọn chi nhánh nhận hàng
+                        </h5>
+                        <div class="mb-2">
+                            <select name="phongKhamId" id="phongKhamId" class="branch-select" required>
+                                <option disabled selected value="">-- Chọn chi nhánh nhận hàng --</option>
+                                @foreach (var branch in ViewBag.ListPhongKham)
+                                {
+                                    <option value="@branch.PhongKhamId">@branch.TenPhongKham - @branch.DiaChi</option>
+                                }
+                            </select>
+                            <div class="invalid-feedback" id="branchFeedback">
+                                Vui lòng chọn chi nhánh nhận hàng
+                            </div>
+                        </div>
+
+                        <h5 class="section-title mt-4">
+                            <i class="fas fa-credit-card"></i>
+                            Chọn phương thức thanh toán
+                        </h5>
+
+                        <div class="payment-methods">
+                            <div class="payment-option selected" onclick="selectPayment(this, 'TienMat')">
+                                <div class="icon">
+                                    <i class="fas fa-money-bill-wave"></i>
+                                </div>
+                                <div class="details">
+                                    <h6 class="title">Tiền mặt</h6>
+                                    <p class="description">Thanh toán khi nhận hàng tại chi nhánh</p>
+                                </div>
+                                <div class="radio">
+                                    <input type="radio" name="method" value="TienMat" checked hidden>
+                                    <i class="fas fa-check-circle text-success"></i>
+                                </div>
+                            </div>
+
+                            <div class="payment-option" onclick="selectPayment(this, 'ChuyenKhoan')">
+                                <div class="icon">
+                                    <i class="fas fa-university"></i>
+                                </div>
+                                <div class="details">
+                                    <h6 class="title">Chuyển khoản ngân hàng</h6>
+                                    <p class="description">Chuyển khoản đến tài khoản của PhapClinicX</p>
+                                </div>
+                                <div class="radio">
+                                    <input type="radio" name="method" value="ChuyenKhoan" hidden>
+                                    <i class="far fa-circle text-secondary"></i>
+                                </div>
+                            </div>
+
+                            <div class="payment-option" onclick="selectPayment(this, 'VNPAY')">
+                                <div class="icon">
+                                    <i class="fas fa-qrcode"></i>
+                                </div>
+                                <div class="details">
+                                    <h6 class="title">Thanh toán VNPAY</h6>
+                                    <p class="description">Thanh toán trực tuyến qua cổng VNPAY</p>
+                                </div>
+                                <div class="radio">
+                                    <input type="radio" name="method" value="VNPAY" hidden>
+                                    <i class="far fa-circle text-secondary"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-5">
+                <div class="order-card">
+                    <div class="card-header">
+                        <h5 class="mb-0"><i class="fas fa-calculator me-2"></i>Tổng thanh toán</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="price-info mb-4">
+                            <div class="price-row">
+                                <span>Tiền sản phẩm:</span>
+                                <span class="fw-medium">@ViewBag.ProductTotal.ToString("N0") VNĐ</span>
+                            </div>
+                            <div class="price-row">
+                                <span>Phí vận chuyển:</span>
+                                <span class="fw-medium">@ViewBag.ShippingFee.ToString("N0") VNĐ</span>
+                            </div>
+                            <div class="price-row price-total">
+                                <span>Tổng tiền:</span>
+                                <span>@Model.TotalAmount?.ToString("N0") VNĐ</span>
+                            </div>
+                        </div>
+
+                        <div class="alert alert-info d-flex align-items-center" role="alert">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <div>
+                                Vui lòng kiểm tra thông tin đơn hàng trước khi xác nhận thanh toán
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-success w-100">
+                            <i class="fas fa-check-circle me-2"></i>
+                            Xác nhận thanh toán
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- Toast container for notifications -->
+<div class="toast-container" id="toastContainer"></div>
+
+<script>
+    function selectPayment(element, method) {
+        // Remove selected class from all payment options
+        document.querySelectorAll('.payment-option').forEach(option => {
+            option.classList.remove('selected');
+            option.querySelector('.radio i').className = 'far fa-circle text-secondary';
+        });
+
+        // Add selected class to clicked payment option
+        element.classList.add('selected');
+        element.querySelector('.radio i').className = 'fas fa-check-circle text-success';
+
+        // Select the radio button and update hidden input
+        document.querySelector(`input[value="${method}"]`).checked = true;
+        document.getElementById('selectedPayment').value = method;
+    }
+
+    function validateForm() {
+        let isValid = true;
+        const branchSelect = document.getElementById('phongKhamId');
+        const branchFeedback = document.getElementById('branchFeedback');
+
+        // Validate branch selection
+        if (branchSelect.value === '' || branchSelect.value === null) {
+            branchSelect.classList.add('is-invalid');
+            branchFeedback.classList.add('show');
+            isValid = false;
+
+            // Show toast notification
+            showToast('Vui lòng chọn chi nhánh nhận hàng', 'error');
+
+            // Scroll to branch select
+            branchSelect.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } else {
+            branchSelect.classList.remove('is-invalid');
+            branchFeedback.classList.remove('show');
+        }
+
+        return isValid;
+    }
+
+    // Add event listener to select to remove validation error when value changes
+    document.getElementById('phongKhamId').addEventListener('change', function() {
+        if (this.value !== '') {
+            this.classList.remove('is-invalid');
+            document.getElementById('branchFeedback').classList.remove('show');
+        }
+    });
+
+    function showToast(message, type = 'info') {
+        const toastContainer = document.getElementById('toastContainer');
+
+        // Create toast element
+        const toast = document.createElement('div');
+        toast.className = `toast ${type === 'error' ? 'toast-error' : ''}`;
+
+        // Create toast content
+        toast.innerHTML = `
+            <div class="toast-icon">
+                <i class="fas ${type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i>
+            </div>
+            <div class="toast-message">${message}</div>
+        `;
+
+        // Add toast to container
+        toastContainer.appendChild(toast);
+
+        // Remove toast after 3 seconds
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            toast.style.transition = 'opacity 0.5s ease';
+            setTimeout(() => {
+                toastContainer.removeChild(toast);
+            }, 500);
+        }, 3000);
+    }
+</script>

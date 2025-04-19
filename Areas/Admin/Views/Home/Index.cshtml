@@ -20,8 +20,10 @@
                                     <img src="~/admin/assets/images/product/1.png" class="img-fluid" alt="image">
                                 </div>
                                 <div>
-                                    <p class="mb-2">Total Sales</p>
-                                    <h4>31.50</h4>
+                                    <h4 class="mb-1 mt-1">
+                                        <span data-plugin="counterup">@ViewBag.TotalSales.ToString("N0") VNĐ</span>
+                                    </h4>
+                                    <p class="text-muted mb-0">Tổng Doanh Thu</p>
                                 </div>
                             </div>
                             <div class="iq-progress-bar mt-2">
@@ -39,8 +41,10 @@
                                     <img src="~/admin/assets/images/product/2.png" class="img-fluid" alt="image">
                                 </div>
                                 <div>
-                                    <p class="mb-2">Total Cost</p>
-                                    <h4>$ 4598</h4>
+                                    <h4 class="mb-1 mt-1">
+                                        <span data-plugin="counterup">@ViewBag.TotalCost.ToString("N0") VNĐ</span>
+                                    </h4>
+                                    <p class="text-muted mb-0">Tổng Chi Phí</p>
                                 </div>
                             </div>
                             <div class="iq-progress-bar mt-2">
@@ -58,8 +62,11 @@
                                     <img src="~/admin/assets/images/product/3.png" class="img-fluid" alt="image">
                                 </div>
                                 <div>
-                                    <p class="mb-2">Product Sold</p>
-                                    <h4>4589 M</h4>
+
+                                    <h4 class="mb-1 mt-1">
+                                        <span data-plugin="counterup">@ViewBag.ProductSold</span>
+                                    </h4>
+                                    <p class="text-muted mb-0">Sản Phẩm Đã Bán</p>
                                 </div>
                             </div>
                             <div class="iq-progress-bar mt-2">

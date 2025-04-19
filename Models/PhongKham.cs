@@ -25,13 +25,15 @@ public partial class PhongKham
 
     public virtual ICollection<BranchProduct> BranchProducts { get; set; } = new List<BranchProduct>();
 
-    public virtual ICollection<ClinicAppointment> ClinicAppointments { get; set; } = new List<ClinicAppointment>();
+    public virtual ICollection<Cart> Carts { get; set; } = new List<Cart>();
 
-    public virtual ICollection<DoanhThuPhongKham> DoanhThuPhongKhams { get; set; } = new List<DoanhThuPhongKham>();
+    public virtual ICollection<ClinicAppointment> ClinicAppointments { get; set; } = new List<ClinicAppointment>();
 
     public virtual ICollection<DoctorProfile> DoctorProfiles { get; set; } = new List<DoctorProfile>();
 
     public virtual ICollection<Invoice> Invoices { get; set; } = new List<Invoice>();
 
     public virtual ICollection<KhoaKham> KhoaKhams { get; set; } = new List<KhoaKham>();
+
+    public virtual ICollection<Revenue> Revenues { get; set; } = new List<Revenue>();
 }

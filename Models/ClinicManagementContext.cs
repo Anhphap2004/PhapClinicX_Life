@@ -33,10 +33,6 @@ public partial class ClinicManagementContext : DbContext
 
     public virtual DbSet<Discount> Discounts { get; set; }
 
-    public virtual DbSet<DoanhThuPhongKham> DoanhThuPhongKhams { get; set; }
-
-    public virtual DbSet<DoanhThuTong> DoanhThuTongs { get; set; }
-
     public virtual DbSet<DoctorAppointment> DoctorAppointments { get; set; }
 
     public virtual DbSet<DoctorProfile> DoctorProfiles { get; set; }
@@ -63,6 +59,8 @@ public partial class ClinicManagementContext : DbContext
 
     public virtual DbSet<ProductComment> ProductComments { get; set; }
 
+    public virtual DbSet<Revenue> Revenues { get; set; }
+
     public virtual DbSet<Role> Roles { get; set; }
 
     public virtual DbSet<Service> Services { get; set; }
@@ -75,7 +73,6 @@ public partial class ClinicManagementContext : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
-   
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -208,6 +205,10 @@ public partial class ClinicManagementContext : DbContext
             entity.Property(e => e.Quantity).HasColumnName("quantity");
             entity.Property(e => e.UserId).HasColumnName("user_id");
 
+            entity.HasOne(d => d.PhongKham).WithMany(p => p.Carts)
+                .HasForeignKey(d => d.PhongKhamId)
+                .HasConstraintName("FK_Cart_PhongKham");
+
             entity.HasOne(d => d.Product).WithMany(p => p.Carts)
                 .HasForeignKey(d => d.ProductId)
                 .HasConstraintName("FK__Cart__product_id__778AC167");
@@ -267,32 +268,6 @@ public partial class ClinicManagementContext : DbContext
             entity.Property(e => e.Image).HasMaxLength(255);
             entity.Property(e => e.IsActive).HasDefaultValue(true);
             entity.Property(e => e.StartDate).HasColumnType("datetime");
-        });
-
-        modelBuilder.Entity<DoanhThuPhongKham>(entity =>
-        {
-            entity.HasKey(e => e.DoanhThuId).HasName("PK__DoanhThu__D2C18FB1C8148A0E");
-
-            entity.ToTable("DoanhThuPhongKham");
-
-            entity.Property(e => e.DoanhThuId).HasColumnName("DoanhThuID");
-            entity.Property(e => e.DoanhThu).HasColumnType("decimal(15, 2)");
-            entity.Property(e => e.PhongKhamId).HasColumnName("PhongKhamID");
-
-            entity.HasOne(d => d.PhongKham).WithMany(p => p.DoanhThuPhongKhams)
-                .HasForeignKey(d => d.PhongKhamId)
-                .OnDelete(DeleteBehavior.Cascade)
-                .HasConstraintName("FK__DoanhThuP__Phong__3493CFA7");
-        });
-
-        modelBuilder.Entity<DoanhThuTong>(entity =>
-        {
-            entity.HasKey(e => e.DoanhThuTongId).HasName("PK__DoanhThu__FC40012C84371545");
-
-            entity.ToTable("DoanhThuTong");
-
-            entity.Property(e => e.DoanhThuTongId).HasColumnName("DoanhThuTongID");
-            entity.Property(e => e.TongDoanhThu).HasColumnType("decimal(15, 2)");
         });
 
         modelBuilder.Entity<DoctorAppointment>(entity =>
@@ -368,9 +343,7 @@ public partial class ClinicManagementContext : DbContext
                 .HasColumnType("datetime")
                 .HasColumnName("created_at");
             entity.Property(e => e.InvoiceType).HasMaxLength(50);
-            entity.Property(e => e.Method) // 👈 Dòng mới nè
-                .HasMaxLength(50)
-                .HasColumnName("method");
+            entity.Property(e => e.Method).HasMaxLength(50);
             entity.Property(e => e.PhongKhamId).HasColumnName("PhongKhamID");
             entity.Property(e => e.Status)
                 .HasMaxLength(50)
@@ -390,12 +363,15 @@ public partial class ClinicManagementContext : DbContext
                 .HasConstraintName("FK__Invoices__user_i__6E01572D");
         });
 
-
         modelBuilder.Entity<InvoiceDetail>(entity =>
         {
             entity.HasKey(e => e.DetailId).HasName("PK__InvoiceD__38E9A22458F37023");
 
-            entity.ToTable(tb => tb.HasTrigger("trg_UpdateProductSold"));
+            entity.ToTable(tb =>
+                {
+                    tb.HasTrigger("UpdateRevenueAfterInsert");
+                    tb.HasTrigger("trg_UpdateProductSold");
+                });
 
             entity.Property(e => e.DetailId).HasColumnName("detail_id");
             entity.Property(e => e.InvoiceId).HasColumnName("invoice_id");
@@ -590,6 +566,26 @@ public partial class ClinicManagementContext : DbContext
             entity.HasOne(d => d.User).WithMany(p => p.ProductComments)
                 .HasForeignKey(d => d.UserId)
                 .HasConstraintName("FK__ProductCo__user___7C4F7684");
+        });
+
+        modelBuilder.Entity<Revenue>(entity =>
+        {
+            entity.HasKey(e => e.RevenueId).HasName("PK__Revenue__275F173DF14F3A16");
+
+            entity.ToTable("Revenue");
+
+            entity.Property(e => e.RevenueId).HasColumnName("RevenueID");
+            entity.Property(e => e.PhongKhamId).HasColumnName("PhongKhamID");
+            entity.Property(e => e.ProductId).HasColumnName("product_id");
+            entity.Property(e => e.TotalRevenue).HasColumnType("decimal(18, 2)");
+
+            entity.HasOne(d => d.PhongKham).WithMany(p => p.Revenues)
+                .HasForeignKey(d => d.PhongKhamId)
+                .HasConstraintName("FK_PhongKhamID");
+
+            entity.HasOne(d => d.Product).WithMany(p => p.Revenues)
+                .HasForeignKey(d => d.ProductId)
+                .HasConstraintName("FK_ProductID");
         });
 
         modelBuilder.Entity<Role>(entity =>

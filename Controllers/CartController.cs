@@ -210,12 +210,15 @@ namespace PhapClinicX.Controllers
                 return RedirectToAction("Index", "Login");
             }
 
-            // Lấy danh sách tên sản phẩm để hiển thị trong View
+            // 🛍️ Lấy tên sản phẩm
             var productNames = await _context.Products
                 .ToDictionaryAsync(p => p.ProductId, p => p.ProductName);
-
             ViewBag.ProductNames = productNames;
 
+            var productImages = await _context.Products
+    .ToDictionaryAsync(p => p.ProductId, p => p.Image);
+            ViewBag.ProductImages = productImages;
+            // 🛒 Lấy giỏ hàng
             var cartItems = await _context.Carts
                 .Where(c => c.UserId == userId && c.IsCheckedOut == false)
                 .Include(c => c.Product)
@@ -227,26 +230,31 @@ namespace PhapClinicX.Controllers
                 return RedirectToAction("Index");
             }
 
-            // Tính tổng tiền hàng
+            // 💵 Tính tiền
             var total = cartItems.Sum(c => (c.Quantity ?? 0) * (c.Product?.PriceSale ?? 0));
-
-            // Tính phí ship (miễn phí nếu tổng >= 1 triệu)
             decimal shippingFee = total >= 1000000 ? 0 : 30000;
-
-            // Tổng cộng thanh toán
             var finalTotal = total + shippingFee;
 
-            // Lấy danh sách chi nhánh để chọn khi thanh toán
+            // 📍 Lấy danh sách chi nhánh
             ViewBag.ListPhongKham = await _context.PhongKhams
                 .Where(p => p.Isactive == true)
                 .ToListAsync();
 
-            // Truyền dữ liệu phụ trợ ra View
+            // 💬 Lấy địa chỉ user
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserId == userId);
+            if (user != null)
+            {
+                ViewBag.UserAddress = user.Address; 
+                ViewBag.UserPhone = user.Phone;
+                ViewBag.UserName = user.FullName;
+            }
+
+            // 🚚 Truyền phụ trợ
             ViewBag.ShippingFee = shippingFee;
             ViewBag.ProductTotal = total;
             ViewBag.FinalTotal = finalTotal;
 
-            // Tạo hóa đơn tạm để hiển thị
+            // 📜 Hóa đơn tạm
             var invoice = new Invoice
             {
                 UserId = userId,
@@ -258,12 +266,13 @@ namespace PhapClinicX.Controllers
                 {
                     ProductId = c.ProductId,
                     Quantity = c.Quantity,
-                    Price = c.Product?.PriceSale ?? 0
+                    Price = c.Product?.PriceSale // 👉 Sửa lỗi nhỏ nè
                 }).ToList()
             };
 
             return View("InvoiceConfirmation", invoice);
         }
+
         public async Task<IActionResult> BankTransfer(int id)
         {
             var invoice = await _context.Invoices
@@ -327,7 +336,7 @@ namespace PhapClinicX.Controllers
                     InvoiceId = invoice.InvoiceId,
                     ProductId = item.ProductId,
                     Quantity = item.Quantity,
-                    Price = item.Product?.PriceSale ?? 0
+                    Price = finalTotal
                 };
                 await _context.InvoiceDetails.AddAsync(detail);
             }
