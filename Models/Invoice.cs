@@ -20,7 +20,9 @@ public partial class Invoice
     public string? InvoiceType { get; set; }
 
     public string? Method { get; set; }
-
+    public decimal? DiscountAmount { get; set; }
+    public string? DiscountCode { get; set; }
+    public int? DiscountId { get; set; }
     public virtual ICollection<InvoiceDetail> InvoiceDetails { get; set; } = new List<InvoiceDetail>();
 
     public virtual ICollection<Payment> Payments { get; set; } = new List<Payment>();

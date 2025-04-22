@@ -42,7 +42,20 @@ namespace PhapClinicX.Controllers
 
             decimal cartTotal = cartItems.Sum(item => (item.Product?.PriceSale ?? 0) * (item.Quantity ?? 0));
             ViewBag.ShippingFee = cartTotal >= 1000000 ? 0 : 30000;
+
+            // Lấy thông tin giảm giá từ session
             ViewBag.Discount = HttpContext.Session.GetInt32("DiscountAmount") ?? 0;
+            ViewBag.CouponCode = HttpContext.Session.GetString("CouponCode");
+
+            // Nếu có mã giảm giá, hiển thị thông tin mã giảm giá
+            if (!string.IsNullOrEmpty(ViewBag.CouponCode))
+            {
+                int? discountId = HttpContext.Session.GetInt32("DiscountId");
+                if (discountId.HasValue)
+                {
+                    ViewBag.DiscountInfo = await _context.Discounts.FirstOrDefaultAsync(d => d.DiscountId == discountId);
+                }
+            }
 
             return View(cartItems);
         }
@@ -70,7 +83,7 @@ namespace PhapClinicX.Controllers
                 .OrderByDescending(p => p.PriceSale)
                 .Take(4)
                 .ToListAsync();
-
+   
             ViewBag.RelatedProducts = relatedProducts;
         }
 
@@ -133,45 +146,8 @@ namespace PhapClinicX.Controllers
             return Json(new { success = true });
         }
 
-        [HttpPost]
-        public async Task<IActionResult> RemoveItem(int cartId)
-        {
-            int? userId = HttpContext.Session.GetInt32("UserId");
-            if (userId == null)
-            {
-                return Json(new { success = false, message = "Vui lòng đăng nhập để thực hiện thao tác này" });
-            }
 
-            var cartItem = await _context.Carts.FirstOrDefaultAsync(c => c.CartId == cartId && c.UserId == userId);
-            if (cartItem == null)
-            {
-                return Json(new { success = false, message = "Không tìm thấy sản phẩm trong giỏ hàng" });
-            }
 
-            _context.Carts.Remove(cartItem);
-            await _context.SaveChangesAsync();
-
-            return Json(new { success = true });
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> ClearCart()
-        {
-            int? userId = HttpContext.Session.GetInt32("UserId");
-            if (userId == null)
-            {
-                return Json(new { success = false, message = "Vui lòng đăng nhập để thực hiện thao tác này" });
-            }
-
-            var cartItems = _context.Carts.Where(c => c.UserId == userId);
-            _context.Carts.RemoveRange(cartItems);
-            await _context.SaveChangesAsync();
-
-            HttpContext.Session.Remove("DiscountAmount");
-            HttpContext.Session.Remove("CouponCode");
-
-            return Json(new { success = true });
-        }
 
         [HttpPost]
         public async Task<IActionResult> ApplyCoupon(string code)
@@ -179,12 +155,14 @@ namespace PhapClinicX.Controllers
             int? userId = HttpContext.Session.GetInt32("UserId");
             if (userId == null)
             {
-                return Json(new { success = false, message = "Vui lòng đăng nhập để thực hiện thao tác này" });
+                TempData["Message"] = "Vui lòng đăng nhập để áp dụng mã giảm giá";
+                return RedirectToAction("Index");
             }
 
             if (string.IsNullOrEmpty(code))
             {
-                return Json(new { success = false, message = "Vui lòng nhập mã giảm giá" });
+                TempData["Message"] = "Vui lòng nhập mã giảm giá";
+                return RedirectToAction("Index");
             }
 
             var coupon = await _context.Discounts
@@ -192,14 +170,37 @@ namespace PhapClinicX.Controllers
 
             if (coupon == null)
             {
-                return Json(new { success = false, message = "Mã giảm giá không hợp lệ hoặc đã hết hạn" });
+                TempData["Message"] = "Mã giảm giá không hợp lệ hoặc đã hết hạn";
+                return RedirectToAction("Index");
             }
 
-            HttpContext.Session.SetInt32("DiscountAmount", (int)coupon.DiscountPercent);
-            HttpContext.Session.SetString("CouponCode", code);
+            var cartItems = await _context.Carts
+                .Include(c => c.Product)
+                .Where(c => c.UserId == userId)
+                .ToListAsync();
 
-            return Json(new { success = true, message = "Áp dụng mã giảm giá thành công" });
+            decimal cartTotal = cartItems.Sum(item => (item.Product?.PriceSale ?? 0) * (item.Quantity ?? 0));
+            decimal discountAmount = Math.Round((cartTotal * coupon.DiscountPercent) / 100);
+
+            // Lưu thông tin giảm giá vào session
+            HttpContext.Session.SetString("DiscountAmount", discountAmount.ToString()); // Lưu dạng string
+            HttpContext.Session.SetString("CouponCode", code);
+            HttpContext.Session.SetInt32("DiscountId", coupon.DiscountId);
+
+
+            return RedirectToAction("Index");
         }
+        [HttpPost]
+        public IActionResult RemoveCoupon()
+        {
+            HttpContext.Session.Remove("DiscountAmount");
+            HttpContext.Session.Remove("CouponCode");
+            HttpContext.Session.Remove("DiscountId");
+
+            // Có thể Redirect về lại giỏ hàng
+            return RedirectToAction("Index", "Cart");
+        }
+
 
         [HttpPost]
         public async Task<IActionResult> Checkout()
@@ -210,15 +211,6 @@ namespace PhapClinicX.Controllers
                 return RedirectToAction("Index", "Login");
             }
 
-            // 🛍️ Lấy tên sản phẩm
-            var productNames = await _context.Products
-                .ToDictionaryAsync(p => p.ProductId, p => p.ProductName);
-            ViewBag.ProductNames = productNames;
-
-            var productImages = await _context.Products
-    .ToDictionaryAsync(p => p.ProductId, p => p.Image);
-            ViewBag.ProductImages = productImages;
-            // 🛒 Lấy giỏ hàng
             var cartItems = await _context.Carts
                 .Where(c => c.UserId == userId && c.IsCheckedOut == false)
                 .Include(c => c.Product)
@@ -230,31 +222,31 @@ namespace PhapClinicX.Controllers
                 return RedirectToAction("Index");
             }
 
-            // 💵 Tính tiền
-            var total = cartItems.Sum(c => (c.Quantity ?? 0) * (c.Product?.PriceSale ?? 0));
-            decimal shippingFee = total >= 1000000 ? 0 : 30000;
-            var finalTotal = total + shippingFee;
+            decimal cartTotal = cartItems.Sum(c => (c.Quantity ?? 0) * (c.Product?.PriceSale ?? 0));
+            decimal shippingFee = cartTotal >= 1_000_000 ? 0 : 30_000;
 
-            // 📍 Lấy danh sách chi nhánh
-            ViewBag.ListPhongKham = await _context.PhongKhams
-                .Where(p => p.Isactive == true)
-                .ToListAsync();
+            // 🎯 Lấy giảm giá từ Session
+            decimal discountAmount = decimal.TryParse(HttpContext.Session.GetString("DiscountAmount"), out var d) ? d : 0;
+            decimal finalTotal = cartTotal + shippingFee - discountAmount;
+            if (finalTotal < 0) finalTotal = 0;
 
-            // 💬 Lấy địa chỉ user
+            ViewBag.ProductNames = await _context.Products.ToDictionaryAsync(p => p.ProductId, p => p.ProductName);
+            ViewBag.ProductImages = await _context.Products.ToDictionaryAsync(p => p.ProductId, p => p.Image);
+            ViewBag.ListPhongKham = await _context.PhongKhams.Where(p => p.Isactive == true).ToListAsync();
+
             var user = await _context.Users.FirstOrDefaultAsync(u => u.UserId == userId);
             if (user != null)
             {
-                ViewBag.UserAddress = user.Address; 
+                ViewBag.UserAddress = user.Address;
                 ViewBag.UserPhone = user.Phone;
                 ViewBag.UserName = user.FullName;
             }
 
-            // 🚚 Truyền phụ trợ
             ViewBag.ShippingFee = shippingFee;
-            ViewBag.ProductTotal = total;
+            ViewBag.ProductTotal = cartTotal;
+            ViewBag.DiscountAmount = discountAmount;
             ViewBag.FinalTotal = finalTotal;
 
-            // 📜 Hóa đơn tạm
             var invoice = new Invoice
             {
                 UserId = userId,
@@ -266,28 +258,12 @@ namespace PhapClinicX.Controllers
                 {
                     ProductId = c.ProductId,
                     Quantity = c.Quantity,
-                    Price = c.Product?.PriceSale // 👉 Sửa lỗi nhỏ nè
+                    Price = c.Product?.PriceSale
                 }).ToList()
             };
 
             return View("InvoiceConfirmation", invoice);
         }
-
-        public async Task<IActionResult> BankTransfer(int id)
-        {
-            var invoice = await _context.Invoices
-                .Include(i => i.User)
-                .FirstOrDefaultAsync(i => i.InvoiceId == id);
-
-            if (invoice == null)
-            {
-                return NotFound();
-            }
-
-            return View(invoice);
-        }
-
-
         [HttpPost]
         public async Task<IActionResult> ConfirmPayment(string method, int phongKhamId)
         {
@@ -308,27 +284,34 @@ namespace PhapClinicX.Controllers
                 return RedirectToAction("Index");
             }
 
-            // Tính tiền
             decimal cartTotal = cartItems.Sum(item => (item.Product?.PriceSale ?? 0) * (item.Quantity ?? 0));
             decimal shippingFee = cartTotal >= 1_000_000 ? 0 : 30_000;
-            decimal finalTotal = cartTotal + shippingFee;
 
-            // Tạo hóa đơn
+            // 🎯 Lấy giảm giá từ Session
+            decimal discountAmount = decimal.TryParse(HttpContext.Session.GetString("DiscountAmount"), out var d) ? d : 0;
+            decimal finalTotal = cartTotal + shippingFee - discountAmount;
+            if (finalTotal < 0) finalTotal = 0;
+
+            string couponCode = HttpContext.Session.GetString("Code") ?? "";
+            int? discountId = HttpContext.Session.GetInt32("DiscountId");
+
             var invoice = new Invoice
             {
                 UserId = userId,
                 CreatedAt = DateTime.Now,
-                Status = "Chờ thanh toán", // Thay đổi status ban đầu thành "Chờ thanh toán"
+                Status = "Chờ thanh toán",
                 TotalAmount = finalTotal,
                 PhongKhamId = phongKhamId,
                 InvoiceType = "Sản phẩm",
-                Method = method
+                Method = method,
+                DiscountAmount = discountAmount,
+                DiscountCode = couponCode,
+                DiscountId = discountId
             };
 
             await _context.Invoices.AddAsync(invoice);
             await _context.SaveChangesAsync();
 
-            // Thêm chi tiết hóa đơn
             foreach (var item in cartItems)
             {
                 var detail = new InvoiceDetail
@@ -336,30 +319,32 @@ namespace PhapClinicX.Controllers
                     InvoiceId = invoice.InvoiceId,
                     ProductId = item.ProductId,
                     Quantity = item.Quantity,
-                    Price = finalTotal
+                    Price = item.Product?.PriceSale
                 };
                 await _context.InvoiceDetails.AddAsync(detail);
             }
 
             await _context.SaveChangesAsync();
 
-            // Xóa giỏ hàng
+            // 🧹 Xóa Session giảm giá sau khi thanh toán
+            HttpContext.Session.Remove("DiscountPercent");
+            HttpContext.Session.Remove("Code");
+            HttpContext.Session.Remove("DiscountId");
+
+            // 🛒 Xóa giỏ hàng
             _context.Carts.RemoveRange(cartItems);
             await _context.SaveChangesAsync();
 
-            // Nếu là chuyển khoản thì chuyển hướng đến trang hướng dẫn thanh toán ngân hàng
+            // 👉 Xử lý các phương thức thanh toán
             if (method == "ChuyenKhoan")
             {
-                // Cập nhật trạng thái cho phương thức chuyển khoản
                 invoice.Status = "Chờ xác nhận thanh toán";
                 await _context.SaveChangesAsync();
-
                 return RedirectToAction("BankTransfer", new { id = invoice.InvoiceId });
             }
 
             if (method == "VNPAY")
             {
-                // Ghi thanh toán với trạng thái "Đang xử lý"
                 var payment = new Payment
                 {
                     InvoiceId = invoice.InvoiceId,
@@ -369,23 +354,18 @@ namespace PhapClinicX.Controllers
                     Status = "Đang xử lý",
                     CreatedAt = DateTime.Now
                 };
-
                 await _context.Payments.AddAsync(payment);
                 await _context.SaveChangesAsync();
-
-                // Gửi orderId là số nguyên, không có dấu #
-                string orderId = invoice.InvoiceId.ToString();
 
                 return RedirectToAction("CreatePaymentUrlVnpay", "Payment", new
                 {
                     amount = finalTotal,
-                    orderId = orderId, // Gửi orderId dạng số nguyên không có ký tự đặc biệt
-                    description = $"Thanh toán đơn hàng {orderId} tại PhapClinicX"
+                    orderId = invoice.InvoiceId.ToString(),
+                    description = $"Thanh toán đơn hàng {invoice.InvoiceId} tại PhapClinicX"
                 });
             }
-            else // Các phương thức khác (tiền mặt, v.v.)
+            else
             {
-                // Ghi thanh toán
                 var payment = new Payment
                 {
                     InvoiceId = invoice.InvoiceId,
@@ -395,17 +375,14 @@ namespace PhapClinicX.Controllers
                     Status = "Đã thanh toán",
                     CreatedAt = DateTime.Now
                 };
-
                 await _context.Payments.AddAsync(payment);
-                await _context.SaveChangesAsync();
-
-                // Cập nhật trạng thái hóa đơn
                 invoice.Status = "Đã thanh toán";
                 await _context.SaveChangesAsync();
             }
 
             return RedirectToAction("Success", "Cart");
         }
+
 
 
 
