@@ -372,11 +372,11 @@ namespace PhapClinicX.Controllers
                     UserId = userId,
                     Amount = finalTotal,
                     Method = method,
-                    Status = "Đã thanh toán",
+                    Status = "Đã Đặt Hàng",
                     CreatedAt = DateTime.Now
                 };
                 await _context.Payments.AddAsync(payment);
-                invoice.Status = "Đã thanh toán";
+                invoice.Status = "Đã Đặt Hàng";
                 await _context.SaveChangesAsync();
             }
 

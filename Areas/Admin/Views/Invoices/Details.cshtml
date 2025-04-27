@@ -1,0 +1,64 @@
+﻿@model PhapClinicX.Models.Invoice
+
+@{
+    ViewData["Title"] = "Chi tiết hóa đơn";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container py-5">
+    <div class="card shadow rounded-4 border-0">
+        <div class="card-header bg-primary text-white rounded-top-4">
+            <h2 class="text-center fw-bold mb-0">🧾 Chi tiết hóa đơn</h2>
+        </div>
+
+        <div class="card-body">
+            <div class="row g-4">
+                <!-- Bên trái -->
+                <div class="col-lg-6">
+                    <div class="border rounded-3 p-4 h-100">
+                        <h5 class="text-primary mb-3">🪙 Thông tin thanh toán</h5>
+                        <dl class="row mb-0">
+                            <dt class="col-5">Tổng tiền:</dt>
+                            <dd class="col-7">@String.Format("{0:N0} đ", Model.TotalAmount)</dd>
+
+                            <dt class="col-5">Trạng thái:</dt>
+                            <dd class="col-7">@Html.DisplayFor(m => m.Status)</dd>
+
+                            <dt class="col-5">Ngày tạo:</dt>
+                            <dd class="col-7">@Html.DisplayFor(m => m.CreatedAt)</dd>
+
+                            <dt class="col-5">Hình thức thanh toán:</dt>
+                            <dd class="col-7">@Html.DisplayFor(m => m.Method)</dd>
+                        </dl>
+                    </div>
+                </div>
+
+                <!-- Bên phải -->
+                <div class="col-lg-6">
+                    <div class="border rounded-3 p-4 h-100">
+                        <h5 class="text-success mb-3">📚 Thông tin thêm</h5>
+                        <dl class="row mb-0">
+                            <dt class="col-5">Loại hóa đơn:</dt>
+                            <dd class="col-7">@Html.DisplayFor(m => m.InvoiceType)</dd>
+
+                            <dt class="col-5">Phòng khám:</dt>
+                            <dd class="col-7">@Model.PhongKham?.TenPhongKham</dd>
+
+                            <dt class="col-5">Người dùng:</dt>
+                            <dd class="col-7">@Model.User?.FullName</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-footer bg-white d-flex justify-content-between rounded-bottom-4">
+            <a asp-action="Index" class="btn btn-light border">
+                ⬅️ Quay lại danh sách
+            </a>
+            <a asp-action="Edit" asp-route-id="@Model.InvoiceId" class="btn btn-primary">
+                ✏️ Chỉnh sửa hóa đơn
+            </a>
+        </div>
+    </div>
+</div>

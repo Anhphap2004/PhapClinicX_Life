@@ -27,7 +27,7 @@ public partial class Invoice
 
     public virtual ICollection<Payment> Payments { get; set; } = new List<Payment>();
 
-    public virtual PhongKham PhongKham { get; set; } = null!;
+    public virtual PhongKham? PhongKham { get; set; }
 
     public virtual User? User { get; set; }
 }

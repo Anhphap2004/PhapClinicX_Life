@@ -1,0 +1,53 @@
+﻿@model PhapClinicX.Models.Invoice
+
+@{
+    ViewData["Title"] = "Xóa hóa đơn";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container py-4">
+    <div class="card shadow-lg rounded-4 border-0">
+        <div class="card-header bg-light">
+            <h2 class="text-center mb-0 text-danger">🗑️ Xóa hóa đơn</h2>
+        </div>
+        <div class="card-body">
+            <h4 class="text-center text-secondary mb-4">Anh chắc chắn muốn xóa hóa đơn này chứ? 😥</h4>
+            <dl class="row">
+                <dt class="col-sm-4">Tổng tiền:</dt>
+                <dd class="col-sm-8">@String.Format("{0:N0} đ", Model.TotalAmount)</dd>
+
+                <dt class="col-sm-4">Trạng thái:</dt>
+                <dd class="col-sm-8">@Html.DisplayFor(model => model.Status)</dd>
+
+                <dt class="col-sm-4">Ngày tạo:</dt>
+                <dd class="col-sm-8">@Html.DisplayFor(model => model.CreatedAt)</dd>
+
+                <dt class="col-sm-4">Loại hóa đơn:</dt>
+                <dd class="col-sm-8">@Html.DisplayFor(model => model.InvoiceType)</dd>
+
+                <dt class="col-sm-4">Hình thức thanh toán:</dt>
+                <dd class="col-sm-8">@Html.DisplayFor(model => model.Method)</dd>
+
+       
+
+                <dt class="col-sm-4">Phòng khám:</dt>
+                <dd class="col-sm-8">@Model.PhongKham?.TenPhongKham</dd>
+
+                <dt class="col-sm-4">Người dùng:</dt>
+                <dd class="col-sm-8">@Model.User?.FullName</dd>
+            </dl>
+        </div>
+
+        <div class="card-footer bg-white d-flex justify-content-between">
+            <form asp-action="Delete" class="d-inline">
+                <input type="hidden" asp-for="InvoiceId" />
+                <button type="submit" class="btn btn-danger">
+                    🗑️ Xác nhận xóa
+                </button>
+            </form>
+            <a asp-action="Index" class="btn btn-outline-secondary">
+                ⬅️ Quay lại danh sách
+            </a>
+        </div>
+    </div>
+</div>

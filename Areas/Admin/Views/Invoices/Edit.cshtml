@@ -1,0 +1,89 @@
+﻿@model PhapClinicX.Models.Invoice
+
+@{
+    ViewData["Title"] = "Chỉnh sửa hóa đơn";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container py-5">
+    <div class="card shadow rounded-4 border-0">
+        <div class="card-header bg-secondary text-dark rounded-top-4">
+            <h2 class="text-center text-white fw-bold mb-0">🛠️ Chỉnh sửa hóa đơn</h2>
+        </div>
+
+        <div class="card-body">
+            <form asp-action="Edit" class="row g-4">
+                @* Validation Error Summary *@
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                
+                <input type="hidden" asp-for="InvoiceId" />
+                <input type="hidden" asp-for="UserId" />
+                <div class="col-md-6">
+                    <label asp-for="PhongKhamId" class="form-label">Phòng khám</label>
+                    <select asp-for="PhongKhamId" class="form-select" asp-items="ViewBag.PhongKhamId"></select>
+                    <span asp-validation-for="PhongKhamId" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="TotalAmount" class="form-label">Tổng tiền</label>
+                    <input asp-for="TotalAmount" class="form-control" />
+                    <span asp-validation-for="TotalAmount" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="Status" class="form-label">Trạng thái</label>
+                    <select asp-for="Status" class="form-select">
+                        <option value="">-- Chọn trạng thái --</option>
+                        <option value="Chờ xử lý">Chờ xử lý</option>
+                        <option value="Chờ xử lý">Hoàn Thành</option>
+                        <option value="Đã hủy">Đã hủy</option>
+                    </select>
+                    <span asp-validation-for="Status" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="CreatedAt" class="form-label">Ngày tạo</label>
+                    <input asp-for="CreatedAt" class="form-control" type="datetime-local" />
+                    <span asp-validation-for="CreatedAt" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="InvoiceType" class="form-label">Loại hóa đơn</label>
+                    <select asp-for="InvoiceType" class="form-select">
+                        <option value="">-- Chọn loại hóa đơn --</option>
+                        <option value="Sản phẩm">Sản phẩm</option>
+                        <option value="Dịch vụ">Dịch vụ</option>
+                        <option value="Lịch hẹn">Lịch hẹn</option>
+                    </select>
+
+                    <span asp-validation-for="InvoiceType" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="Method" class="form-label">Phương thức thanh toán</label>
+                    <select asp-for="Method" class="form-select">
+                        <option value="">-- Chọn phương thức --</option>
+                        <option value="Cash">Tiền mặt</option>
+                        <option value="Card">Thẻ</option>
+                        <option value="Banking">Chuyển khoản</option>
+                        <option value="Momo">Ví VNPAY</option>
+                    </select>
+                    <span asp-validation-for="Method" class="text-danger"></span>
+                </div>
+
+                <div class="col-12 d-flex justify-content-between">
+                    <a asp-action="Index" class="btn btn-outline-secondary">
+                        ⬅️ Quay lại danh sách
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        💾 Lưu thay đổi
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
