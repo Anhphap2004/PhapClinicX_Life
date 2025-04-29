@@ -85,14 +85,20 @@
                                     <li><h6 class="dropdown-header">Xin chào, @username!</h6></li>
                                     <li>
                                         <a class="dropdown-item" asp-controller="Account" asp-action="Index" asp-route-id="@userid">
-                                            <i class="bi bi-person-circle me-2"></i>Tài khoản
+                                            <i class="bi bi-person-circle me-2"></i>Thông tin tài khoản
                                         </a>
                                     </li>
                                     <li>
                                         <a class="dropdown-item" asp-controller="Cart" asp-action="Index">
-                                            <i class="bi bi-bag me-2"></i>Đơn hàng
+                                            <i class="bi bi-cart-check me-2"></i>Giỏ hàng
                                         </a>
                                     </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="Account" asp-action="ViewInvoices">
+                                            <i class="bi bi-receipt me-2"></i>Hóa đơn của tôi
+                                        </a>
+                                    </li>
+
                                     @if (role == 1)
                                     {
                                     <li>

@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using PhapClinicX.Middleware;
 using PhapClinicX.Models;
+using PhapClinicX.Services;
 using PhapClinicX.Services.Vnpay;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,10 +12,9 @@ builder.Services.AddDbContext<ClinicManagementContext>(options =>
 });
 // Add services to the container.
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
-builder.Services.AddScoped<IMenuService, MenuService>();
-//Connect VNPay API
-builder.Services.AddScoped<IVnPayService, VnPayService>();
 
+builder.Services.AddScoped<IMenuService, MenuService>();
+builder.Services.AddScoped<IVnPayService, VnPayService>();
 builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromDays(30);

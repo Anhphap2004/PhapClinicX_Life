@@ -19,6 +19,46 @@ namespace PhapClinicX.Controllers
             var user = await _context.Users.Where(p=>p.IsActive == true).FirstOrDefaultAsync(m => m.UserId == id);
             return View(user);
         }
-    
+
+        public async Task<IActionResult> ViewInvoices()
+        {
+            var userId = HttpContext.Session.GetInt32("UserId"); 
+            if (userId == null)
+            {
+                return RedirectToAction("Index", "Login"); 
+            }
+
+            var invoices = await _context.Invoices
+                .Include(i => i.InvoiceDetails)
+                    .ThenInclude(d => d.Product)
+                .Where(i => i.UserId == userId) 
+                .OrderByDescending(i => i.CreatedAt)
+                .ToListAsync();
+
+            return View(invoices);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> InvoiceDetails(int id)
+        {
+            var userId = HttpContext.Session.GetInt32("UserId");
+            if (userId == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+
+            var invoice = await _context.Invoices
+                .Include(i => i.User) // ✨ Thêm dòng này nè!
+                .Include(i => i.InvoiceDetails)
+                    .ThenInclude(d => d.Product)
+                .FirstOrDefaultAsync(i => i.InvoiceId == id && i.UserId == userId);
+
+            if (invoice == null)
+            {
+                return NotFound();
+            }
+
+            return View(invoice);
+        }
     }
 }

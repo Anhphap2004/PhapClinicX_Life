@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using PhapClinicX.Models;
 using PhapClinicX.Models.Vnpay;
 using PhapClinicX.Services.Vnpay;
-using System.Text.Json; // Thêm namespace này
+using System.Text.Json; 
 namespace PhapClinicX.Controllers
 {
     public class CheckoutController : Controller
