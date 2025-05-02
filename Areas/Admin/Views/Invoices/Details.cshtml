@@ -1,64 +1,731 @@
 ﻿@model PhapClinicX.Models.Invoice
-
 @{
     ViewData["Title"] = "Chi tiết hóa đơn";
-    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container py-5">
-    <div class="card shadow rounded-4 border-0">
-        <div class="card-header bg-primary text-white rounded-top-4">
-            <h2 class="text-center fw-bold mb-0">🧾 Chi tiết hóa đơn</h2>
+<div class="invoice-wrapper">
+    <div class="invoice-container">
+        <!-- Watermark -->
+        <div class="watermark">PhapClinicX</div>
+
+        <!-- Top Header with Pattern -->
+        <div class="top-pattern"></div>
+
+        <!-- Header -->
+        <div class="invoice-header">
+            <div class="company-info">
+                <div class="logo-container">
+                    <img src="~/assets/img/logo/APHAPLIFE.png" alt="PhapClinicX Logo" />
+                </div>
+                <div class="company-details">
+                    <h3>PHAP CLINIC X</h3>
+                    <p>Chăm sóc sức khỏe chuyên nghiệp</p>
+                </div>
+            </div>
+            <div class="invoice-title-box">
+                <h1>HÓA ĐƠN</h1>
+                <div class="invoice-number">#@Model.InvoiceId</div>
+            </div>
         </div>
 
-        <div class="card-body">
-            <div class="row g-4">
-                <!-- Bên trái -->
-                <div class="col-lg-6">
-                    <div class="border rounded-3 p-4 h-100">
-                        <h5 class="text-primary mb-3">🪙 Thông tin thanh toán</h5>
-                        <dl class="row mb-0">
-                            <dt class="col-5">Tổng tiền:</dt>
-                            <dd class="col-7">@String.Format("{0:N0} đ", Model.TotalAmount)</dd>
-
-                            <dt class="col-5">Trạng thái:</dt>
-                            <dd class="col-7">@Html.DisplayFor(m => m.Status)</dd>
-
-                            <dt class="col-5">Ngày tạo:</dt>
-                            <dd class="col-7">@Html.DisplayFor(m => m.CreatedAt)</dd>
-
-                            <dt class="col-5">Hình thức thanh toán:</dt>
-                            <dd class="col-7">@Html.DisplayFor(m => m.Method)</dd>
-                        </dl>
-                    </div>
+        <!-- Meta Information -->
+        <div class="invoice-meta">
+            <div class="meta-section date-section">
+                <div class="meta-icon"><i class="fas fa-calendar-alt"></i></div>
+                <div class="meta-content">
+                    <span class="meta-label">Ngày tạo</span>
+                    <span class="meta-value">@Model.CreatedAt?.ToString("dd/MM/yyyy HH:mm")</span>
                 </div>
+            </div>
 
-                <!-- Bên phải -->
-                <div class="col-lg-6">
-                    <div class="border rounded-3 p-4 h-100">
-                        <h5 class="text-success mb-3">📚 Thông tin thêm</h5>
-                        <dl class="row mb-0">
-                            <dt class="col-5">Loại hóa đơn:</dt>
-                            <dd class="col-7">@Html.DisplayFor(m => m.InvoiceType)</dd>
+            <div class="meta-section status-section">
+                <div class="meta-icon"><i class="fas fa-check-circle"></i></div>
+                <div class="meta-content">
+                    <span class="meta-label">Trạng thái</span>
+                    <span class="meta-value status-badge">@Model.Status</span>
+                </div>
+            </div>
 
-                            <dt class="col-5">Phòng khám:</dt>
-                            <dd class="col-7">@Model.PhongKham?.TenPhongKham</dd>
+            <div class="meta-section payment-section">
+                <div class="meta-icon"><i class="fas fa-credit-card"></i></div>
+                <div class="meta-content">
+                    <span class="meta-label">Phương thức thanh toán</span>
+                    <span class="meta-value">@Model.Method</span>
+                </div>
+            </div>
 
-                            <dt class="col-5">Người dùng:</dt>
-                            <dd class="col-7">@Model.User?.FullName</dd>
-                        </dl>
-                    </div>
+            <div class="meta-section branch-section">
+                <div class="meta-icon"><i class="fas fa-clinic-medical"></i></div>
+                <div class="meta-content">
+                    <span class="meta-label">Chi nhánh</span>
+                    <span class="meta-value">@Model.PhongKham?.TenPhongKham</span>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Customer Info Card -->
+        <div class="customer-info-card">
+            <div class="card-header">
+                <i class="fas fa-user-circle"></i>
+                <h3>Thông tin khách hàng</h3>
+            </div>
+            <div class="card-content">
+                <div class="customer-detail">
+                    <span class="detail-label">Họ và tên</span>
+                    <span class="detail-value">@Model.User?.FullName</span>
+                </div>
+                <div class="customer-detail">
+                    <span class="detail-label">Số điện thoại</span>
+                    <span class="detail-value">@Model.User?.Phone</span>
+                </div>
+                <div class="customer-detail">
+                    <span class="detail-label">Email</span>
+                    <span class="detail-value">@Model.User?.Email</span>
+                </div>
+                <div class="customer-detail">
+                    <span class="detail-label">Địa chỉ</span>
+                    <span class="detail-value">@Model.User?.Address</span>
                 </div>
             </div>
         </div>
 
-        <div class="card-footer bg-white d-flex justify-content-between rounded-bottom-4">
-            <a asp-action="Index" class="btn btn-light border">
-                ⬅️ Quay lại danh sách
-            </a>
-            <a asp-action="Edit" asp-route-id="@Model.InvoiceId" class="btn btn-primary">
-                ✏️ Chỉnh sửa hóa đơn
-            </a>
+        <!-- Items Section -->
+        <div class="invoice-items-section">
+            <h3 class="section-title">Chi tiết đơn hàng</h3>
+            <div class="items-table-container">
+                <table class="items-table">
+                    <thead>
+                        <tr>
+                            <th class="item-col-name">Sản phẩm/Dịch vụ</th>
+                            <th class="item-col-qty">Số lượng</th>
+                            <th class="item-col-price">Đơn giá</th>
+                            <th class="item-col-total">Thành tiền</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.InvoiceDetails.Count == 0)
+                        {
+                            <tr>
+                                <td colspan="4" class="empty-items-message">
+                                    <div class="empty-state">
+                                        <i class="fas fa-box-open"></i>
+                                        <p>Hóa đơn này chưa có sản phẩm hoặc dịch vụ nào</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            @foreach (var detail in Model.InvoiceDetails)
+                            {
+                                <tr>
+                                    @if (detail.Product != null)
+                                    {
+                                        <!-- Hiển thị sản phẩm -->
+                                        <td class="item-col-name">@detail.Product.ProductName</td>
+                                        <td class="item-col-qty">
+                                            <div class="qty-badge">@detail.Quantity</div>
+                                        </td>
+                                        <td class="item-col-price">@detail.Price?.ToString("N0") ₫</td>
+                                        <td class="item-col-total">@((detail.Price * detail.Quantity)?.ToString("N0")) ₫</td>
+                                    }
+                                    else if (detail.Package != null)
+                                    {
+                                        <!-- Hiển thị dịch vụ (không có số lượng) -->
+                                        <td class="item-col-name">@detail.Package.PackageName</td>
+                                        <td class="item-col-qty">
+                                            <div class="qty-badge">0</div>  <!-- Mặc định là 1 vì dịch vụ chỉ có 1 đơn vị -->
+                                        </td>
+                                        <td class="item-col-price">@detail.Price?.ToString("N0") ₫</td>
+                                        <td class="item-col-total">@detail.Price?.ToString("N0") ₫</td>
+
+                                        <!-- Thành tiền chỉ là đơn giá -->
+                                    }
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
+
+
+        <!-- Total Section -->
+        <div class="invoice-total-section">
+            <div class="total-values">
+                <div class="total-row subtotal">
+                    <span class="label">Tạm tính:</span>
+                    <span class="value">@Model.TotalAmount?.ToString("N0") ₫</span>
+                </div>
+                <div class="total-row grand-total">
+                    <span class="label">Tổng thanh toán:</span>
+                    <span class="value">@((Model.TotalAmount)?.ToString("N0")) ₫</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Section -->
+        <div class="invoice-footer">
+            <div class="footer-info">
+                <div class="footer-contact">
+                    <div class="contact-item">
+                        <i class="fas fa-phone-alt"></i>
+                        <span>0333 013 972</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>info@phapclinicx.com</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>309 Nguyễn Thiếp, TP.Vinh, Nghệ An </span>
+                    </div>
+                </div>
+                <div class="footer-thanks">
+                    <p>Cảm ơn quý khách đã sử dụng dịch vụ của PhapClinicX!</p>
+                    <div class="barcode">
+                        <!-- Placeholder for barcode -->
+                        <div class="barcode-img"></div>
+                        <div class="barcode-number">@Model.InvoiceId.ToString("D10")</div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-copyright">
+                <p>&copy; @DateTime.Now.Year PhapClinicX. Đã đăng ký bản quyền.</p>
+            </div>
+        </div>
+
+        <!-- Bottom Pattern -->
+        <div class="bottom-pattern"></div>
     </div>
+
+    <!-- Print Button -->
+    <div class="print-button-container">
+        <button class="print-button" onclick="window.print()">
+            <i class="fas fa-print"></i> In hóa đơn
+        </button>
+    </div>
+
 </div>
+
+<style>
+    @@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Roboto', sans-serif;
+        color: #333;
+        background-color: #f5f5f5;
+        padding: 20px;
+    }
+
+    .invoice-wrapper {
+        max-width: 850px;
+        margin: 0 auto;
+        margin-top: 20px;
+    }
+
+    .invoice-container {
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        position: relative;
+    }
+
+    /* Watermark */
+    .watermark {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) rotate(-45deg);
+        font-size: 100px;
+        color: rgba(0, 0, 0, 0.03);
+        font-weight: bold;
+        pointer-events: none;
+        white-space: nowrap;
+        z-index: 0;
+    }
+
+    /* Top & Bottom Patterns */
+    .top-pattern, .bottom-pattern {
+        height: 15px;
+        background: linear-gradient(45deg, #4a90e2 25%, transparent 25%, transparent 50%, #4a90e2 50%, #4a90e2 75%, transparent 75%, transparent);
+        background-size: 20px 20px;
+    }
+
+    .bottom-pattern {
+        margin-top: 40px;
+    }
+
+    /* Header */
+    .invoice-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        padding: 30px 40px;
+        border-bottom: 1px solid #eaeaea;
+    }
+
+    .company-info {
+        display: flex;
+        align-items: center;
+    }
+
+    .logo-container {
+        width: 80px;
+        height: 80px;
+        margin-right: 20px;
+    }
+
+        .logo-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+    .company-details h3 {
+        color: #4a90e2;
+        font-size: 24px;
+        margin-bottom: 5px;
+    }
+
+    .company-details p {
+        color: #777;
+        font-size: 14px;
+    }
+
+    .invoice-title-box {
+        text-align: right;
+    }
+
+        .invoice-title-box h1 {
+            color: #4a90e2;
+            font-size: 28px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+    .invoice-number {
+        display: inline-block;
+        padding: 8px 15px;
+        background-color: #f0f7ff;
+        color: #4a90e2;
+        border-radius: 5px;
+        font-weight: bold;
+        font-size: 16px;
+        border: 1px dashed #4a90e2;
+    }
+
+    /* Meta Information */
+    .invoice-meta {
+        display: flex;
+        justify-content: space-between;
+        padding: 20px 40px;
+        background-color: #f9f9f9;
+    }
+
+    .meta-section {
+        display: flex;
+        align-items: center;
+    }
+
+    .meta-icon {
+        width: 40px;
+        height: 40px;
+        background-color: #e6f0fd;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-right: 15px;
+    }
+
+        .meta-icon i {
+            color: #4a90e2;
+            font-size: 18px;
+        }
+
+    .meta-content {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .meta-label {
+        font-size: 12px;
+        color: #777;
+        margin-bottom: 5px;
+    }
+
+    .meta-value {
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+    .status-badge {
+        display: inline-block;
+        padding: 4px 10px;
+        border-radius: 20px;
+        background-color: #4caf50;
+        color: white;
+        font-weight: 500;
+        font-size: 12px;
+    }
+
+    /* Customer Info Card */
+    .customer-info-card {
+        margin: 30px 40px;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        border: 1px solid #eaeaea;
+    }
+
+    .card-header {
+        background-color: #4a90e2;
+        color: white;
+        padding: 15px 20px;
+        display: flex;
+        align-items: center;
+    }
+
+        .card-header i {
+            margin-right: 10px;
+            font-size: 18px;
+        }
+
+        .card-header h3 {
+            font-size: 18px;
+            font-weight: 500;
+        }
+
+    .card-content {
+        padding: 20px;
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .customer-detail {
+        width: 33.33%;
+        padding: 10px 15px;
+    }
+
+    .detail-label {
+        display: block;
+        font-size: 12px;
+        color: #777;
+        margin-bottom: 5px;
+    }
+
+    .detail-value {
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+    /* Items Section */
+    .invoice-items-section {
+        margin: 30px 40px;
+    }
+
+    .section-title {
+        margin-bottom: 20px;
+        font-size: 18px;
+        color: #4a90e2;
+        position: relative;
+        padding-left: 15px;
+    }
+
+        .section-title:before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 5px;
+            height: 20px;
+            background-color: #4a90e2;
+            border-radius: 5px;
+        }
+
+    .items-table-container {
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    .items-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        .items-table thead {
+            background-color: #f0f7ff;
+        }
+
+        .items-table th {
+            padding: 15px;
+            text-align: left;
+            color: #4a90e2;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .items-table td {
+            padding: 15px;
+            border-bottom: 1px solid #eaeaea;
+            font-size: 14px;
+        }
+
+        .items-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+    .item-col-name {
+        width: 40%;
+    }
+
+    .item-col-qty {
+        width: 15%;
+    }
+
+    .item-col-price, .item-col-total {
+        width: 22.5%;
+        text-align: right;
+    }
+
+    .qty-badge {
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        background-color: #f0f7ff;
+        border-radius: 50%;
+        color: #4a90e2;
+        font-weight: 500;
+    }
+
+    .empty-items-message {
+        text-align: center;
+        padding: 40px !important;
+    }
+
+    .empty-state {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        color: #aaa;
+    }
+
+        .empty-state i {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+    /* Total Section */
+    .invoice-total-section {
+        margin: 30px 40px;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .total-values {
+        width: 350px;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    .total-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 15px 20px;
+        border-bottom: 1px solid #eaeaea;
+    }
+
+        .total-row:last-child {
+            border-bottom: none;
+        }
+
+        .total-row .label {
+            color: #777;
+            font-size: 14px;
+        }
+
+        .total-row .value {
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+    .grand-total {
+        background-color: #4a90e2;
+        color: white !important;
+    }
+
+        .grand-total .label, .grand-total .value {
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+    /* Footer Section */
+    .invoice-footer {
+        padding: 0 40px 30px;
+    }
+
+    .footer-info {
+        display: flex;
+        margin-bottom: 30px;
+    }
+
+    .footer-contact {
+        flex: 1;
+    }
+
+    .contact-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+        .contact-item i {
+            width: 25px;
+            height: 25px;
+            background-color: #e6f0fd;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 10px;
+            color: #4a90e2;
+            font-size: 12px;
+        }
+
+        .contact-item span {
+            font-size: 13px;
+            color: #777;
+        }
+
+    .footer-thanks {
+        flex: 1;
+        text-align: right;
+    }
+
+        .footer-thanks p {
+            margin-bottom: 15px;
+            font-size: 14px;
+            color: #777;
+        }
+
+    .barcode {
+        display: inline-block;
+    }
+
+    .barcode-img {
+        height: 50px;
+        background: repeating-linear-gradient(90deg, #000, #000 2px, transparent 2px, transparent 4px);
+        margin-bottom: 5px;
+    }
+
+    .barcode-number {
+        font-size: 12px;
+        letter-spacing: 2px;
+    }
+
+    .footer-copyright {
+        text-align: center;
+        margin-top: 20px;
+        color: #aaa;
+        font-size: 12px;
+    }
+
+    /* Print Button */
+    .print-button-container {
+        text-align: center;
+        margin-top: 30px;
+    }
+
+    .print-button {
+        background-color: #4a90e2;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 12px 25px;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+    }
+
+        .print-button i {
+            margin-right: 8px;
+        }
+
+        .print-button:hover {
+            background-color: #3a7bc8;
+            box-shadow: 0 5px 15px rgba(74, 144, 226, 0.3);
+        }
+
+    /* Responsive Styles */
+    @@media (max-width: 768px) {
+        .invoice-meta {
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .customer-detail {
+            width: 100%;
+        }
+
+        .footer-info {
+            flex-direction: column;
+        }
+
+        .footer-thanks {
+            text-align: left;
+            margin-top: 20px;
+        }
+    }
+
+    /* Print Styles */
+    @@media print {
+        body {
+            background-color: white;
+            padding: 0;
+        }
+
+        .invoice-container {
+            box-shadow: none;
+            border-radius: 0;
+        }
+
+        .print-button-container {
+            display: none;
+        }
+    }
+</style>
+
+<script>
+    // Tùy chỉnh màu trạng thái dựa trên giá trị
+    document.addEventListener('DOMContentLoaded', function() {
+        const statusBadge = document.querySelector('.status-badge');
+        const status = statusBadge.textContent.trim().toLowerCase();
+
+        if (status.includes('hoàn thành') || status.includes('thanh toán') || status.includes('đã thanh toán')) {
+            statusBadge.style.backgroundColor = '#4caf50'; // Green for completed/paid
+        } else if (status.includes('xử lý') || status.includes('đang xử lý') || status.includes('chờ')) {
+            statusBadge.style.backgroundColor = '#ff9800'; // Orange for processing
+        } else if (status.includes('hủy') || status.includes('đã hủy')) {
+            statusBadge.style.backgroundColor = '#f44336'; // Red for canceled
+        }
+    });
+</script>

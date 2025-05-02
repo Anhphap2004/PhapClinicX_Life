@@ -24,4 +24,6 @@ public partial class ServicePackage
     public int? CategoryId { get; set; }
 
     public virtual ServiceCategory? Category { get; set; }
+
+    public virtual ICollection<InvoiceDetail>? InvoiceDetails { get; set; }
 }

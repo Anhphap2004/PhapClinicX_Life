@@ -273,23 +273,33 @@
                     <p class="invoice-date">Ngày tạo: @p.CreatedAt?.ToString("dd/MM/yyyy")</p>
                     <p class="invoice-total">Tổng tiền: @p.TotalAmount?.ToString("N0") ₫</p>
 
-                    <div class="invoice-products mb-2">
-                        @foreach (var h in p.InvoiceDetails)
-                        {
-                            <div class="product-list">
-                                <div class="product-item">
-                                    <img src="~/assets/img/product/@h.Product?.Image" alt="@h.Product?.ProductName"
-                                    class="product-image">
-                                    <div class="product-info">
-                                        <p class="product-name">@h.Product?.ProductName</p>
-                                        <p class="product-quantity">Số lượng: @h.Quantity</p>
-                                        <p class="product-price">Giá: @h.Price?.ToString("N0") ₫</p>
-                                    </div>
-                                </div>
-                            </div>
-                        }
-
+                   <div class="invoice-products mb-2">
+    @foreach (var h in p.InvoiceDetails)
+    {
+        <div class="product-list">
+            <div class="product-item">
+                @if (h.Product != null)
+                {
+                    <img src="~/assets/img/product/@h.Product.Image" alt="@h.Product.ProductName" class="product-image">
+                    <div class="product-info">
+                        <p class="product-name">@h.Product.ProductName</p>
+                        <p class="product-quantity">Số lượng: @h.Quantity</p>
+                        <p class="product-price">Giá: @h.Price?.ToString("N0") ₫</p>
                     </div>
+                }
+                @if (h.Package != null)
+                {
+                    <img src="~/assets/img/ServicePackages/@h.Package.Image" alt="@h.Package.PackageName" class="product-image">
+                    <div class="product-info">
+                        <p class="product-name">@h.Package.PackageName</p>
+                        <p class="product-price">Giá: @h.Price?.ToString("N0") ₫</p>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+</div>
+
 
                         <a href="@Url.Action("InvoiceDetails", "Account", new { id = p.InvoiceId })"
                            class="text-blue-500 hover:underline inline-block">Xem chi tiết</a>

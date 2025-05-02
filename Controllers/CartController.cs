@@ -119,6 +119,47 @@ namespace PhapClinicX.Controllers
         }
 
         [HttpPost]
+        public IActionResult RemoveItem(int cartId)
+        {
+            int? userId = HttpContext.Session.GetInt32("UserId");
+            if (userId == null)
+            {
+                return Json(new { success = false, message = "Vui lòng đăng nhập để thực hiện thao tác này" });
+            }
+
+            var cartItem = _context.Carts.FirstOrDefault(c => c.CartId == cartId && c.UserId == userId);
+            if (cartItem == null)
+            {
+                return Json(new { success = false, message = "Không tìm thấy sản phẩm trong giỏ hàng" });
+            }
+
+            _context.Carts.Remove(cartItem);
+            _context.SaveChanges();
+
+            return Json(new { success = true });
+        }
+
+        [HttpPost]
+        public IActionResult ClearCart()
+        {
+            int? userId = HttpContext.Session.GetInt32("UserId");
+            if (userId == null)
+            {
+                return Json(new { success = false, message = "Vui lòng đăng nhập để thực hiện thao tác này" });
+            }
+
+            var cartItems = _context.Carts.Where(c => c.UserId == userId);
+            _context.Carts.RemoveRange(cartItems);
+            _context.SaveChanges();
+
+            // Xóa mã giảm giá nếu có
+            HttpContext.Session.Remove("DiscountAmount");
+            HttpContext.Session.Remove("CouponCode");
+
+            return Json(new { success = true });
+        }
+
+        [HttpPost]
         public async Task<IActionResult> UpdateQuantity(int cartId, int quantity)
         {
             int? userId = HttpContext.Session.GetInt32("UserId");

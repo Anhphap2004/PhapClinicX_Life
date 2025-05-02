@@ -53,6 +53,15 @@
                         <span class="meta-value">@Model.Method</span>
                     </div>
                 </div>
+
+            <div class="meta-section branch-section">
+                <div class="meta-icon"><i class="fas fa-clinic-medical"></i></div>
+                <div class="meta-content">
+                    <span class="meta-label">Chi nhánh</span>
+                    <span class="meta-value">@Model.PhongKham?.TenPhongKham</span>
+                </div>
+            </div>
+
             </div>
 
             <!-- Customer Info Card -->
@@ -74,52 +83,71 @@
                         <span class="detail-label">Email</span>
                         <span class="detail-value">@Model.User?.Email</span>
                     </div>
+                <div class="customer-detail">
+                    <span class="detail-label">Địa chỉ</span>
+                    <span class="detail-value">@Model.User?.Address</span>
+                </div>
                 </div>
             </div>
 
-            <!-- Items Section -->
-            <div class="invoice-items-section">
-                <h3 class="section-title">Chi tiết đơn hàng</h3>
-                <div class="items-table-container">
-                    <table class="items-table">
-                        <thead>
-                            <tr>
-                                <th class="item-col-name">Sản phẩm/Dịch vụ</th>
-                                <th class="item-col-qty">Số lượng</th>
-                                <th class="item-col-price">Đơn giá</th>
-                                <th class="item-col-total">Thành tiền</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if (Model.InvoiceDetails.Count == 0)
+           <!-- Items Section -->
+<div class="invoice-items-section">
+    <h3 class="section-title">Chi tiết đơn hàng</h3>
+    <div class="items-table-container">
+        <table class="items-table">
+            <thead>
+                <tr>
+                    <th class="item-col-name">Sản phẩm/Dịch vụ</th>
+                    <th class="item-col-qty">Số lượng</th>
+                    <th class="item-col-price">Đơn giá</th>
+                    <th class="item-col-total">Thành tiền</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.InvoiceDetails.Count == 0)
+                {
+                    <tr>
+                        <td colspan="4" class="empty-items-message">
+                            <div class="empty-state">
+                                <i class="fas fa-box-open"></i>
+                                <p>Hóa đơn này chưa có sản phẩm hoặc dịch vụ nào</p>
+                            </div>
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    @foreach (var detail in Model.InvoiceDetails)
+                    {
+                        <tr>
+                            @if (detail.Product != null)
                             {
-                                <tr>
-                                    <td colspan="4" class="empty-items-message">
-                                        <div class="empty-state">
-                                            <i class="fas fa-box-open"></i>
-                                            <p>Hóa đơn này chưa có sản phẩm nào</p>
-                                        </div>
-                                    </td>
-                                </tr>
+                                <!-- Hiển thị sản phẩm -->
+                                <td class="item-col-name">@detail.Product.ProductName</td>
+                                <td class="item-col-qty">
+                                    <div class="qty-badge">@detail.Quantity</div>
+                                </td>
+                                <td class="item-col-price">@detail.Price?.ToString("N0") ₫</td>
+                                <td class="item-col-total">@((detail.Price * detail.Quantity)?.ToString("N0")) ₫</td>
                             }
-                            else
+                            else if (detail.Package != null)
                             {
-                                @foreach (var detail in Model.InvoiceDetails)
-                                {
-                                    <tr>
-                                        <td class="item-col-name">@(detail.Product?.ProductName ?? "Dịch vụ khác")</td>
-                                        <td class="item-col-qty">
-                                            <div class="qty-badge">@detail.Quantity</div>
-                                        </td>
-                                        <td class="item-col-price">@detail.Price?.ToString("N0") ₫</td>
-                                        <td class="item-col-total">@((detail.Price * detail.Quantity)?.ToString("N0")) ₫</td>
-                                    </tr>
-                                }
+                                <!-- Hiển thị dịch vụ (không có số lượng) -->
+                                <td class="item-col-name">@detail.Package.PackageName</td>
+                                <td class="item-col-qty">
+                                    <div class="qty-badge">0</div>  <!-- Mặc định là 1 vì dịch vụ chỉ có 1 đơn vị -->
+                                </td>
+                                <td class="item-col-price">@detail.Price?.ToString("N0") ₫</td>
+                                <td class="item-col-total">@detail.Price?.ToString("N0") ₫</td> <!-- Thành tiền chỉ là đơn giá -->
                             }
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
 
             <!-- Total Section -->
             <div class="invoice-total-section">
@@ -198,6 +226,7 @@
         .invoice-wrapper {
             max-width: 850px;
             margin: 0 auto;
+            margin-top: 20px;
         }
 
         .invoice-container {

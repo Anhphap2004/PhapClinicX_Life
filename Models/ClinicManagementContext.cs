@@ -381,7 +381,7 @@ public partial class ClinicManagementContext : DbContext
             entity.Property(e => e.ProductId).HasColumnName("product_id");
             entity.Property(e => e.Quantity).HasColumnName("quantity");
             entity.Property(e => e.ServiceId).HasColumnName("service_id");
-
+            entity.Property(e => e.PackageId).HasColumnName("package_id"); 
             entity.HasOne(d => d.Invoice).WithMany(p => p.InvoiceDetails)
                 .HasForeignKey(d => d.InvoiceId)
                 .HasConstraintName("FK__InvoiceDe__invoi__70DDC3D8");
@@ -389,6 +389,10 @@ public partial class ClinicManagementContext : DbContext
             entity.HasOne(d => d.Product).WithMany(p => p.InvoiceDetails)
                 .HasForeignKey(d => d.ProductId)
                 .HasConstraintName("FK_InvoiceDetails_Products");
+
+            entity.HasOne(d => d.Package).WithMany(p => p.InvoiceDetails) // 👈 Thêm nè
+                .HasForeignKey(d => d.PackageId)
+                .HasConstraintName("FK_InvoiceDetails_ServicePackages");
         });
 
         modelBuilder.Entity<KhoaKham>(entity =>

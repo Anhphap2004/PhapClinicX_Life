@@ -17,7 +17,11 @@ public partial class InvoiceDetail
 
     public int? ProductId { get; set; }
 
+    public int? PackageId { get; set; }
+
     public virtual Invoice? Invoice { get; set; }
 
     public virtual Product? Product { get; set; }
+
+    public virtual ServicePackage? Package { get; set; }
 }

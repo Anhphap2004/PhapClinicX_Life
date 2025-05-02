@@ -1,89 +1,361 @@
 ﻿@model PhapClinicX.Models.Invoice
-
+@using Newtonsoft.Json
 @{
-    ViewData["Title"] = "Chỉnh sửa hóa đơn";
-    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Chỉnh Sửa Hóa Đơn";
+    var packagesJson = ViewData["PackagesJson"] as string;
 }
 
-<div class="container py-5">
-    <div class="card shadow rounded-4 border-0">
-        <div class="card-header bg-secondary text-dark rounded-top-4">
-            <h2 class="text-center text-white fw-bold mb-0">🛠️ Chỉnh sửa hóa đơn</h2>
+<style>
+    .invoice-page {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 30px;
+    }
+    
+    .card {
+        border: none;
+        border-radius: 12px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+    }
+    
+    .card-header {
+        background-color: #fff;
+        border-bottom: 1px solid #f0f0f0;
+        border-radius: 12px 12px 0 0 !important;
+        padding: 20px 25px;
+    }
+    
+    .card-header h5 {
+        margin-bottom: 0;
+        font-weight: 600;
+        color: #2c3e50;
+    }
+    
+    .card-body {
+        padding: 25px;
+    }
+    
+    .form-label {
+        font-weight: 500;
+        color: #495057;
+        margin-bottom: 8px;
+    }
+    
+    .form-control, .form-select {
+        border-radius: 8px;
+        padding: 10px 15px;
+        border: 1px solid #e1e5eb;
+        font-size: 0.95rem;
+        transition: all 0.2s ease;
+    }
+    
+    .form-control:focus, .form-select:focus {
+        border-color: #4e73df;
+        box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.15);
+    }
+    
+    .btn {
+        border-radius: 8px;
+        padding: 10px 20px;
+        font-weight: 500;
+        transition: all 0.2s ease;
+    }
+    
+    .btn-primary {
+        background-color: #4e73df;
+        border-color: #4e73df;
+    }
+    
+    .btn-primary:hover {
+        background-color: #3f5eca;
+        border-color: #3f5eca;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(78, 115, 223, 0.25);
+    }
+    
+    .btn-secondary {
+        background-color: #f8f9fa;
+        border-color: #e1e5eb;
+        color: #6c757d;
+    }
+    
+    .btn-secondary:hover {
+        background-color: #e9ecef;
+        border-color: #dde2e6;
+        color: #495057;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    }
+    
+    .page-title {
+        color: #2c3e50;
+        font-weight: 700;
+        margin-bottom: 25px;
+        padding-bottom: 15px;
+        position: relative;
+    }
+    
+    .page-title:after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        height: 4px;
+        width: 50px;
+        background-color: #4e73df;
+        border-radius: 2px;
+    }
+    
+    .input-group-text {
+        background-color: #f8f9fa;
+        border-color: #e1e5eb;
+        color: #6c757d;
+    }
+    
+    .required-field:after {
+        content: "*";
+        color: #dc3545;
+        margin-left: 4px;
+    }
+    
+    /* Thêm animation khi hover vào card */
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    }
+    
+    /* Indicator cho trạng thái */
+    .status-indicator {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        display: inline-block;
+        margin-right: 8px;
+    }
+    
+    .status-pending {
+        background-color: #f6c23e;
+    }
+    
+    .status-processed {
+        background-color: #1cc88a;
+    }
+    
+    .status-cancelled {
+        background-color: #e74a3b;
+    }
+    
+    /* Badge cho mã hóa đơn */
+    .invoice-id-badge {
+        background-color: #eaecf4;
+        color: #4e73df;
+        border-radius: 6px;
+        padding: 4px 10px;
+        font-weight: 500;
+        font-size: 0.9rem;
+        display: inline-block;
+    }
+</style>
+
+<div class="container-fluid py-4 invoice-page">
+    <h2 class="page-title">Chỉnh Sửa Hóa Đơn</h2>
+
+    <form asp-action="Edit">
+        <div asp-validation-summary="ModelOnly" class="alert alert-danger mb-4" role="alert"></div>
+        <input asp-for="CreatedAt" type="hidden" />
+        <!-- Ẩn trường InvoiceId -->
+        <input type="hidden" asp-for="InvoiceId" />
+
+        <!-- Bệnh nhân -->
+        <div class="form-group mb-3">
+            <label asp-for="UserId" class="form-label">Bệnh nhân</label>
+            <select asp-for="UserId" class="form-control" asp-items="ViewBag.UserId">
+                <option value="">-- Chọn bệnh nhân --</option>
+            </select>
         </div>
 
-        <div class="card-body">
-            <form asp-action="Edit" class="row g-4">
-                @* Validation Error Summary *@
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                
-                <input type="hidden" asp-for="InvoiceId" />
-                <input type="hidden" asp-for="UserId" />
-                <div class="col-md-6">
-                    <label asp-for="PhongKhamId" class="form-label">Phòng khám</label>
-                    <select asp-for="PhongKhamId" class="form-select" asp-items="ViewBag.PhongKhamId"></select>
-                    <span asp-validation-for="PhongKhamId" class="text-danger"></span>
-                </div>
-
-                <div class="col-md-6">
-                    <label asp-for="TotalAmount" class="form-label">Tổng tiền</label>
-                    <input asp-for="TotalAmount" class="form-control" />
-                    <span asp-validation-for="TotalAmount" class="text-danger"></span>
-                </div>
-
-                <div class="col-md-6">
-                    <label asp-for="Status" class="form-label">Trạng thái</label>
-                    <select asp-for="Status" class="form-select">
-                        <option value="">-- Chọn trạng thái --</option>
-                        <option value="Chờ xử lý">Chờ xử lý</option>
-                        <option value="Chờ xử lý">Hoàn Thành</option>
-                        <option value="Đã hủy">Đã hủy</option>
-                    </select>
-                    <span asp-validation-for="Status" class="text-danger"></span>
-                </div>
-
-                <div class="col-md-6">
-                    <label asp-for="CreatedAt" class="form-label">Ngày tạo</label>
-                    <input asp-for="CreatedAt" class="form-control" type="datetime-local" />
-                    <span asp-validation-for="CreatedAt" class="text-danger"></span>
-                </div>
-
-                <div class="col-md-6">
-                    <label asp-for="InvoiceType" class="form-label">Loại hóa đơn</label>
-                    <select asp-for="InvoiceType" class="form-select">
-                        <option value="">-- Chọn loại hóa đơn --</option>
-                        <option value="Sản phẩm">Sản phẩm</option>
-                        <option value="Dịch vụ">Dịch vụ</option>
-                        <option value="Lịch hẹn">Lịch hẹn</option>
-                    </select>
-
-                    <span asp-validation-for="InvoiceType" class="text-danger"></span>
-                </div>
-
-                <div class="col-md-6">
-                    <label asp-for="Method" class="form-label">Phương thức thanh toán</label>
-                    <select asp-for="Method" class="form-select">
-                        <option value="">-- Chọn phương thức --</option>
-                        <option value="Cash">Tiền mặt</option>
-                        <option value="Card">Thẻ</option>
-                        <option value="Banking">Chuyển khoản</option>
-                        <option value="Momo">Ví VNPAY</option>
-                    </select>
-                    <span asp-validation-for="Method" class="text-danger"></span>
-                </div>
-
-                <div class="col-12 d-flex justify-content-between">
-                    <a asp-action="Index" class="btn btn-outline-secondary">
-                        ⬅️ Quay lại danh sách
-                    </a>
-                    <button type="submit" class="btn btn-primary">
-                        💾 Lưu thay đổi
-                    </button>
-                </div>
-            </form>
+        <!-- Thông tin hóa đơn -->
+        <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5><i class="fas fa-file-invoice me-2"></i> Thông tin hóa đơn</h5>
+                <span class="invoice-id-badge">
+                    <i class="fas fa-hashtag me-1"></i> Mã hóa đơn: @Model.InvoiceId
+                </span>
+            </div>
         </div>
-    </div>
+
+       
+        <!-- Thông tin cơ bản -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5><i class="fas fa-info-circle me-2"></i> Thông tin dịch vụ</h5>
+            </div>
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label asp-for="PhongKhamId" class="form-label required-field">Phòng khám</label>
+                        <select asp-for="PhongKhamId" class="form-select" asp-items="ViewBag.PhongKhamId" required>
+                            <option value="">-- Chọn phòng khám --</option>
+                        </select>
+                        <span asp-validation-for="PhongKhamId" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="PackageId" class="form-label required-field">Gói dịch vụ</label>
+                        <select id="PackageId" name="PackageId" class="form-select" asp-items="@(ViewData["PackageId"] as SelectList)">
+                            <option value="">-- Chọn gói dịch vụ --</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="Price" class="form-label">Đơn giá</label>
+                        <div class="input-group">
+                            <input type="text" id="Price" name="PriceDisplay" class="form-control" readonly />
+                            <span class="input-group-text">VNĐ</span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="InvoiceType" class="form-label required-field">Loại hóa đơn</label>
+                        <select asp-for="InvoiceType" class="form-select" required>
+                            <option value="">-- Chọn loại hóa đơn --</option>
+                            <option value="Sản phẩm">Sản phẩm</option>
+                            <option value="Dịch vụ">Dịch vụ</option>
+                            <option value="Lịch hẹn">Lịch hẹn</option>
+                        </select>
+                        <span asp-validation-for="InvoiceType" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="Status" class="form-label required-field">Trạng thái</label>
+                        <select asp-for="Status" class="form-select" required>
+                            <option value="">-- Chọn trạng thái --</option>
+                            <option value="Chờ xử lý">
+                                <span class="status-indicator status-pending"></span> Chờ xử lý
+                            </option>
+                            <option value="Đang giao hàng">
+                                <span class="status-indicator status-processed"></span> Đã giao hàng
+                            </option>
+                            <option value="Đã thanh toán">
+                                <span class="status-indicator status-processed"></span> Đã thanh toán
+                            </option>
+                            <option value="Đã hủy">
+                                <span class="status-indicator status-cancelled"></span> Đã hủy
+                            </option>
+                        </select>
+                        <span asp-validation-for="Status" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chi tiết thanh toán -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5><i class="fas fa-credit-card me-2"></i> Chi tiết thanh toán</h5>
+            </div>
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label asp-for="TotalAmount" class="form-label required-field">Tổng tiền</label>
+                        <div class="input-group">
+                            <input asp-for="TotalAmount" class="form-control" id="TotalAmount" placeholder="0" required />
+                            <span class="input-group-text">VNĐ</span>
+                        </div>
+                        <span asp-validation-for="TotalAmount" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="Method" class="form-label required-field">Phương thức thanh toán</label>
+                        <select asp-for="Method" class="form-select" required>
+                            <option value="">-- Chọn phương thức --</option>
+                            <option value="Tiền Mặt">
+                                <i class="fas fa-money-bill-wave"></i> Tiền mặt
+                            </option>
+                            <option value="Thẻ">
+                                <i class="fas fa-credit-card"></i> Thẻ
+                            </option>
+                            <option value="Chuyển Khoản">
+                                <i class="fas fa-university"></i> Chuyển khoản
+                            </option>
+                            <option value="VNPAY">
+                                <i class="fas fa-wallet"></i> Ví VNPAY
+                            </option>
+                        </select>
+                        <span asp-validation-for="Method" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-between mt-4">
+            <a asp-action="Index" class="btn btn-secondary">
+                <i class="fas fa-arrow-left me-2"></i> Quay lại
+            </a>
+            <div>
+                <a asp-action="Details" asp-route-id="@Model.InvoiceId" class="btn btn-info me-2">
+                    <i class="fas fa-eye me-2"></i> Xem chi tiết
+                </a>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save me-2"></i> Lưu thay đổi
+                </button>
+            </div>
+        </div>
+    </form>
 </div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+
+    <script>
+        const packages = @Html.Raw(packagesJson);
+        const selectedPackageId = @Html.Raw(ViewData["SelectedPackageId"] ?? "null");
+
+        // Thiết lập giá trị ban đầu cho trường Price và chọn gói dịch vụ
+        window.addEventListener('DOMContentLoaded', function() {
+            const packageSelect = document.getElementById("PackageId");
+
+            // Nếu có gói dịch vụ được chọn trước đó, thiết lập select box
+            if (selectedPackageId) {
+                packageSelect.value = selectedPackageId;
+
+                // Tìm gói dịch vụ và hiển thị giá
+                const selected = packages.find(p => p.packageId == selectedPackageId);
+                if (selected) {
+                    const price = Number(selected.price);
+                    const formattedPrice = price.toLocaleString('vi-VN') + " ₫";
+                    document.getElementById("Price").value = formattedPrice;
+
+                    // Nếu tổng tiền chưa được thiết lập hoặc tương đương với giá gói, đặt lại
+                    const totalAmount = document.getElementById("TotalAmount");
+                    if (!totalAmount.value || Number(totalAmount.value) === 0) {
+                        totalAmount.value = price;
+                    }
+                }
+            }
+        });
+
+        // Xử lý khi thay đổi gói dịch vụ
+        document.getElementById("PackageId").addEventListener("change", function () {
+            const selectedId = this.value;
+            const selected = packages.find(p => p.packageId == selectedId);
+
+            if (selected) {
+                const price = Number(selected.price);
+                const formattedPrice = price.toLocaleString('vi-VN') + " ₫";
+                document.getElementById("Price").value = formattedPrice;
+                document.getElementById("TotalAmount").value = price;
+            } else {
+                document.getElementById("Price").value = "";
+                document.getElementById("TotalAmount").value = "";
+            }
+        });
+
+        // Animation cho card khi tương tác
+        document.querySelectorAll('.form-control, .form-select').forEach(item => {
+            item.addEventListener('focus', function() {
+                this.closest('.card').classList.add('shadow-lg');
+            });
+
+            item.addEventListener('blur', function() {
+                this.closest('.card').classList.remove('shadow-lg');
+            });
+        });
+    </script>
 }
