@@ -238,6 +238,22 @@
                         </div>
 
                         <!-- Lịch sắp tới -->
+                        @if (TempData["SuccessMessage"] != null)
+                        {
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                @TempData["SuccessMessage"]
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        }
+
+                        @if (TempData["ErrorMessage"] != null)
+                        {
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                @TempData["ErrorMessage"]
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        }
+
                         <div class="card border-0 rounded-4 shadow-sm mb-4">
                             <div class="card-header bg-light py-3">
                                 <h6 class="mb-0 fw-bold text-primary">
@@ -245,28 +261,27 @@
                                 </h6>
                             </div>
                             <div class="card-body p-0">
-                                @foreach(var  p in History)
+                                @foreach (var p in History)
                                 {
-                                <div class="appointment-item">
-                                    <div class="appointment-date">
-                                            <span class="month">Tháng @p.DateTime?.Month</span>
-                                            <span class="day">@p.DateTime?.Day</span>
+                                    <div class="appointment-item d-flex align-items-center justify-content-between border-bottom px-3 py-2">
+                                        <div class="appointment-date text-center me-3">
+                                            <span class="month">Tháng @p.DateTime?.Month</span><br />
+                                            <span class="day fs-3 fw-bold">@p.DateTime?.Day</span><br />
                                             <span class="time">@p.DateTime?.ToString("HH:mm")</span>
-
+                                        </div>
+                                        <div class="appointment-info flex-grow-1">
+                                            <h6 class="fw-bold mb-1">Khám tổng quát</h6>
+                                            <p class="text-muted mb-0">Bác sĩ: @p.Doctor?.Fullname</p>
+                                            <p class="text-muted mb-0">Phòng: @p.Doctor?.PhongKham?.TenPhongKham</p>
+                                        </div>
+                                        <div class="appointment-action d-flex flex-column" style="min-width: 110px;">
+                                            <a href="@Url.Action("DetailAppointment", new { id = p.AppointmentId })" class="btn btn-sm btn-outline-primary mb-2 w-100">Chi tiết</a>
+                                            <form method="post" asp-controller="Booking" asp-action="cancelAppointment" asp-route-id="@p.AppointmentId" onsubmit="return confirm('Bạn có chắc muốn hủy lịch này không?');">
+                                                <button type="submit" class="btn btn-sm btn-outline-danger w-100">Hủy lịch</button>
+                                            </form>
+                                        </div>
                                     </div>
-                                    <div class="appointment-info">
-                                        <h6 class="fw-bold mb-1">Khám tổng quát</h6>
-                                        <p class="text-muted mb-0">Bác sĩ: @p.Doctor?.Fullname</p>
-                                        <p class="text-muted mb-0">Phòng: @p.Doctor?.PhongKham?.TenPhongKham</p>
-                                    </div>
-                                    <div class="appointment-action">
-                                        <button class="btn btn-sm btn-outline-primary mb-2 w-100">Chi tiết</button>
-                                        <button class="btn btn-sm btn-outline-danger w-100">Hủy lịch</button>
-                                    </div>
-                                </div>
-                                    
                                 }
-                               
                             </div>
                         </div>
 

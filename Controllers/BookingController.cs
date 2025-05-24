@@ -43,6 +43,11 @@ namespace PhapClinicX.Controllers
         [HttpPost]
         public async Task<IActionResult> DatLich(int DoctorId, string PatientName, string PhoneNumber, string SelectedSlot)
         {
+            var userId = HttpContext.Session.GetInt32("UserId");
+            if (userId == null)
+            {
+                return Unauthorized("Bạn cần đăng nhập để đặt lịch.");
+            }
             if (string.IsNullOrEmpty(PatientName) || string.IsNullOrEmpty(PhoneNumber) || string.IsNullOrEmpty(SelectedSlot))
             {
                 return BadRequest("Vui lòng nhập đầy đủ thông tin.");
@@ -58,7 +63,8 @@ namespace PhapClinicX.Controllers
                 DoctorId = DoctorId,
                 Fullname = PatientName,
                 Phone = PhoneNumber,  // Đã đổi từ int -> string
-                DateTime = appointmentTime
+                DateTime = appointmentTime,
+                UserId = userId.Value,
             };
 
             _context.DoctorAppointments.Add(newAppointment);
@@ -67,6 +73,24 @@ namespace PhapClinicX.Controllers
             TempData["SuccessMessage"] = "Đặt lịch thành công! Vui lòng chờ bác sĩ liên hệ.";
             return RedirectToAction("Detail_doctor", new { id = DoctorId });
 
+        }
+        [HttpPost]
+        public async Task<IActionResult> cancelAppointment(int id)
+        {
+            var userId = HttpContext.Session.GetInt32("UserId");
+            var appointment = await _context.DoctorAppointments.FindAsync(id); 
+            if (appointment != null)
+            {
+                _context.DoctorAppointments.Remove(appointment);
+                await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = "Đã huỷ lịch hẹn thành công!";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Lịch hẹn không tồn tại!";
+            }
+
+            return RedirectToAction("Index","Account", new {id = userId});
         }
 
         [Route("/booking/chi-nhanh-kham/{id}.html")]
