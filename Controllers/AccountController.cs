@@ -17,6 +17,11 @@ namespace PhapClinicX.Controllers
                 return NotFound();
             }
             var user = await _context.Users.Where(p=>p.IsActive == true).FirstOrDefaultAsync(m => m.UserId == id);
+            ViewBag.History = await _context.DoctorAppointments
+        .Include(p => p.Doctor)
+            .ThenInclude(p => p.PhongKham)
+        .Where(p => p.Status == true && p.UserId == id)
+        .ToListAsync();
             return View(user);
         }
 

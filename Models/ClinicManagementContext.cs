@@ -290,6 +290,12 @@ public partial class ClinicManagementContext : DbContext
                 .HasForeignKey(d => d.DoctorId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_DoctorAppointments_DoctorProfiles");
+            entity.HasOne(d => d.User)
+    .WithMany(p => p.DoctorAppointments)
+    .HasForeignKey(d => d.UserId)
+    .OnDelete(DeleteBehavior.Cascade) // 💣 Xoá user là xoá luôn lịch hẹn
+    .HasConstraintName("FK_DoctorAppointments_Users");
+
         });
 
         modelBuilder.Entity<DoctorProfile>(entity =>

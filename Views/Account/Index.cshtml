@@ -7,6 +7,7 @@
     var username = Context.Session.GetString("Username");
     var avatar = Context.Session.GetString("ProfileImage") ?? "default-avatar.jpg";
     var email = Context.Session.GetString("Email") ?? "example@gmail.com";
+    List<DoctorAppointment> History = ViewBag.History ?? new List<DoctorAppointment>();
 }
 
 <div class="container py-5">
@@ -28,7 +29,7 @@
                                 <input type="file" id="profile-upload" class="d-none">
                             </div>
                         </div>
-                        <div class="text-white">
+                        <div class="text-dark">
                             <h3 class="fw-bold mb-1">@username</h3>
                             <p class="mb-0 d-flex align-items-center">
                                 <i class="fas fa-envelope me-2"></i>@email
@@ -244,38 +245,28 @@
                                 </h6>
                             </div>
                             <div class="card-body p-0">
+                                @foreach(var  p in History)
+                                {
                                 <div class="appointment-item">
                                     <div class="appointment-date">
-                                        <span class="month">Tháng 4</span>
-                                        <span class="day">12</span>
-                                        <span class="time">09:30</span>
+                                            <span class="month">Tháng @p.DateTime?.Month</span>
+                                            <span class="day">@p.DateTime?.Day</span>
+                                            <span class="time">@p.DateTime?.ToString("HH:mm")</span>
+
                                     </div>
                                     <div class="appointment-info">
                                         <h6 class="fw-bold mb-1">Khám tổng quát</h6>
-                                        <p class="text-muted mb-0">Bác sĩ: Nguyễn Văn A</p>
-                                        <p class="text-muted mb-0">Phòng: A203</p>
+                                        <p class="text-muted mb-0">Bác sĩ: @p.Doctor?.Fullname</p>
+                                        <p class="text-muted mb-0">Phòng: @p.Doctor?.PhongKham?.TenPhongKham</p>
                                     </div>
                                     <div class="appointment-action">
                                         <button class="btn btn-sm btn-outline-primary mb-2 w-100">Chi tiết</button>
                                         <button class="btn btn-sm btn-outline-danger w-100">Hủy lịch</button>
                                     </div>
                                 </div>
-                                <div class="appointment-item">
-                                    <div class="appointment-date">
-                                        <span class="month">Tháng 4</span>
-                                        <span class="day">20</span>
-                                        <span class="time">14:00</span>
-                                    </div>
-                                    <div class="appointment-info">
-                                        <h6 class="fw-bold mb-1">Tư vấn dinh dưỡng</h6>
-                                        <p class="text-muted mb-0">Bác sĩ: Lê Thị B</p>
-                                        <p class="text-muted mb-0">Phòng: B105</p>
-                                    </div>
-                                    <div class="appointment-action">
-                                        <button class="btn btn-sm btn-outline-primary mb-2 w-100">Chi tiết</button>
-                                        <button class="btn btn-sm btn-outline-danger w-100">Hủy lịch</button>
-                                    </div>
-                                </div>
+                                    
+                                }
+                               
                             </div>
                         </div>
 

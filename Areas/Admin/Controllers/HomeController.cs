@@ -14,8 +14,8 @@ namespace PhapClinicX.Areas.Admin.Controllers
         [Area("Admin")]
         public async Task<IActionResult> Index()
         {
-            var totalSales = await _context.InvoiceDetails.SumAsync(i => i.Quantity * i.Price);
-            var totalCost = await _context.Products.SumAsync(p => p.PriceSale * p.ProductSold); // nếu có cột CostPrice
+            var totalSales = await _context.InvoiceDetails.SumAsync(i=>i.Price);
+            var totalCost = await _context.Products.SumAsync(p => p.PriceSale * p.ProductSold); 
             var productSold = await _context.Products.SumAsync(p => p.ProductSold);
             var topProducts = await _context.Products
                 .OrderByDescending(p => p.ProductSold)
@@ -60,7 +60,7 @@ namespace PhapClinicX.Areas.Admin.Controllers
                 {
                     ProductName = g.FirstOrDefault() == null ? "Chưa có tên sản phẩm" : g.FirstOrDefault().Product.ProductName,
                     QuantitySold = g.Sum(i => i.Quantity),
-                    TotalAmount = g.Sum(i => i.Quantity * i.Price)
+                    TotalAmount = g.Sum(i => i.Price)
                 })
                 .OrderByDescending(g => g.TotalAmount)
                 .ToListAsync();

@@ -42,4 +42,6 @@ public partial class User
     public virtual Role? Role { get; set; }
 
     public virtual ICollection<ServiceReview> ServiceReviews { get; set; } = new List<ServiceReview>();
+
+    public virtual ICollection<DoctorAppointment> DoctorAppointments { get; set; } = new List<DoctorAppointment>();
 }
