@@ -19,9 +19,17 @@ namespace PhapClinicX.Areas.Admin.Controllers
         {
             _context = context;
         }
-        public async Task<IActionResult> DoanhThuTheoPhongKham()
+        public async Task<IActionResult> DoanhThuTheoPhongKham(DateOnly? startDate, DateOnly? endDate)
         {
-            var result = await _context.Revenues
+            var query = _context.Revenues.AsQueryable();
+
+            if (startDate != null)
+                query = query.Where(r => r.RevenueDate >= startDate);
+
+            if (endDate != null)
+                query = query.Where(r => r.RevenueDate <= endDate);
+
+            var result = await query
                 .Where(r => r.PhongKhamId != null && r.TotalRevenue != null && r.Product != null && r.Product.ProductSold != null)
                 .GroupBy(r => new
                 {
@@ -39,6 +47,7 @@ namespace PhapClinicX.Areas.Admin.Controllers
 
             return View(result);
         }
+
 
 
 
