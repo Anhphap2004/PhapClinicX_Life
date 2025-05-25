@@ -1,0 +1,30 @@
+﻿@model IEnumerable<PhapClinicX.Models.ViewModels.DoanhThuPhongKhamViewModel>
+
+<div class="container mt-5">
+    <div class="card shadow rounded-4 border-0">
+        <div class="card-header bg-primary text-white rounded-top-4">
+            <h2 class="mb-0">📊 Doanh Thu Theo Phòng Khám</h2>
+        </div>
+        <div class="card-body">
+            <table class="table table-hover table-bordered align-middle text-center">
+                <thead class="table-light">
+                    <tr>
+                        <th>🏥 Phòng khám</th>
+                        <th>💰 Tổng doanh thu</th>
+                        <th>📦 Sản phẩm đã bán</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="fw-semibold">@item.TenPhongKham</td>
+                            <td class="text-success fw-bold">@item.TongDoanhThu?.ToString("N0") VND</td>
+                            <td>@item.TongSanPhamBanDuoc</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

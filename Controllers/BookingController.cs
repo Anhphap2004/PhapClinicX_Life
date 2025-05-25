@@ -62,14 +62,14 @@ namespace PhapClinicX.Controllers
             {
                 DoctorId = DoctorId,
                 Fullname = PatientName,
-                Phone = PhoneNumber,  // Đã đổi từ int -> string
+                Phone = PhoneNumber,
                 DateTime = appointmentTime,
                 UserId = userId.Value,
+                Status = true,
             };
 
             _context.DoctorAppointments.Add(newAppointment);
             await _context.SaveChangesAsync();
-            // Lưu thông báo vào TempData để hiển thị sau khi redirect
             TempData["SuccessMessage"] = "Đặt lịch thành công! Vui lòng chờ bác sĩ liên hệ.";
             return RedirectToAction("Detail_doctor", new { id = DoctorId });
 
@@ -126,12 +126,12 @@ namespace PhapClinicX.Controllers
             {
                 PhongKhamId = PhongKhamId,
                 Fullname = PatientName,
-                Phone = PhoneNumber,  // Đã đổi từ int -> string
-                DateTime = appointmentTime
+                Phone = PhoneNumber,  
+                DateTime = appointmentTime,
+
             };
             _context.ClinicAppointments.Add(newAppointment);
             await _context.SaveChangesAsync();
-            // Lưu thông báo vào TempData để hiển thị sau khi redirect
             TempData["SuccessMessage"] = "Đặt lịch thành công! Vui lòng đến chi nhánh đúng hẹn.";
             return RedirectToAction("Detail_branch", new { id = PhongKhamId });
         }
