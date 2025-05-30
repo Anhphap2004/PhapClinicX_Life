@@ -589,6 +589,8 @@ public partial class ClinicManagementContext : DbContext
             entity.Property(e => e.ProductId).HasColumnName("product_id");
             entity.Property(e => e.TotalRevenue).HasColumnType("decimal(18, 2)");
 
+            entity.Property(e => e.Quantity).HasColumnName("Quantity"); 
+
             entity.HasOne(d => d.PhongKham).WithMany(p => p.Revenues)
                 .HasForeignKey(d => d.PhongKhamId)
                 .HasConstraintName("FK_PhongKhamID");
@@ -597,6 +599,7 @@ public partial class ClinicManagementContext : DbContext
                 .HasForeignKey(d => d.ProductId)
                 .HasConstraintName("FK_ProductID");
         });
+
 
         modelBuilder.Entity<Role>(entity =>
         {

@@ -299,7 +299,7 @@ namespace PhapClinicX.Controllers
                 {
                     ProductId = c.ProductId,
                     Quantity = c.Quantity,
-                    Price = c.Product?.PriceSale
+                    Price = c.Product?.PriceSale ?? 0,
                 }).ToList()
             };
 
@@ -360,7 +360,7 @@ namespace PhapClinicX.Controllers
                     InvoiceId = invoice.InvoiceId,
                     ProductId = item.ProductId,
                     Quantity = item.Quantity,
-                    Price = item.Product?.PriceSale
+                    Price = finalTotal
                 };
                 await _context.InvoiceDetails.AddAsync(detail);
             }

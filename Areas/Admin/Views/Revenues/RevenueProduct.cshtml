@@ -1,0 +1,332 @@
+﻿@model List<PhapClinicX.Models.ViewModels.SanPhamDaBanViewModel>
+@{
+    ViewData["Title"] = "Danh sách sản phẩm đã bán";
+    var tongSoLuong = Model.Sum(x => x.SoLuong);
+    var tongTien = Model.Sum(x => x.TongTien);
+}
+
+<style>
+    .page-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 2rem 0;
+        margin-bottom: 2rem;
+        border-radius: 15px;
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+    }
+
+    .filter-card {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        padding: 2rem;
+        margin-bottom: 2rem;
+        border: none;
+    }
+
+        .filter-card h5 {
+            color: #667eea;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+    .form-control {
+        border-radius: 10px;
+        border: 2px solid #e9ecef;
+        padding: 0.75rem 1rem;
+        transition: all 0.3s ease;
+    }
+
+        .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+
+    .btn-filter {
+        background: linear-gradient(135deg, #28a745, #20c997);
+        border: none;
+        border-radius: 10px;
+        padding: 0.75rem 2rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+    }
+
+        .btn-filter:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+        }
+
+    .stats-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .stat-card {
+        background: white;
+        border-radius: 15px;
+        padding: 1.5rem;
+        text-align: center;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        border-left: 5px solid;
+        transition: transform 0.3s ease;
+    }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-card.quantity {
+            border-left-color: #17a2b8;
+        }
+
+        .stat-card.revenue {
+            border-left-color: #28a745;
+        }
+
+    .stat-number {
+        font-size: 2rem;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+        color: #6c757d;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .table-container {
+        background: white;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    }
+
+    .table {
+        margin-bottom: 0;
+    }
+
+        .table thead th {
+            background: linear-gradient(135deg, #495057, #6c757d);
+            color: white;
+            border: none;
+            padding: 1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 0.85rem;
+        }
+
+        .table tbody td {
+            padding: 1rem;
+            vertical-align: middle;
+            border-color: #f8f9fa;
+        }
+
+        .table tbody tr:hover {
+            background-color: #f8f9fa;
+            transform: scale(1.01);
+            transition: all 0.3s ease;
+        }
+
+    .product-image {
+        width: 60px;
+        height: 60px;
+        border-radius: 10px;
+        object-fit: cover;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+        transition: transform 0.3s ease;
+    }
+
+        .product-image:hover {
+            transform: scale(1.1);
+        }
+
+    .price-badge {
+        background: linear-gradient(135deg, #ffc107, #ff8c00);
+        color: white;
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-weight: 600;
+        font-size: 0.85rem;
+    }
+
+    .total-badge {
+        background: linear-gradient(135deg, #28a745, #20c997);
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 25px;
+        font-weight: bold;
+        font-size: 1rem;
+    }
+
+    .table tfoot {
+        background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    }
+
+        .table tfoot td {
+            padding: 1.5rem 1rem;
+            font-size: 1.1rem;
+            color: #495057;
+        }
+
+    .no-data {
+        text-align: center;
+        padding: 3rem;
+        color: #6c757d;
+    }
+
+        .no-data i {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.3;
+        }
+
+    @@media (max-width: 768px) {
+        .stats-cards
+
+    {
+        grid-template-columns: 1fr;
+    }
+
+    .table-responsive {
+        font-size: 0.85rem;
+    }
+
+    .product-image {
+        width: 40px;
+        height: 40px;
+    }
+
+    }
+</style>
+
+<div class="container-fluid" style="margin-bottom: 20px">
+    <!-- Header -->
+    <div class="page-header text-center">
+        <h1 style="color: white !important" class="display-4 mb-0">
+            <i class="fas fa-chart-line me-3"></i>
+            Danh sách sản phẩm đã bán
+        </h1>
+        <p class="lead mt-2 mb-0">Quản lý và theo dõi doanh số bán hàng</p>
+    </div>
+
+    <!-- Filter Section -->
+    <div class="filter-card">
+        <h5><i class="fas fa-filter me-2"></i>Bộ lọc thời gian</h5>
+        <form method="get" class="row g-3 align-items-end">
+            <div class="col-md-4">
+                <label for="tuNgay" class="form-label fw-semibold">
+                    <i class="fas fa-calendar-alt me-1"></i>Từ ngày
+                </label>
+                <input type="date" id="tuNgay" name="tuNgay" class="form-control"
+                       value="@Context.Request.Query["tuNgay"]" />
+            </div>
+            <div class="col-md-4">
+                <label for="denNgay" class="form-label fw-semibold">
+                    <i class="fas fa-calendar-alt me-1"></i>Đến ngày
+                </label>
+                <input type="date" id="denNgay" name="denNgay" class="form-control"
+                       value="@Context.Request.Query["denNgay"]" />
+            </div>
+            <div  class="col-md-4">
+                <button style="color: white" type="submit" class="btn btn-filter w-100">
+                    <i style ="color: white" class="fas fa-search me-2"></i>Lọc dữ liệu
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="stats-cards">
+        <div class="stat-card quantity">
+            <div style="color: darkred" class="stat-number">@tongSoLuong</div>
+            <div class="stat-label">Tổng số lượng đã bán</div>
+        </div>
+        <div class="stat-card revenue">
+            <div class="stat-number text-success">@tongTien.ToString("N0") ₫</div>
+            <div class="stat-label">Tổng doanh thu</div>
+        </div>
+    </div>
+
+    <!-- Table Section -->
+    <div class="table-container">
+        @if (Model.Any())
+        {
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th><i class="fas fa-calendar me-1"></i>Ngày bán</th>
+                            <th><i class="fas fa-box me-1"></i>Sản phẩm</th>
+                            <th><i class="fas fa-image me-1"></i>Hình ảnh</th>
+                            <th><i class="fas fa-clinic-medical me-1"></i>Phòng khám</th>
+                            <th><i class="fas fa-sort-numeric-up me-1"></i>Số lượng</th>
+                            <th><i class="fas fa-tag me-1"></i>Giá gốc</th>
+                            <th><i class="fas fa-money-bill me-1"></i>Giá bán</th>
+                            <th><i class="fas fa-calculator me-1"></i>Tổng tiền</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="fw-semibold">@item.NgayBan.ToString("dd/MM/yyyy")</td>
+                                <td class="fw-semibold text-primary">@item.TenSanPham</td>
+                                <td>
+                                    <img class="product-image" src="~/assets/img/product/@item.Image"
+                                         alt="@item.TenSanPham" title="@item.TenSanPham" />
+                                </td>
+                                <td>
+                                    <span class="badge bg-primary">@item.TenPhongKham</span>
+                                </td>
+                                <td>
+                                    <span class="badge bg-info fs-6">@item.SoLuong</span>
+                                </td>
+                                <td>
+                                    <span class="text-muted">@item.GiaGoc.ToString("N0") ₫</span>
+                                </td>
+                                <td>
+                                    <span class="price-badge">@item.GiaBan.ToString("N0") ₫</span>
+                                </td>
+                                <td>
+                                    <span style="color: white !important" class="total-badge">@item.TongTien.ToString("N0") ₫</span>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="4" class="text-center">
+                                <i class="fas fa-calculator me-2"></i>
+                                <strong>TỔNG CỘNG</strong>
+                            </td>
+                            <td>
+                                <span class="badge bg-info fs-5">@tongSoLuong</span>
+                            </td>
+                            <td colspan="2"></td>
+                            <td>
+                                <span class="badge bg-success fs-5">@tongTien.ToString("N0") ₫</span>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="no-data">
+                <i class="fas fa-inbox"></i>
+                <h4>Không có dữ liệu</h4>
+                <p>Không tìm thấy sản phẩm nào trong khoảng thời gian đã chọn.</p>
+            </div>
+        }
+    </div>
+</div>
+
+<!-- Add Font Awesome if not already included -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">

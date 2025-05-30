@@ -10,17 +10,18 @@ namespace PhapClinicX.Controllers
         {
             _context = context;
         }
-        public async Task<IActionResult> Index(int? id)
+        public async Task<IActionResult> Index()
         {
-            if (id == null || _context.Users == null)
+            var userId = HttpContext.Session.GetInt32("UserId");
+            if (userId == null || _context.Users == null)
             {
                 return NotFound();
             }
-            var user = await _context.Users.Where(p=>p.IsActive == true).FirstOrDefaultAsync(m => m.UserId == id);
+            var user = await _context.Users.Where(p=>p.IsActive == true).FirstOrDefaultAsync(m => m.UserId == userId);
             ViewBag.History = await _context.DoctorAppointments
         .Include(p => p.Doctor)
             .ThenInclude(p => p.PhongKham)
-        .Where(p => p.Status == true && p.UserId == id)
+        .Where(p => p.Status == true && p.UserId == userId)
         .ToListAsync();
             return View(user);
         }
@@ -65,5 +66,8 @@ namespace PhapClinicX.Controllers
 
             return View(invoice);
         }
+
+
+
     }
 }

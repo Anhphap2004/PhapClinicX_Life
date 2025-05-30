@@ -19,6 +19,8 @@ public partial class Revenue
 
     public decimal? TotalRevenue { get; set; }
 
+    public int? Quantity { get; set; }
+
     public virtual PhongKham? PhongKham { get; set; }
 
     public virtual Product? Product { get; set; }
