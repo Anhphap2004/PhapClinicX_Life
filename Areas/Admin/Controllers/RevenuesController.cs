@@ -73,9 +73,9 @@ namespace PhapClinicX.Areas.Admin.Controllers
                     TenPhongKham = x.Invoice.PhongKham!.TenPhongKham ?? "Không xác định",
                     SoLuong = x.Quantity ?? 0,
                     GiaGoc = x.Product.Price,
-                    GiaBan = x.Price ?? 0,
+                    GiaBan = x.Product.PriceSale ?? 0,
                     Image = x.Product.Image,
-                    TongTien = (x.Quantity ?? 0) * (x.Price ?? 0)
+                    TongTien = x.Price ?? 0
                 })
                 .OrderByDescending(x => x.NgayBan)
                 .ToListAsync();
