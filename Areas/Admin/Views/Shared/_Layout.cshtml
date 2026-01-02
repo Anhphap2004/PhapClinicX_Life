@@ -2,6 +2,7 @@
 @using Microsoft.AspNetCore.Http.Extensions;
 <!doctype html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -15,11 +16,15 @@
     <link rel="stylesheet" href="~/admin/assets/vendor/line-awesome/dist/line-awesome/css/line-awesome.min.css">
     <link rel="stylesheet" href="~/admin/assets/vendor/remixicon/fonts/remixicon.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+        integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <!-- Summernote CSS -->
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-lite.min.css" rel="stylesheet">
 </head>
+
 <body class="  ">
     <!-- loader Start -->
     <div id="loading">
@@ -33,7 +38,8 @@
         <div class="iq-sidebar  sidebar-default ">
             <div class="iq-sidebar-logo d-flex align-items-center justify-content-between">
                 <a asp-controller="Home" asp-action="Index" class="header-logo">
-                    <img src="~/admin/assets/images/logo.png" class="img-fluid rounded-normal light-logo" alt="logo"><h5 class="logo-title light-logo ml-3">PhapClinicX</h5>
+                    <img src="~/admin/assets/images/logo.png" class="img-fluid rounded-normal light-logo" alt="logo">
+                    <h5 class="logo-title light-logo ml-3">PhapClinicX</h5>
                 </a>
                 <div class="iq-menu-bt-sidebar ml-0">
                     <i class="las la-bars wrapper-menu"></i>
@@ -42,661 +48,196 @@
             <div class="data-scrollbar" data-scroll="1">
                 <nav class="iq-sidebar-menu">
                     <ul id="iq-sidebar-toggle" class="iq-menu">
+                        <!-- Dashboard -->
                         <li class="active">
                             <a asp-controller="Home" asp-action="Index" class="svg-icon">
-                                <svg class="svg-icon" id="p-dash1" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
-                                    <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
-                                    <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                                <svg class="svg-icon" width="20" height="20" xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
                                 </svg>
-                                <span class="ml-4">Trang Chủ</span>
+                                <span class="ml-4">Dashboard</span>
                             </a>
                         </li>
+
+                        <!-- Quản Lý Sản Phẩm -->
                         <li>
-                            <a href="#product-service" class="collapsed svg-icon" data-toggle="collapse" aria-expanded="false">
-                                <svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M3 9l9-6 9 6v6a9 9 0 0 1-18 0z" />
-                                    <polyline points="9 22 9 12 15 12 15 22" />
+                            <a href="#products" class="collapsed svg-icon" data-toggle="collapse" aria-expanded="false">
+                                <svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <circle cx="9" cy="21" r="1"></circle>
+                                    <circle cx="20" cy="21" r="1"></circle>
+                                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
                                 </svg>
-                                <span class="ml-4">Sản Phẩm & Dịch Vụ</span>
+                                <span class="ml-4">Quản Lý Sản Phẩm</span>
                             </a>
-                            <ul id="product-service" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                                <li>
-                                    <a asp-controller="Products" asp-action="Index" class="svg-icon">
-                                        <svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                                            <polyline points="7 10 12 15 17 10" />
-                                            <line x1="12" y1="15" x2="12" y2="3" />
-                                        </svg>
-                                        <span class="ml-4">Danh Sách Sản Phẩm</span>
-                                    </a>
-                                </li>
-
-                                <li>
-                                    <a asp-controller="Products" asp-action="Create" class="svg-icon">
-                                        <svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <line x1="12" y1="5" x2="12" y2="19" />
-                                            <line x1="5" y1="12" x2="19" y2="12" />
-                                        </svg>
-                                        <span class="ml-4">Thêm Sản Phẩm</span>
-                                    </a>
-                                </li>
-
-                                <li>
-                                    <a asp-controller="ProductCategories" asp-action="Index" class="svg-icon">
-                                        <svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <rect x="3" y="3" width="7" height="7"></rect>
-                                            <rect x="14" y="3" width="7" height="7"></rect>
-                                            <rect x="14" y="14" width="7" height="7"></rect>
-                                            <rect x="3" y="14" width="7" height="7"></rect>
-                                        </svg>
-                                        <span class="ml-4">Danh Mục Sản Phẩm</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a asp-controller="ProductComments" asp-action="Index" class="svg-icon">
-                                        <svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2z" />
-                                        </svg>
-                                        <span class="ml-4">Bình Luận Sản Phẩm</span>
-                                    </a>
-                                </li>
-
-                                <li>
-                                    <a asp-controller="Services" asp-action="Index" class="svg-icon">
-                                        <svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M12 1v22M5 5l14 14M19 5L5 19" />
-                                        </svg>
-                                        <span class="ml-4">Dịch Vụ Y Tế</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a asp-controller="ServicePackages" asp-action="Index" class="svg-icon">
-                                        <svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
-                                            <line x1="3" y1="9" x2="21" y2="9" />
-                                            <line x1="9" y1="21" x2="9" y2="9" />
-                                        </svg>
-                                        <span class="ml-4">Gói Dịch Vụ</span>
-                                    </a>
-                                </li>
-
-                                <li>
-                                    <a asp-controller="ServiceCategories" asp-action="Index" class="svg-icon">
-                                        <svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M3 7h18" />
-                                            <path d="M3 12h18" />
-                                            <path d="M3 17h18" />
-                                        </svg>
-                                        <span class="ml-4">Danh Mục Gói DV</span>
-                                    </a>
-                                </li>
-
-
-                                <li>
-                                    <a asp-controller="Discounts" asp-action="Index" class="svg-icon">
-                                        <svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <circle cx="6.5" cy="6.5" r="1.5" />
-                                            <circle cx="17.5" cy="17.5" r="1.5" />
-                                            <path d="M21 3L3 21" />
-                                        </svg>
-                                        <span class="ml-4">Voucher</span>
-                                    </a>
-                                </li>
+                            <ul id="products" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                                <li><a asp-controller="Products" asp-action="Index"><i class="ri-list-check"></i>
+                                        <span>Danh Sách Sản Phẩm</span></a></li>
+                                <li><a asp-controller="Products" asp-action="Create"><i class="ri-add-circle-line"></i>
+                                        <span>Thêm Sản Phẩm</span></a></li>
+                                <li><a asp-controller="ProductCategories" asp-action="Index"><i
+                                            class="ri-folder-3-line"></i> <span>Danh Mục</span></a></li>
+                                <li><a asp-controller="ProductComments" asp-action="Index"><i
+                                            class="ri-chat-3-line"></i> <span>Bình Luận</span></a></li>
+                                <li><a asp-controller="Discounts" asp-action="Index"><i class="ri-coupon-3-line"></i>
+                                        <span>Mã Giảm Giá</span></a></li>
                             </ul>
                         </li>
+
+                        <!-- Dịch Vụ Y Tế -->
                         <li>
-                            <a href="#revenue-management" class="collapsed svg-icon" data-toggle="collapse" aria-expanded="false">
-                                <svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M3 9l9-6 9 6v6a9 9 0 0 1-18 0z" />
-                                    <polyline points="9 22 9 12 15 12 15 22" />
+                            <a href="#services" class="collapsed svg-icon" data-toggle="collapse" aria-expanded="false">
+                                <svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
                                 </svg>
-                                <span class="ml-4">Doanh Thu & Hóa Đơn</span>
+                                <span class="ml-4">Dịch Vụ Y Tế</span>
                             </a>
-                            <ul id="revenue-management" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                                <li>
-                                    <a asp-controller="Invoices" asp-action="Index" class="svg-icon">
-                                        <svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                                            <polyline points="7 10 12 15 17 10" />
-                                            <line x1="12" y1="15" x2="12" y2="3" />
-                                        </svg>
-                                        <span class="ml-4">Danh Sách Hóa Đơn</span>
-                                    </a>
-                                </li>
+                            <ul id="services" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                                <li><a asp-controller="Services" asp-action="Index"><i class="ri-stethoscope-line"></i>
+                                        <span>Danh Sách Dịch Vụ</span></a></li>
+                                <li><a asp-controller="ServicePackages" asp-action="Index"><i class="ri-inbox-line"></i>
+                                        <span>Gói Dịch Vụ</span></a></li>
+                                <li><a asp-controller="ServiceCategories" asp-action="Index"><i
+                                            class="ri-folder-3-line"></i> <span>Danh Mục</span></a></li>
+                            </ul>
+                        </li>
+                        <!-- Đặt Lịch & Khách Hàng -->
+                        <li>
+                            <a href="#appointments" class="collapsed svg-icon" data-toggle="collapse"
+                                aria-expanded="false">
+                                <svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                                </svg>
+                                <span class="ml-4">Đặt Lịch & Khách Hàng</span>
+                            </a>
+                            <ul id="appointments" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                                <li><a asp-controller="DoctorAppointments" asp-action="Index"><i
+                                            class="ri-calendar-check-line"></i> <span>Lịch Hẹn Bác Sĩ</span></a></li>
+                                <li><a asp-controller="ClinicAppointments" asp-action="Index"><i
+                                            class="ri-hospital-line"></i> <span>Lịch Hẹn Chi Nhánh</span></a></li>
+                                <li><a asp-controller="Contacts" asp-action="Index"><i class="ri-mail-line"></i>
+                                        <span>Liên Hệ Từ KH</span></a></li>
+                            </ul>
+                        </li>
 
-                                <li>
-                                    <a asp-controller="Invoices" asp-action="Create" class="svg-icon">
-                                        <svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <line x1="12" y1="5" x2="12" y2="19" />
-                                            <line x1="5" y1="12" x2="19" y2="12" />
-                                        </svg>
-                                        <span class="ml-4">Thêm Hóa Đơn</span>
-                                    </a>
-                                </li>
-
-                                <li>
-                                    <a asp-controller="Revenues" asp-action="RevenueProduct" class="svg-icon">
-                                        <svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M3 9l9-6 9 6v6a9 9 0 0 1-18 0z" />
-                                            <polyline points="9 22 9 12 15 12 15 22" />
-                                        </svg>
-                                        <span class="ml-4">Doanh Thu Sản Phẩm</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a asp-controller="Revenues" asp-action="DoanhThuTheoPhongKham" class="svg-icon">
-                                        <svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M3 9l9-6 9 6v6a9 9 0 0 1-18 0z" />
-                                            <polyline points="9 22 9 12 15 12 15 22" />
-                                        </svg>
-                                        <span class="ml-4">Doanh Thu Phòng Khám</span>
-                                    </a>
+                        <!-- Hóa Đơn & Doanh Thu -->
+                        <li>
+                            <a href="#finance" class="collapsed svg-icon" data-toggle="collapse" aria-expanded="false">
+                                <svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <line x1="12" y1="1" x2="12" y2="23"></line>
+                                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                                </svg>
+                                <span class="ml-4">Hóa Đơn & Doanh Thu</span>
+                            </a>
+                            <ul id="finance" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                                <li><a asp-controller="Invoices" asp-action="Index"><i class="ri-file-list-3-line"></i>
+                                        <span>Danh Sách Hóa Đơn</span></a></li>
+                                <li><a asp-controller="Invoices" asp-action="Create"><i class="ri-file-add-line"></i>
+                                        <span>Tạo Hóa Đơn</span></a></li>
+                                <li><a asp-controller="Revenues" asp-action="RevenueProduct"><i
+                                            class="ri-line-chart-line"></i> <span>Doanh Thu Sản Phẩm</span></a></li>
+                                <li><a asp-controller="Revenues" asp-action="DoanhThuTheoPhongKham"><i
+                                            class="ri-bar-chart-box-line"></i> <span>Doanh Thu Phòng Khám</span></a>
                                 </li>
                             </ul>
                         </li>
 
-
-
+                        <!-- Nội Dung Website -->
                         <li>
                             <a href="#content" class="collapsed svg-icon" data-toggle="collapse" aria-expanded="false">
-                                <svg class="svg-icon" width="20" height="20" fill="none" stroke="currentColor"
-                                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-                                    <path d="M4 4h16v4H4z" />
-                                    <path d="M4 12h16v8H4z" />
+                                <svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                                    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
                                 </svg>
                                 <span class="ml-4">Nội Dung Website</span>
                             </a>
                             <ul id="content" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                                <li><a asp-controller="Menus" asp-action="Index" class="svg-icon"><span>Menu Điều Hướng</span></a></li>
-                                <li><a asp-controller="BlogCategories" asp-action="Index"><span>Danh Mục Bài Viết</span></a></li>
-                                <li><a asp-controller="Blogs" asp-action="Index"><span>Bài Viết</span></a></li>
-                                <li><a asp-controller="BlogComments" asp-action="Index"><span>Bình Luận Bài Viết</span></a></li>
-                                <li><a asp-controller="Abouts" asp-action="Index"><span>Giới Thiệu</span></a></li>
-                                <li><a asp-controller="Faqs" asp-action="Index"><span>FAQ</span></a></li>
+                                <li><a asp-controller="Blogs" asp-action="Index"><i class="ri-article-line"></i>
+                                        <span>Bài Viết</span></a></li>
+                                <li><a asp-controller="BlogCategories" asp-action="Index"><i
+                                            class="ri-folder-3-line"></i> <span>Danh Mục Blog</span></a></li>
+                                <li><a asp-controller="BlogComments" asp-action="Index"><i class="ri-chat-3-line"></i>
+                                        <span>Bình Luận</span></a></li>
+                                <li><a asp-controller="Menus" asp-action="Index"><i class="ri-menu-line"></i> <span>Menu
+                                            Điều Hướng</span></a></li>
+                                <li><a asp-controller="Abouts" asp-action="Index"><i class="ri-information-line"></i>
+                                        <span>Giới Thiệu</span></a></li>
+                                <li><a asp-controller="Faqs" asp-action="Index"><i class="ri-question-answer-line"></i>
+                                        <span>FAQ</span></a></li>
                             </ul>
                         </li>
 
 
+                        <!-- Quản Lý Người Dùng -->
                         <li>
-                            <a href="#appointment" class="collapsed svg-icon" data-toggle="collapse" aria-expanded="false">
-                                <svg class="svg-icon" width="20" height="20" fill="none" stroke="currentColor"
-                                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
-                                    <line x1="16" y1="2" x2="16" y2="6" />
-                                    <line x1="8" y1="2" x2="8" y2="6" />
-                                    <line x1="3" y1="10" x2="21" y2="10" />
+                            <a href="#users" class="collapsed svg-icon" data-toggle="collapse" aria-expanded="false">
+                                <svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="9" cy="7" r="4"></circle>
+                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
                                 </svg>
-                                <span class="ml-4">Đặt Lịch & Liên Hệ</span>
+                                <span class="ml-4">Quản Lý Người Dùng</span>
                             </a>
-                            <ul id="appointment" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                                <li><a asp-controller="Contacts" asp-action="Index"><span>Liên Hệ</span></a></li>
-                                <li><a asp-controller="DoctorAppointments" asp-action="Index"><span>Đặt Lịch Bác Sĩ</span></a></li>
-                                <li><a asp-controller="ClinicAppointments" asp-action="Index"><span>Đặt Lịch Chi Nhánh</span></a></li>
+                            <ul id="users" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                                <li><a asp-controller="Users" asp-action="Index"><i class="ri-user-3-line"></i>
+                                        <span>Danh Sách Người Dùng</span></a></li>
+                                <li><a asp-controller="Users" asp-action="Create"><i class="ri-user-add-line"></i>
+                                        <span>Thêm Người Dùng</span></a></li>
+                                <li><a asp-controller="Roles" asp-action="Index"><i class="ri-shield-user-line"></i>
+                                        <span>Phân Quyền</span></a></li>
                             </ul>
                         </li>
 
-
+                        <!-- Cấu Hình Hệ Thống -->
                         <li>
                             <a href="#system" class="collapsed svg-icon" data-toggle="collapse" aria-expanded="false">
-                                <svg class="svg-icon" width="20" height="20" fill="none" stroke="currentColor"
-                                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-                                    <circle cx="12" cy="12" r="3" />
-                                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83l-.06.06a2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2h0a2 2 0 0 1-2-2v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0l-.06-.06a2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2h0a2 2 0 0 1 2-2h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83l.06-.06a2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2h0a2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0l.06.06a2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9c0 .7.4 1.34 1.01 1.66.24.12.49.21.76.27H21a2 2 0 0 1 2 2v0a2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
+                                <svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                    <path
+                                        d="M12 1v6m0 6v6m-6-6h6m6 0h-6m-6 6 4.24-4.24m8.48-8.48L16.24 16.24m0-12.48-4.24 4.24M7.76 16.24l4.24-4.24">
+                                    </path>
                                 </svg>
-                                <span class="ml-4">Hệ Thống</span>
+                                <span class="ml-4">Cấu Hình Hệ Thống</span>
                             </a>
                             <ul id="system" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                                <li><a asp-controller="DoctorProfiles" asp-action="Index"><span>Bác Sĩ</span></a></li>
-                                <li><a asp-controller="PhongKhams" asp-action="Index"><span>Chi Nhánh</span></a></li>
-                            </ul>
-                        </li>
-
-
-                        <li>
-                            <a href="#user" class="collapsed svg-icon" data-toggle="collapse" aria-expanded="false">
-                                <svg class="svg-icon" width="20" height="20" fill="none" stroke="currentColor"
-                                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-                                    <path d="M20 21v-2a4 4 0 0 0-3-3.87" />
-                                    <path d="M4 21v-2a4 4 0 0 1 3-3.87" />
-                                    <circle cx="12" cy="7" r="4" />
-                                </svg>
-                                <span class="ml-4">Người Dùng</span>
-                            </a>
-                            <ul id="user" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                                <li><a asp-controller="Contacts" asp-action="Index"><span>Liên Lạc</span></a></li>
-                                <li><a href="../backend/page-add-customers.html"><span>Thêm Khách Hàng</span></a></li>
-                                <li><a asp-controller="Roles" asp-action="Index">Phân Quyền</a> </li>
-                                <li><a asp-controller="Users" asp-action="Index"><span>Danh Sách Người Dùng</span></a></li>
-                                <li><a asp-controller="Users" asp-action="Create"><span>Thêm Người Dùng</span></a></li>
-                                <li><a href="../backend/page-list-suppliers.html"><span>Nhà Cung Cấp</span></a></li>
-                                <li><a href="../backend/page-add-supplier.html"><span>Thêm Nhà Cung Cấp</span></a></li>
-                            </ul>
-                        </li>
-
-
-                        <li class="">
-                            <a href="../backend/page-report.html" class="">
-                                <svg class="svg-icon" id="p-dash7" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                    <polyline points="14 2 14 8 20 8"></polyline>
-                                    <line x1="16" y1="13" x2="8" y2="13"></line>
-                                    <line x1="16" y1="17" x2="8" y2="17"></line>
-                                    <polyline points="10 9 9 9 8 9"></polyline>
-                                </svg>
-                                <span class="ml-4">Reports</span>
-                            </a>
-                            <ul id="reports" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                            </ul>
-                        </li>
-                        <li class=" ">
-                            <a href="#otherpage" class="collapsed" data-toggle="collapse" aria-expanded="false">
-                                <svg class="svg-icon" id="p-dash9" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                                    <rect x="7" y="7" width="3" height="9"></rect>
-                                    <rect x="14" y="7" width="3" height="5"></rect>
-                                </svg>
-                                <span class="ml-4">other page</span>
-                                <svg class="svg-icon iq-arrow-right arrow-active" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <polyline points="10 15 15 20 20 15"></polyline>
-                                    <path d="M4 4h7a4 4 0 0 1 4 4v12"></path>
-                                </svg>
-                            </a>
-                            <ul id="otherpage" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                                <li class=" ">
-                                    <a href="#user" class="collapsed" data-toggle="collapse" aria-expanded="false">
-                                        <svg class="svg-icon" id="p-dash10" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                                            <circle cx="8.5" cy="7" r="4"></circle>
-                                            <polyline points="17 11 19 13 23 9"></polyline>
-                                        </svg>
-                                        <span class="ml-4">User Details</span>
-                                        <svg class="svg-icon iq-arrow-right arrow-active" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <polyline points="10 15 15 20 20 15"></polyline>
-                                            <path d="M4 4h7a4 4 0 0 1 4 4v12"></path>
-                                        </svg>
-                                    </a>
-                                    <ul id="user" class="iq-submenu collapse" data-parent="#otherpage">
-                                        <li class="">
-                                            <a href="../app/user-profile.html">
-                                                <i class="las la-minus"></i><span>User Profile</span>
-                                            </a>
-                                        </li>
-                                        <li class="">
-                                            <a href="../app/user-add.html">
-                                                <i class="las la-minus"></i><span>User Add</span>
-                                            </a>
-                                        </li>
-                                        <li class="">
-                                            <a href="../app/user-list.html">
-                                                <i class="las la-minus"></i><span>User List</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class=" ">
-                                    <a href="#ui" class="collapsed" data-toggle="collapse" aria-expanded="false">
-                                        <svg class="svg-icon" id="p-dash11" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
-                                        </svg>
-                                        <span class="ml-4">UI Elements</span>
-                                        <svg class="svg-icon iq-arrow-right arrow-active" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <polyline points="10 15 15 20 20 15"></polyline>
-                                            <path d="M4 4h7a4 4 0 0 1 4 4v12"></path>
-                                        </svg>
-                                    </a>
-                                    <ul id="ui" class="iq-submenu collapse" data-parent="#otherpage">
-                                        <li class="">
-                                            <a href="../backend/ui-avatars.html">
-                                                <i class="las la-minus"></i><span>Avatars</span>
-                                            </a>
-                                        </li>
-                                        <li class="">
-                                            <a href="../backend/ui-alerts.html">
-                                                <i class="las la-minus"></i><span>Alerts</span>
-                                            </a>
-                                        </li>
-                                        <li class="">
-                                            <a href="../backend/ui-badges.html">
-                                                <i class="las la-minus"></i><span>Badges</span>
-                                            </a>
-                                        </li>
-                                        <li class="">
-                                            <a href="../backend/ui-breadcrumb.html">
-                                                <i class="las la-minus"></i><span>Breadcrumb</span>
-                                            </a>
-                                        </li>
-                                        <li class="">
-                                            <a href="../backend/ui-buttons.html">
-                                                <i class="las la-minus"></i><span>Buttons</span>
-                                            </a>
-                                        </li>
-                                        <li class="">
-                                            <a href="../backend/ui-buttons-group.html">
-                                                <i class="las la-minus"></i><span>Buttons Group</span>
-                                            </a>
-                                        </li>
-                                        <li class="">
-                                            <a href="../backend/ui-boxshadow.html">
-                                                <i class="las la-minus"></i><span>Box Shadow</span>
-                                            </a>
-                                        </li>
-                                        <li class="">
-                                            <a href="../backend/ui-colors.html">
-                                                <i class="las la-minus"></i><span>Colors</span>
-                                            </a>
-                                        </li>
-                                        <li class="">
-                                            <a href="../backend/ui-cards.html">
-                                                <i class="las la-minus"></i><span>Cards</span>
-                                            </a>
-                                        </li>
-                                        <li class="">
-                                            <a href="../backend/ui-carousel.html">
-                                                <i class="las la-minus"></i><span>Carousel</span>
-                                            </a>
-                                        </li>
-                                        <li class="">
-                                            <a href="../backend/ui-grid.html">
-                                                <i class="las la-minus"></i><span>Grid</span>
-                                            </a>
-                                        </li>
-                                        <li class="">
-                                            <a href="../backend/ui-helper-classes.html">
-                                                <i class="las la-minus"></i><span>Helper classes</span>
-                                            </a>
-                                        </li>
-                                        <li class="">
-                                            <a href="../backend/ui-images.html">
-                                                <i class="las la-minus"></i><span>Images</span>
-                                            </a>
-                                        </li>
-                                        <li class="">
-                                            <a href="../backend/ui-list-group.html">
-                                                <i class="las la-minus"></i><span>list Group</span>
-                                            </a>
-                                        </li>
-                                        <li class="">
-                                            <a href="../backend/ui-media-object.html">
-                                                <i class="las la-minus"></i><span>Media</span>
-                                            </a>
-                                        </li>
-                                        <li class="">
-                                            <a href="../backend/ui-modal.html">
-                                                <i class="las la-minus"></i><span>Modal</span>
-                                            </a>
-                                        </li>
-                                        <li class="">
-                                            <a href="../backend/ui-notifications.html">
-                                                <i class="las la-minus"></i><span>Notifications</span>
-                                            </a>
-                                        </li>
-                                        <li class="">
-                                            <a href="../backend/ui-pagination.html">
-                                                <i class="las la-minus"></i><span>Pagination</span>
-                                            </a>
-                                        </li>
-                                        <li class="">
-                                            <a href="../backend/ui-popovers.html">
-                                                <i class="las la-minus"></i><span>Popovers</span>
-                                            </a>
-                                        </li>
-                                        <li class="">
-                                            <a href="../backend/ui-progressbars.html">
-                                                <i class="las la-minus"></i><span>Progressbars</span>
-                                            </a>
-                                        </li>
-                                        <li class="">
-                                            <a href="../backend/ui-typography.html">
-                                                <i class="las la-minus"></i><span>Typography</span>
-                                            </a>
-                                        </li>
-                                        <li class="">
-                                            <a href="../backend/ui-tabs.html">
-                                                <i class="las la-minus"></i><span>Tabs</span>
-                                            </a>
-                                        </li>
-                                        <li class="">
-                                            <a href="../backend/ui-tooltips.html">
-                                                <i class="las la-minus"></i><span>Tooltips</span>
-                                            </a>
-                                        </li>
-                                        <li class="">
-                                            <a href="../backend/ui-embed-video.html">
-                                                <i class="las la-minus"></i><span>Video</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class=" ">
-                                    <a href="#auth" class="collapsed" data-toggle="collapse" aria-expanded="false">
-                                        <svg class="svg-icon" id="p-dash12" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                            <polyline points="14 2 14 8 20 8"></polyline>
-                                            <line x1="16" y1="13" x2="8" y2="13"></line>
-                                            <line x1="16" y1="17" x2="8" y2="17"></line>
-                                            <polyline points="10 9 9 9 8 9"></polyline>
-                                        </svg>
-                                        <span class="ml-4">Authentication</span>
-                                        <svg class="svg-icon iq-arrow-right arrow-active" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <polyline points="10 15 15 20 20 15"></polyline>
-                                            <path d="M4 4h7a4 4 0 0 1 4 4v12"></path>
-                                        </svg>
-                                    </a>
-                                    <ul id="auth" class="iq-submenu collapse" data-parent="#otherpage">
-                                        <li class="">
-                                            <a href="../backend/auth-sign-in.html">
-                                                <i class="las la-minus"></i><span>Login</span>
-                                            </a>
-                                        </li>
-                                        <li class="">
-                                            <a href="../backend/auth-sign-up.html">
-                                                <i class="las la-minus"></i><span>Register</span>
-                                            </a>
-                                        </li>
-                                        <li class="">
-                                            <a href="../backend/auth-recoverpw.html">
-                                                <i class="las la-minus"></i><span>Recover Password</span>
-                                            </a>
-                                        </li>
-                                        <li class="">
-                                            <a href="../backend/auth-confirm-mail.html">
-                                                <i class="las la-minus"></i><span>Confirm Mail</span>
-                                            </a>
-                                        </li>
-                                        <li class="">
-                                            <a href="../backend/auth-lock-screen.html">
-                                                <i class="las la-minus"></i><span>Lock Screen</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="">
-                                    <a href="#form" class="collapsed svg-icon" data-toggle="collapse" aria-expanded="false">
-                                        <svg class="svg-icon" id="p-dash13" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
-                                            <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
-                                        </svg>
-                                        <span class="ml-4">Forms</span>
-                                        <svg class="svg-icon iq-arrow-right arrow-active" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <polyline points="10 15 15 20 20 15"></polyline>
-                                            <path d="M4 4h7a4 4 0 0 1 4 4v12"></path>
-                                        </svg>
-                                    </a>
-                                    <ul id="form" class="iq-submenu collapse" data-parent="#otherpage">
-                                        <li class="">
-                                            <a href="../backend/form-layout.html">
-                                                <i class="las la-minus"></i><span class="">Form Elements</span>
-                                            </a>
-                                        </li>
-                                        <li class="">
-                                            <a href="../backend/form-input-group.html" class="svg-icon">
-                                                <i class="las la-minus"></i><span class="">Form Input</span>
-                                            </a>
-                                        </li>
-                                        <li class="">
-                                            <a href="../backend/form-validation.html" class="svg-icon">
-                                                <i class="las la-minus"></i><span class="">Form Validation</span>
-                                            </a>
-                                        </li>
-                                        <li class="">
-                                            <a href="../backend/form-switch.html" class="svg-icon">
-                                                <i class="las la-minus"></i><span class="">Form Switch</span>
-                                            </a>
-                                        </li>
-                                        <li class="">
-                                            <a href="../backend/form-chechbox.html" class="svg-icon">
-                                                <i class="las la-minus"></i><span class="">Form Checkbox</span>
-                                            </a>
-                                        </li>
-                                        <li class="">
-                                            <a href="../backend/form-radio.html" class="svg-icon">
-                                                <i class="las la-minus"></i><span class="">Form Radio</span>
-                                            </a>
-                                        </li>
-                                        <li class="">
-                                            <a href="../backend/form-textarea.html" class="svg-icon">
-                                                <i class="las la-minus"></i><span class="">Form Textarea</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class=" ">
-                                    <a href="#table" class="collapsed" data-toggle="collapse" aria-expanded="false">
-                                        <svg class="svg-icon" id="p-dash14" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <rect x="3" y="3" width="7" height="7"></rect>
-                                            <rect x="14" y="3" width="7" height="7"></rect>
-                                            <rect x="14" y="14" width="7" height="7"></rect>
-                                            <rect x="3" y="14" width="7" height="7"></rect>
-                                        </svg>
-                                        <span class="ml-4">Table</span>
-                                        <svg class="svg-icon iq-arrow-right arrow-active" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <polyline points="10 15 15 20 20 15"></polyline>
-                                            <path d="M4 4h7a4 4 0 0 1 4 4v12"></path>
-                                        </svg>
-                                    </a>
-                                    <ul id="table" class="iq-submenu collapse" data-parent="#otherpage">
-                                        <li class="">
-                                            <a href="../backend/tables-basic.html">
-                                                <i class="las la-minus"></i><span>Basic Tables</span>
-                                            </a>
-                                        </li>
-                                        <li class="">
-                                            <a href="../backend/table-data.html">
-                                                <i class="las la-minus"></i><span>Data Table</span>
-                                            </a>
-                                        </li>
-                                        <li class="">
-                                            <a href="../backend/table-tree.html">
-                                                <i class="las la-minus"></i><span>Table Tree</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class=" ">
-                                    <a href="#pricing" class="collapsed" data-toggle="collapse" aria-expanded="false">
-                                        <svg class="svg-icon" id="p-dash16" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
-                                            <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
-                                            <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
-                                        </svg>
-                                        <span class="ml-4">Pricing</span>
-                                        <svg class="svg-icon iq-arrow-right arrow-active" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <polyline points="10 15 15 20 20 15"></polyline>
-                                            <path d="M4 4h7a4 4 0 0 1 4 4v12"></path>
-                                        </svg>
-                                    </a>
-                                    <ul id="pricing" class="iq-submenu collapse" data-parent="#otherpage">
-                                        <li class="">
-                                            <a href="../backend/pricing.html">
-                                                <i class="las la-minus"></i><span>Pricing 1</span>
-                                            </a>
-                                        </li>
-                                        <li class="">
-                                            <a href="../backend/pricing-2.html">
-                                                <i class="las la-minus"></i><span>Pricing 2</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="">
-                                    <a href="../backend/pages-invoice.html" class="svg-icon">
-                                        <svg class="svg-icon" id="p-dash07" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                            <polyline points="14 2 14 8 20 8"></polyline>
-                                            <line x1="16" y1="13" x2="8" y2="13"></line>
-                                            <line x1="16" y1="17" x2="8" y2="17"></line>
-                                            <polyline points="10 9 9 9 8 9"></polyline>
-                                        </svg>
-                                        <span class="ml-4">Invoice</span>
-                                    </a>
-                                </li>
-                                <li class=" ">
-                                    <a href="#pages-error" class="collapsed" data-toggle="collapse" aria-expanded="false">
-                                        <svg class="svg-icon" id="p-dash17" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
-                                            <line x1="12" y1="9" x2="12" y2="13"></line>
-                                            <line x1="12" y1="17" x2="12.01" y2="17"></line>
-                                        </svg>
-                                        <span class="ml-4">Error</span>
-                                        <svg class="svg-icon iq-arrow-right arrow-active" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <polyline points="10 15 15 20 20 15"></polyline>
-                                            <path d="M4 4h7a4 4 0 0 1 4 4v12"></path>
-                                        </svg>
-                                    </a>
-                                    <ul id="pages-error" class="iq-submenu collapse" data-parent="#otherpage">
-                                        <li class="">
-                                            <a href="../backend/pages-error.html">
-                                                <i class="las la-minus"></i><span>Error 404</span>
-                                            </a>
-                                        </li>
-                                        <li class="">
-                                            <a href="../backend/pages-error-500.html">
-                                                <i class="las la-minus"></i><span>Error 500</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="">
-                                    <a href="../backend/pages-blank-page.html">
-                                        <svg class="svg-icon" id="p-dash18" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
-                                            <polyline points="13 2 13 9 20 9"></polyline>
-                                        </svg>
-                                        <span class="ml-4">Blank Page</span>
-                                    </a>
-                                </li>
-                                <li class="">
-                                    <a href="../backend/pages-maintenance.html">
-                                        <svg class="svg-icon" id="p-dash19" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>
-                                        </svg>
-                                        <span class="ml-4">Maintenance</span>
-                                    </a>
-                                </li>
+                                <li><a asp-controller="PhongKhams" asp-action="Index"><i class="ri-building-2-line"></i>
+                                        <span>Chi Nhánh</span></a></li>
+                                <li><a asp-controller="DoctorProfiles" asp-action="Index"><i
+                                            class="ri-user-heart-line"></i> <span>Bác Sĩ</span></a></li>
                             </ul>
                         </li>
                     </ul>
+                </nav>
+             
+                </ul>
+                </li>
+                </ul>
                 </nav>
                 <div id="sidebar-bottom" class="position-relative sidebar-bottom">
                     <div class="card border-none">
                         <div class="card-body p-0">
                             <div class="sidebarbottom-content">
-                                <div class="image"><img src="~/assets/img/branch/PhapLife.png" class="img-fluid rounded-1" alt="side-bkg"></div>
+                                <div class="image"><img src="~/assets/img/branch/PhapLife.png"
+                                        class="img-fluid rounded-1" alt="side-bkg"></div>
                                 <h6 class="mt-4 px-4 body-title">Phòng Khám PhapLife</h6>
                                 <button type="button" class="btn sidebar-bottom-btn mt-4">Nhiều Tiện Ích</button>
                             </div>
@@ -705,7 +246,8 @@
                 </div>
                 <div class="p-3"></div>
             </div>
-        </div>      <div class="iq-top-navbar">
+        </div>
+        <div class="iq-top-navbar">
             <div class="iq-navbar-custom">
                 <nav class="navbar navbar-expand-lg navbar-light p-0">
                     <div class="iq-navbar-logo d-flex align-items-center justify-content-between">
@@ -724,41 +266,41 @@
                     </div>
                     <div class="d-flex align-items-center">
                         <button class="navbar-toggler" type="button" data-toggle="collapse"
-                                data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                                aria-label="Toggle navigation">
+                            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                            aria-label="Toggle navigation">
                             <i class="ri-menu-3-line"></i>
                         </button>
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                             <ul class="navbar-nav ml-auto navbar-list align-items-center">
                                 <li class="nav-item nav-icon dropdown">
                                     <a href="#" class="search-toggle dropdown-toggle btn border add-btn"
-                                       id="dropdownMenuButton02" data-toggle="dropdown" aria-haspopup="true"
-                                       aria-expanded="false">
+                                        id="dropdownMenuButton02" data-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false">
                                         <img src="~/admin/assets/images/small/flag-01.png" alt="img-flag"
-                                             class="img-fluid image-flag mr-2">En
+                                            class="img-fluid image-flag mr-2">En
                                     </a>
                                     <div class="iq-sub-dropdown dropdown-menu" aria-labelledby="dropdownMenuButton2">
                                         <div class="card shadow-none m-0">
                                             <div class="card-body p-3">
                                                 <a class="iq-sub-card" href="#">
                                                     <img src="~/admin/assets/images/small/flag-02.png" alt="img-flag"
-                                                         class="img-fluid mr-2">French
+                                                        class="img-fluid mr-2">French
                                                 </a>
                                                 <a class="iq-sub-card" href="#">
                                                     <img src="~/admin/assets/images/small/flag-03.png" alt="img-flag"
-                                                         class="img-fluid mr-2">Spanish
+                                                        class="img-fluid mr-2">Spanish
                                                 </a>
                                                 <a class="iq-sub-card" href="#">
                                                     <img src="~/admin/assets/images/small/flag-04.png" alt="img-flag"
-                                                         class="img-fluid mr-2">Italian
+                                                        class="img-fluid mr-2">Italian
                                                 </a>
                                                 <a class="iq-sub-card" href="#">
                                                     <img src="~/admin/assets/images/small/flag-05.png" alt="img-flag"
-                                                         class="img-fluid mr-2">German
+                                                        class="img-fluid mr-2">German
                                                 </a>
                                                 <a class="iq-sub-card" href="#">
                                                     <img src="~/admin/assets/images/small/flag-06.png" alt="img-flag"
-                                                         class="img-fluid mr-2">Japanese
+                                                        class="img-fluid mr-2">Japanese
                                                 </a>
                                             </div>
                                         </div>
@@ -766,21 +308,22 @@
                                 </li>
                                 <li>
                                     <a href="#" class="btn border add-btn shadow-none mx-2 d-none d-md-block"
-                                       data-toggle="modal" data-target="#new-order">
+                                        data-toggle="modal" data-target="#new-order">
                                         <i class="las la-plus mr-2"></i>New
                                         Order
                                     </a>
                                 </li>
                                 <li class="nav-item nav-icon search-content">
                                     <a href="#" class="search-toggle rounded" id="dropdownSearch" data-toggle="dropdown"
-                                       aria-haspopup="true" aria-expanded="false">
+                                        aria-haspopup="true" aria-expanded="false">
                                         <i class="ri-search-line"></i>
                                     </a>
-                                    <div class="iq-search-bar iq-sub-dropdown dropdown-menu" aria-labelledby="dropdownSearch">
+                                    <div class="iq-search-bar iq-sub-dropdown dropdown-menu"
+                                        aria-labelledby="dropdownSearch">
                                         <form action="#" class="searchbox p-2">
                                             <div class="form-group mb-0 position-relative">
                                                 <input type="text" class="text search-input font-size-12"
-                                                       placeholder="type here to search...">
+                                                    placeholder="type here to search...">
                                                 <a href="#" class="search-link"><i class="las la-search"></i></a>
                                             </div>
                                         </form>
@@ -788,11 +331,12 @@
                                 </li>
                                 <li class="nav-item nav-icon dropdown">
                                     <a href="#" class="search-toggle dropdown-toggle" id="dropdownMenuButton2"
-                                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
-                                             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                             stroke-linejoin="round" class="feather feather-mail">
-                                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z">
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail">
+                                            <path
+                                                d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z">
                                             </path>
                                             <polyline points="22,6 12,13 2,6"></polyline>
                                         </svg>
@@ -809,13 +353,15 @@
                                                 </div>
                                                 <div class="px-3 pt-0 pb-0 sub-card">
                                                     <a href="#" class="iq-sub-card">
-                                                        <div class="media align-items-center cust-card py-3 border-bottom">
+                                                        <div
+                                                            class="media align-items-center cust-card py-3 border-bottom">
                                                             <div class="">
                                                                 <img class="avatar-50 rounded-small"
-                                                                     src="~/admin/assets/images/user/01.jpg" alt="01">
+                                                                    src="~/admin/assets/images/user/01.jpg" alt="01">
                                                             </div>
                                                             <div class="media-body ml-3">
-                                                                <div class="d-flex align-items-center justify-content-between">
+                                                                <div
+                                                                    class="d-flex align-items-center justify-content-between">
                                                                     <h6 class="mb-0">Emma Watson</h6>
                                                                     <small class="text-dark"><b>12 : 47 pm</b></small>
                                                                 </div>
@@ -824,13 +370,15 @@
                                                         </div>
                                                     </a>
                                                     <a href="#" class="iq-sub-card">
-                                                        <div class="media align-items-center cust-card py-3 border-bottom">
+                                                        <div
+                                                            class="media align-items-center cust-card py-3 border-bottom">
                                                             <div class="">
                                                                 <img class="avatar-50 rounded-small"
-                                                                     src="~/admin/assets/images/user/02.jpg" alt="02">
+                                                                    src="~/admin/assets/images/user/02.jpg" alt="02">
                                                             </div>
                                                             <div class="media-body ml-3">
-                                                                <div class="d-flex align-items-center justify-content-between">
+                                                                <div
+                                                                    class="d-flex align-items-center justify-content-between">
                                                                     <h6 class="mb-0">Ashlynn Franci</h6>
                                                                     <small class="text-dark"><b>11 : 30 pm</b></small>
                                                                 </div>
@@ -842,10 +390,11 @@
                                                         <div class="media align-items-center cust-card py-3">
                                                             <div class="">
                                                                 <img class="avatar-50 rounded-small"
-                                                                     src="~/admin/assets/images/user/03.jpg" alt="03">
+                                                                    src="~/admin/assets/images/user/03.jpg" alt="03">
                                                             </div>
                                                             <div class="media-body ml-3">
-                                                                <div class="d-flex align-items-center justify-content-between">
+                                                                <div
+                                                                    class="d-flex align-items-center justify-content-between">
                                                                     <h6 class="mb-0">Kianna Carder</h6>
                                                                     <small class="text-dark"><b>11 : 21 pm</b></small>
                                                                 </div>
@@ -854,8 +403,8 @@
                                                         </div>
                                                     </a>
                                                 </div>
-                                                <a class="right-ic btn btn-primary btn-block position-relative p-2" href="#"
-                                                   role="button">
+                                                <a class="right-ic btn btn-primary btn-block position-relative p-2"
+                                                    href="#" role="button">
                                                     View All
                                                 </a>
                                             </div>
@@ -864,10 +413,10 @@
                                 </li>
                                 <li class="nav-item nav-icon dropdown">
                                     <a href="#" class="search-toggle dropdown-toggle" id="dropdownMenuButton"
-                                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
-                                             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                             stroke-linejoin="round" class="feather feather-bell">
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round" class="feather feather-bell">
                                             <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
                                             <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
                                         </svg>
@@ -884,13 +433,15 @@
                                                 </div>
                                                 <div class="px-3 pt-0 pb-0 sub-card">
                                                     <a href="#" class="iq-sub-card">
-                                                        <div class="media align-items-center cust-card py-3 border-bottom">
+                                                        <div
+                                                            class="media align-items-center cust-card py-3 border-bottom">
                                                             <div class="">
                                                                 <img class="avatar-50 rounded-small"
-                                                                     src="~/admin/assets/images/user/01.jpg" alt="01">
+                                                                    src="~/admin/assets/images/user/01.jpg" alt="01">
                                                             </div>
                                                             <div class="media-body ml-3">
-                                                                <div class="d-flex align-items-center justify-content-between">
+                                                                <div
+                                                                    class="d-flex align-items-center justify-content-between">
                                                                     <h6 class="mb-0">Emma Watson</h6>
                                                                     <small class="text-dark"><b>12 : 47 pm</b></small>
                                                                 </div>
@@ -899,13 +450,15 @@
                                                         </div>
                                                     </a>
                                                     <a href="#" class="iq-sub-card">
-                                                        <div class="media align-items-center cust-card py-3 border-bottom">
+                                                        <div
+                                                            class="media align-items-center cust-card py-3 border-bottom">
                                                             <div class="">
                                                                 <img class="avatar-50 rounded-small"
-                                                                     src="~/admin/assets/images/user/02.jpg" alt="02">
+                                                                    src="~/admin/assets/images/user/02.jpg" alt="02">
                                                             </div>
                                                             <div class="media-body ml-3">
-                                                                <div class="d-flex align-items-center justify-content-between">
+                                                                <div
+                                                                    class="d-flex align-items-center justify-content-between">
                                                                     <h6 class="mb-0">Ashlynn Franci</h6>
                                                                     <small class="text-dark"><b>11 : 30 pm</b></small>
                                                                 </div>
@@ -917,10 +470,11 @@
                                                         <div class="media align-items-center cust-card py-3">
                                                             <div class="">
                                                                 <img class="avatar-50 rounded-small"
-                                                                     src="~/admin/assets/images/user/03.jpg" alt="03">
+                                                                    src="~/admin/assets/images/user/03.jpg" alt="03">
                                                             </div>
                                                             <div class="media-body ml-3">
-                                                                <div class="d-flex align-items-center justify-content-between">
+                                                                <div
+                                                                    class="d-flex align-items-center justify-content-between">
                                                                     <h6 class="mb-0">Kianna Carder</h6>
                                                                     <small class="text-dark"><b>11 : 21 pm</b></small>
                                                                 </div>
@@ -929,8 +483,8 @@
                                                         </div>
                                                     </a>
                                                 </div>
-                                                <a class="right-ic btn btn-primary btn-block position-relative p-2" href="#"
-                                                   role="button">
+                                                <a class="right-ic btn btn-primary btn-block position-relative p-2"
+                                                    href="#" role="button">
                                                     View All
                                                 </a>
                                             </div>
@@ -944,23 +498,24 @@
                                 }
                                 <li class="nav-item nav-icon dropdown caption-content">
                                     <a href="#" class="search-toggle dropdown-toggle" id="dropdownMenuButton4"
-                                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <img src="~/assets/img/team/@avatar" class="img-fluid rounded" alt="user">
                                     </a>
                                     <div class="iq-sub-dropdown dropdown-menu" aria-labelledby="dropdownMenuButton">
                                         <div class="card shadow-none m-0">
                                             <div class="card-body p-0 text-center">
                                                 <div class="media-body profile-detail text-center">
-                                                    <img src="~/admin/assets/images/page-img/profile-bg.jpg" alt="profile-bg"
-                                                         class="rounded-top img-fluid mb-4">
+                                                    <img src="~/admin/assets/images/page-img/profile-bg.jpg"
+                                                        alt="profile-bg" class="rounded-top img-fluid mb-4">
                                                     <img src="~/assets/img/team/@avatar" alt="profile-img"
-                                                         class="rounded profile-img img-fluid avatar-70">
+                                                        class="rounded profile-img img-fluid avatar-70">
                                                 </div>
                                                 <div class="p-3">
                                                     <h5 class="mb-1">@username</h5>
                                                     <p class="mb-0">Since 10 march, 2020</p>
                                                     <div class="d-flex align-items-center justify-content-center mt-3">
-                                                        <a href="../app/user-profile.html" class="btn border mr-2">Profile</a>
+                                                        <a href="../app/user-profile.html"
+                                                            class="btn border mr-2">Profile</a>
                                                         <a href="auth-sign-in.html" class="btn border">Sign Out</a>
                                                     </div>
                                                 </div>
@@ -996,11 +551,11 @@
                     </div>
                 </div>
             </div>
-        </div>      
+        </div>
         <div class="content-page">
             @RenderBody()
         </div>
-    
+
     </div>
     <!-- Wrapper End-->
     <footer class="iq-footer">
@@ -1010,12 +565,16 @@
                     <div class="row">
                         <div class="col-lg-6">
                             <ul class="list-inline mb-0">
-                                <li class="list-inline-item"><a href="../backend/privacy-policy.html">Privacy Policy</a></li>
-                                <li class="list-inline-item"><a href="../backend/terms-of-service.html">Terms of Use</a></li>
+                                <li class="list-inline-item"><a href="../backend/privacy-policy.html">Privacy Policy</a>
+                                </li>
+                                <li class="list-inline-item"><a href="../backend/terms-of-service.html">Terms of Use</a>
+                                </li>
                             </ul>
                         </div>
                         <div class="col-lg-6 text-right">
-                            <span class="mr-1"><script>document.write(new Date().getFullYear())</script>©</span> <a href="#" class="">Phap Life</a>.
+                            <span class="mr-1">
+                                <script>document.write(new Date().getFullYear())</script>©
+                            </span> <a href="#" class="">Phap Life</a>.
                         </div>
                     </div>
                 </div>
@@ -1038,4 +597,5 @@
     <script src="~/admin/assets/js/app.js"></script>
     @RenderSection("Scripts", required: false)
 </body>
+
 </html>

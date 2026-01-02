@@ -60,18 +60,14 @@ public class RegisterController : Controller
         // Mã hóa mật khẩu trước khi lưu vào cơ sở dữ liệu
         var hashedPassword = BCrypt.Net.BCrypt.HashPassword(model.PasswordHash);
 
-        var user = new User
-        {
-            Username = model.Username,
-            Phone = model.Phone,
-            FullName = model.FullName,
-            Email = model.Email,
-            PasswordHash = hashedPassword,
-            RoleId = 3 // Gán quyền mặc định
-        };
+
+
+        model.PasswordHash = hashedPassword;
+        model.RoleId = 3; // Gán quyền mặc định
+      
 
         // Lưu người dùng vào cơ sở dữ liệu
-        _context.Users.Add(user);
+        _context.Users.Add(model);
         await _context.SaveChangesAsync();
 
         TempData["SuccessMessage"] = "🎉 Đăng ký thành công. Vui lòng đăng nhập!";

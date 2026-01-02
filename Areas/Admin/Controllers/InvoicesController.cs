@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using PhapClinicX.Models;
+using PhapClinicX.Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -56,34 +57,12 @@ namespace PhapClinicX.Areas.Admin.Controllers
         // GET: Admin/Invoices/Create
         public IActionResult Create()
         {
-            // Lấy danh sách người dùng từ bảng Users
-            var users = _context.Users
-                .ToList();
+            var invoice = new Invoice
+            {
+                CreatedAt = DateTime.Now
+            };
 
-            // Truyền danh sách người dùng vào ViewData để hiển thị trong dropdown
-            ViewData["UserId"] = new SelectList(users, "UserId", "FullName");
-
-            // Lấy danh sách các gói dịch vụ
-            var packages = _context.ServicePackages
-                .Where(p => p.IsActive)
-                .Select(p => new {
-                    packageId = p.PackageId,
-                    packageName = p.PackageName,
-                    price = p.Price
-                }).ToList();
-
-            // Truyền danh sách gói dịch vụ vào ViewData
-            ViewData["Packages"] = packages;
-            ViewData["PackageId"] = new SelectList(packages, "packageId", "packageName");
-            // Lưu trữ danh sách gói dịch vụ dưới dạng JSON để có thể dùng trong JavaScript
-            ViewData["PackagesJson"] = JsonConvert.SerializeObject(packages);
-
-            // Lấy danh sách các phòng khám
-            ViewData["PhongKhamId"] = new SelectList(_context.PhongKhams, "PhongKhamId", "TenPhongKham");
-
-            // Khởi tạo đối tượng hóa đơn
-            var invoice = new Invoice();
-
+            LoadSelections(null, null, new Dictionary<int, int>(), new Dictionary<int, int>());
             return View(invoice);
         }
 
@@ -93,91 +72,72 @@ namespace PhapClinicX.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(
             [Bind("UserId,TotalAmount,Status,CreatedAt,PhongKhamId,InvoiceType,Method,DiscountAmount,DiscountCode,DiscountId")] Invoice invoice,
-            int? PackageId)
+            int[]? packageIds,
+            int[]? packageQuantities,
+            int[]? productIds,
+            int[]? productQuantities)
         {
+            var selectedPackageQuantities = BuildSelectionDictionary(packageIds, packageQuantities);
+            var selectedProductQuantities = BuildSelectionDictionary(productIds, productQuantities);
+
+            var invoiceDetails = new List<InvoiceDetail>();
+            decimal totalAmount = 0;
+
+            totalAmount += await AppendPackageDetails(packageIds, packageQuantities, invoiceDetails);
+            totalAmount += await AppendProductDetails(productIds, productQuantities, invoiceDetails);
+
+            if (!invoiceDetails.Any())
+            {
+                ModelState.AddModelError(string.Empty, "Vui lòng chọn ít nhất một gói dịch vụ hoặc sản phẩm.");
+            }
+
             if (ModelState.IsValid)
             {
+                invoice.TotalAmount = totalAmount;
+                invoice.CreatedAt ??= DateTime.Now;
                 // Lưu hóa đơn vào database
                 _context.Add(invoice);
                 await _context.SaveChangesAsync();
 
-                // Nếu có chọn gói dịch vụ, tạo luôn chi tiết hóa đơn
-                if (PackageId.HasValue)
+                foreach (var detail in invoiceDetails)
                 {
-                    var package = await _context.ServicePackages.FindAsync(PackageId.Value);
-                    if (package != null)
-                    {
-                        var invoiceDetail = new InvoiceDetail
-                        {
-                            InvoiceId = invoice.InvoiceId,
-                            ProductId = null,             // Đây là dịch vụ, không phải sản phẩm
-                            PackageId = PackageId.Value,
-                            Price = package.Price ?? 0
-                        };
+                    detail.InvoiceId = invoice.InvoiceId;
+                }
 
-                        _context.InvoiceDetails.Add(invoiceDetail);
-                        await _context.SaveChangesAsync();
-                    }
+                if (invoiceDetails.Any())
+                {
+                    _context.InvoiceDetails.AddRange(invoiceDetails);
+                    await _context.SaveChangesAsync();
                 }
 
                 return RedirectToAction(nameof(Index));
             }
 
-            // Nếu ModelState không hợp lệ, load lại dữ liệu dropdowns + JSON
-            var users = _context.Users.ToList();
-            ViewData["UserId"] = new SelectList(users, "UserId", "FullName", invoice.UserId);
-
-            var packages = _context.ServicePackages
-                .Where(p => p.IsActive)
-                .Select(p => new {
-                    packageId = p.PackageId,
-                    packageName = p.PackageName,
-                    price = p.Price
-                }).ToList();
-
-            ViewData["PackageId"] = new SelectList(packages, "packageId", "packageName");
-            ViewData["PackagesJson"] = JsonConvert.SerializeObject(packages);
-            ViewData["Packages"] = packages;
-            ViewData["PhongKhamId"] = new SelectList(_context.PhongKhams, "PhongKhamId", "TenPhongKham", invoice.PhongKhamId);
-
+            LoadSelections(invoice.UserId, invoice.PhongKhamId, selectedPackageQuantities, selectedProductQuantities);
             return View(invoice);
         }
 
 
         // GET: Admin/Invoices/Edit/5
-        // GET: Admin/Invoices/Edit/5
-        // GET: Admin/Invoices/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null) return NotFound();
 
-            var invoice = await _context.Invoices.FindAsync(id);
+            var invoice = await _context.Invoices
+                .Include(i => i.InvoiceDetails)
+                .FirstOrDefaultAsync(i => i.InvoiceId == id);
+
             if (invoice == null) return NotFound();
 
-            var users = _context.Users.ToList();
-            ViewData["UserId"] = new SelectList(users, "UserId", "FullName", invoice.UserId);
+            var selectedPackageQuantities = invoice.InvoiceDetails
+                .Where(d => d.PackageId.HasValue)
+                .ToDictionary(d => d.PackageId!.Value, d => d.Quantity ?? 1);
 
-            var packages = _context.ServicePackages
-                .Where(p => p.IsActive)
-                .Select(p => new {
-                    packageId = p.PackageId,
-                    packageName = p.PackageName,
-                    price = p.Price
-                }).ToList();
+            var selectedProductQuantities = invoice.InvoiceDetails
+                .Where(d => d.ProductId.HasValue)
+                .ToDictionary(d => d.ProductId!.Value, d => d.Quantity ?? 1);
 
-            ViewData["PackageId"] = new SelectList(packages, "packageId", "packageName");
-
-            // Tìm chi tiết có gói dịch vụ (nếu có)
-            var existingPackage = await _context.InvoiceDetails
-                .Where(d => d.InvoiceId == id && d.PackageId != null)
-                .Select(d => d.PackageId)
-                .FirstOrDefaultAsync();
-
-            ViewData["SelectedPackageId"] = existingPackage;
-            ViewData["PackagesJson"] = JsonConvert.SerializeObject(packages);
-            ViewData["Packages"] = packages;
-
-            ViewData["PhongKhamId"] = new SelectList(_context.PhongKhams, "PhongKhamId", "TenPhongKham", invoice.PhongKhamId);
+            LoadSelections(invoice.UserId, invoice.PhongKhamId, selectedPackageQuantities, selectedProductQuantities);
 
             return View(invoice);
         }
@@ -189,63 +149,59 @@ namespace PhapClinicX.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id,
             [Bind("InvoiceId,UserId,TotalAmount,Status,CreatedAt,PhongKhamId,InvoiceType,Method,DiscountAmount,DiscountCode,DiscountId")] Invoice invoice,
-            int? PackageId)
+            int[]? packageIds,
+            int[]? packageQuantities,
+            int[]? productIds,
+            int[]? productQuantities)
         {
             if (id != invoice.InvoiceId) return NotFound();
+
+            var selectedPackageQuantities = BuildSelectionDictionary(packageIds, packageQuantities);
+            var selectedProductQuantities = BuildSelectionDictionary(productIds, productQuantities);
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(invoice);
-                    await _context.SaveChangesAsync();
+                    var existingInvoice = await _context.Invoices
+                        .Include(i => i.InvoiceDetails)
+                        .FirstOrDefaultAsync(i => i.InvoiceId == id);
 
-                    // Xử lý gói dịch vụ trong chi tiết
-                    var existingDetail = await _context.InvoiceDetails
-                        .FirstOrDefaultAsync(d => d.InvoiceId == id && d.PackageId != null);
+                    if (existingInvoice == null) return NotFound();
 
-                    if (existingDetail != null)
+                    existingInvoice.UserId = invoice.UserId;
+                    existingInvoice.Status = invoice.Status;
+                    existingInvoice.PhongKhamId = invoice.PhongKhamId;
+                    existingInvoice.InvoiceType = invoice.InvoiceType;
+                    existingInvoice.Method = invoice.Method;
+                    existingInvoice.DiscountAmount = invoice.DiscountAmount;
+                    existingInvoice.DiscountCode = invoice.DiscountCode;
+                    existingInvoice.DiscountId = invoice.DiscountId;
+
+                    _context.InvoiceDetails.RemoveRange(existingInvoice.InvoiceDetails);
+
+                    var invoiceDetails = new List<InvoiceDetail>();
+                    decimal totalAmount = 0;
+
+                    totalAmount += await AppendPackageDetails(packageIds, packageQuantities, invoiceDetails);
+                    totalAmount += await AppendProductDetails(productIds, productQuantities, invoiceDetails);
+
+                    if (!invoiceDetails.Any())
                     {
-                        // Nếu PackageId khác thì cập nhật
-                        if (PackageId != existingDetail.PackageId)
-                        {
-                            _context.InvoiceDetails.Remove(existingDetail);
-                            await _context.SaveChangesAsync();
-
-                            if (PackageId.HasValue)
-                            {
-                                var package = await _context.ServicePackages.FindAsync(PackageId.Value);
-                                if (package != null)
-                                {
-                                    var newDetail = new InvoiceDetail
-                                    {
-                                        InvoiceId = id,
-                                        PackageId = PackageId.Value,
-                                        ProductId = null,
-                                        Price = package.Price ?? 0
-                                    };
-                                    _context.InvoiceDetails.Add(newDetail);
-                                    await _context.SaveChangesAsync();
-                                }
-                            }
-                        }
+                        ModelState.AddModelError(string.Empty, "Vui lòng chọn ít nhất một gói dịch vụ hoặc sản phẩm.");
                     }
-                    else if (PackageId.HasValue)
+                    else
                     {
-                        // Nếu chưa có detail mà giờ thêm mới
-                        var package = await _context.ServicePackages.FindAsync(PackageId.Value);
-                        if (package != null)
+                        existingInvoice.TotalAmount = totalAmount;
+
+                        foreach (var detail in invoiceDetails)
                         {
-                            var newDetail = new InvoiceDetail
-                            {
-                                InvoiceId = id,
-                                PackageId = PackageId.Value,
-                                ProductId = null,
-                                Price = package.Price ?? 0
-                            };
-                            _context.InvoiceDetails.Add(newDetail);
-                            await _context.SaveChangesAsync();
+                            detail.InvoiceId = existingInvoice.InvoiceId;
                         }
+
+                        _context.InvoiceDetails.AddRange(invoiceDetails);
+                        await _context.SaveChangesAsync();
+                        return RedirectToAction(nameof(Index));
                     }
                 }
                 catch (DbUpdateConcurrencyException)
@@ -255,28 +211,9 @@ namespace PhapClinicX.Areas.Admin.Controllers
                     else
                         throw;
                 }
-
-                return RedirectToAction(nameof(Index));
             }
 
-            // Load lại dữ liệu nếu lỗi
-            var users = _context.Users.ToList();
-            ViewData["UserId"] = new SelectList(users, "UserId", "FullName", invoice.UserId);
-
-            var packages = _context.ServicePackages
-                .Where(p => p.IsActive)
-                .Select(p => new {
-                    packageId = p.PackageId,
-                    packageName = p.PackageName,
-                    price = p.Price
-                }).ToList();
-
-            ViewData["PackageId"] = new SelectList(packages, "packageId", "packageName");
-            ViewData["PackagesJson"] = JsonConvert.SerializeObject(packages);
-            ViewData["Packages"] = packages;
-
-            ViewData["PhongKhamId"] = new SelectList(_context.PhongKhams, "PhongKhamId", "TenPhongKham", invoice.PhongKhamId);
-
+            LoadSelections(invoice.UserId, invoice.PhongKhamId, selectedPackageQuantities, selectedProductQuantities);
             return View(invoice);
         }
         // GET: Admin/Invoices/Delete/5
@@ -317,6 +254,174 @@ namespace PhapClinicX.Areas.Admin.Controllers
         private bool InvoiceExists(int id)
         {
             return _context.Invoices.Any(e => e.InvoiceId == id);
+        }
+
+        private void LoadSelections(object? selectedUserId, object? selectedPhongKhamId,
+            Dictionary<int, int> selectedPackages,
+            Dictionary<int, int> selectedProducts)
+        {
+            var users = _context.Users.ToList();
+            ViewData["UserId"] = new SelectList(users, "UserId", "FullName", selectedUserId);
+
+            var packageGroups = GetPackageGroups();
+            var productGroups = GetProductGroups();
+
+            ViewData["PackageGroups"] = packageGroups;
+            ViewData["ProductGroups"] = productGroups;
+            ViewData["PackageGroupsJson"] = JsonConvert.SerializeObject(packageGroups);
+            ViewData["ProductGroupsJson"] = JsonConvert.SerializeObject(productGroups);
+            ViewData["SelectedPackageQuantities"] = selectedPackages;
+            ViewData["SelectedProductQuantities"] = selectedProducts;
+
+            ViewData["PhongKhamId"] = new SelectList(_context.PhongKhams, "PhongKhamId", "TenPhongKham", selectedPhongKhamId);
+        }
+
+        private List<PackageSelectionGroup> GetPackageGroups()
+        {
+            return _context.ServicePackages
+                .Where(p => p.IsActive)
+                .Select(p => new
+                {
+                    p.PackageId,
+                    p.PackageName,
+                    p.Price,
+                    CategoryId = p.CategoryId ?? 0,
+                    CategoryName = p.Category != null ? p.Category.CategoryName : "Chưa phân loại"
+                })
+                .AsEnumerable()
+                .GroupBy(p => new { p.CategoryId, p.CategoryName })
+                .Select(g => new PackageSelectionGroup
+                {
+                    CategoryId = g.Key.CategoryId,
+                    CategoryName = g.Key.CategoryName ?? "Chưa phân loại",
+                    Packages = g.Select(p => new PackageSelectionItem
+                    {
+                        PackageId = p.PackageId,
+                        PackageName = p.PackageName ?? string.Empty,
+                        Price = p.Price ?? 0
+                    })
+                    .OrderBy(p => p.PackageName)
+                    .ToList()
+                })
+                .OrderBy(g => g.CategoryName)
+                .ToList();
+        }
+
+        private List<ProductSelectionGroup> GetProductGroups()
+        {
+            return _context.Products
+                .Where(p => p.IsActive)
+                .Select(p => new
+                {
+                    p.ProductId,
+                    p.ProductName,
+                    Price = p.PriceSale ?? p.Price,
+                    CategoryId = p.CategoryId ?? 0,
+                    CategoryName = p.Category != null ? p.Category.CategoryName : "Chưa phân loại"
+                })
+                .AsEnumerable()
+                .GroupBy(p => new { p.CategoryId, p.CategoryName })
+                .Select(g => new ProductSelectionGroup
+                {
+                    CategoryId = g.Key.CategoryId,
+                    CategoryName = g.Key.CategoryName ?? "Chưa phân loại",
+                    Products = g.Select(p => new ProductSelectionItem
+                    {
+                        ProductId = p.ProductId,
+                        ProductName = p.ProductName ?? string.Empty,
+                        Price = p.Price
+                    })
+                    .OrderBy(p => p.ProductName)
+                    .ToList()
+                })
+                .OrderBy(g => g.CategoryName)
+                .ToList();
+        }
+
+        private Dictionary<int, int> BuildSelectionDictionary(int[]? ids, int[]? quantities)
+        {
+            var result = new Dictionary<int, int>();
+
+            if (ids == null || ids.Length == 0) return result;
+
+            for (var i = 0; i < ids.Length; i++)
+            {
+                var id = ids[i];
+                var qty = (quantities != null && quantities.Length > i) ? quantities[i] : 1;
+                if (qty <= 0) qty = 1;
+
+                result[id] = qty;
+            }
+
+            return result;
+        }
+
+        private async Task<decimal> AppendPackageDetails(int[]? packageIds, int[]? packageQuantities, List<InvoiceDetail> details)
+        {
+            if (packageIds == null || packageIds.Length == 0) return 0;
+
+            var total = 0m;
+            var packageIdList = packageIds.Distinct().ToList();
+            var packages = await _context.ServicePackages
+                .Where(p => packageIdList.Contains(p.PackageId))
+                .ToListAsync();
+
+            for (var i = 0; i < packageIds.Length; i++)
+            {
+                var packageId = packageIds[i];
+                var quantity = (packageQuantities != null && packageQuantities.Length > i) ? packageQuantities[i] : 1;
+                if (quantity <= 0) quantity = 1;
+
+                var package = packages.FirstOrDefault(p => p.PackageId == packageId);
+                if (package == null) continue;
+
+                var unitPrice = package.Price ?? 0;
+                total += unitPrice * quantity;
+
+                details.Add(new InvoiceDetail
+                {
+                    PackageId = package.PackageId,
+                    ProductId = null,
+                    Quantity = quantity,
+                    Price = unitPrice
+                });
+            }
+
+            return total;
+        }
+
+        private async Task<decimal> AppendProductDetails(int[]? productIds, int[]? productQuantities, List<InvoiceDetail> details)
+        {
+            if (productIds == null || productIds.Length == 0) return 0;
+
+            var total = 0m;
+            var productIdList = productIds.Distinct().ToList();
+            var products = await _context.Products
+                .Where(p => productIdList.Contains(p.ProductId) && p.IsActive)
+                .ToListAsync();
+
+            for (var i = 0; i < productIds.Length; i++)
+            {
+                var productId = productIds[i];
+                var quantity = (productQuantities != null && productQuantities.Length > i) ? productQuantities[i] : 1;
+                if (quantity <= 0) quantity = 1;
+
+                var product = products.FirstOrDefault(p => p.ProductId == productId);
+                if (product == null) continue;
+
+                var unitPrice = product.PriceSale ?? product.Price;
+                total += unitPrice * quantity;
+
+                details.Add(new InvoiceDetail
+                {
+                    ProductId = product.ProductId,
+                    PackageId = null,
+                    Quantity = quantity,
+                    Price = unitPrice
+                });
+            }
+
+            return total;
         }
     }
 }
