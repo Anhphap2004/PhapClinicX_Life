@@ -3,10 +3,6 @@
 @using PhapClinicX.Models.ViewModels
 @{
     ViewData["Title"] = "Chỉnh Sửa Hóa Đơn";
-    var packageGroups = ViewData["PackageGroups"] as List<PackageSelectionGroup> ?? new();
-    var productGroups = ViewData["ProductGroups"] as List<ProductSelectionGroup> ?? new();
-    var selectedPackageQuantities = ViewData["SelectedPackageQuantities"] as Dictionary<int, int> ?? new();
-    var selectedProductQuantities = ViewData["SelectedProductQuantities"] as Dictionary<int, int> ?? new();
 }
 
 <style>
@@ -15,44 +11,82 @@
         border-radius: 8px;
         padding: 30px;
     }
-
+    
     .card {
         border: none;
         border-radius: 12px;
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
     }
-
+    
     .card-header {
         background-color: #fff;
         border-bottom: 1px solid #f0f0f0;
         border-radius: 12px 12px 0 0 !important;
         padding: 20px 25px;
     }
-
+    
+    .card-header h5 {
+        margin-bottom: 0;
+        font-weight: 600;
+        color: #2c3e50;
+    }
+    
     .card-body {
         padding: 25px;
     }
-
+    
     .form-label {
         font-weight: 500;
         color: #495057;
         margin-bottom: 8px;
     }
-
-    .form-control,
-    .form-select {
+    
         border-radius: 8px;
         padding: 10px 15px;
         border: 1px solid #e1e5eb;
         font-size: 0.95rem;
+        transition: all 0.2s ease;
     }
-
+    
+    .form-control:focus, .form-select:focus {
+        border-color: #4e73df;
+        box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.15);
+    }
+    
     .btn {
         border-radius: 8px;
         padding: 10px 20px;
         font-weight: 500;
+        transition: all 0.2s ease;
     }
-
+    
+    .btn-primary {
+        background-color: #4e73df;
+        border-color: #4e73df;
+    }
+    
+    .btn-primary:hover {
+        background-color: #3f5eca;
+        border-color: #3f5eca;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(78, 115, 223, 0.25);
+    }
+    
+    .btn-secondary {
+        background-color: #f8f9fa;
+        border-color: #e1e5eb;
+        color: #6c757d;
+    }
+    
+    .btn-secondary:hover {
+        background-color: #e9ecef;
+        border-color: #dde2e6;
+        color: #495057;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    }
+    
     .page-title {
         color: #2c3e50;
         font-weight: 700;
@@ -60,7 +94,7 @@
         padding-bottom: 15px;
         position: relative;
     }
-
+    
     .page-title:after {
         content: "";
         position: absolute;
@@ -71,39 +105,32 @@
         background-color: #4e73df;
         border-radius: 2px;
     }
-
+    
+    .input-group-text {
+        background-color: #f8f9fa;
+        border-color: #e1e5eb;
+        color: #6c757d;
+    }
+    
     .required-field:after {
         content: "*";
         color: #dc3545;
         margin-left: 4px;
     }
-
-    .item-card {
-        background: #fff;
-        border: 1px solid #eef0f2;
-        border-radius: 10px;
-        transition: all 0.2s ease;
-        height: 100%;
+    
     }
-
-    .item-card:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+    
     }
-
-    .tag {
-        background: #eef1f7;
-        color: #4e73df;
-        border-radius: 20px;
-        padding: 6px 12px;
-        font-size: 0.85rem;
+    
     }
-
-    .price-text {
-        color: #1b5e20;
-        font-weight: 600;
+    
     }
-
+    
+    .status-cancelled {
+        background-color: #e74a3b;
+    }
+    
+    /* Badge cho mã hóa đơn */
     .invoice-id-badge {
         background-color: #eaecf4;
         color: #4e73df;
@@ -121,28 +148,26 @@
     <form asp-action="Edit">
         <div asp-validation-summary="ModelOnly" class="alert alert-danger mb-4" role="alert"></div>
         <input asp-for="CreatedAt" type="hidden" />
-        <input asp-for="InvoiceId" type="hidden" />
 
+        <div class="form-group mb-3">
+            </select>
+                    <span asp-validation-for="UserId" class="text-danger"></span>
+        </div>
+
+        <!-- Thông tin hóa đơn -->
         <div class="card mb-4">
             <div class="card-header d-flex justify-content-between align-items-center">
-                <h5 class="mb-0"><i class="fas fa-user me-2"></i> Thông tin khách hàng</h5>
-                <span class="invoice-id-badge"><i class="fas fa-hashtag me-1"></i> Mã: @Model.InvoiceId</span>
-            </div>
-            <div class="card-body">
-                <div class="form-group mb-3">
-                    <label asp-for="UserId" class="form-label required-field">Người nhận hóa đơn</label>
-                    <select asp-for="UserId" class="form-select" asp-items="@(ViewData["UserId"] as SelectList)"
-                        required>
-                        <option value="">-- Chọn khách hàng --</option>
-                    </select>
-                    <span asp-validation-for="UserId" class="text-danger"></span>
-                </div>
+                <h5><i class="fas fa-file-invoice me-2"></i> Thông tin hóa đơn</h5>
+                <span class="invoice-id-badge">
+                    <i class="fas fa-hashtag me-1"></i> Mã hóa đơn: @Model.InvoiceId
+                </span>
             </div>
         </div>
 
+       
+        <!-- Thông tin cơ bản -->
         <div class="card mb-4">
             <div class="card-header">
-                <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i> Thông tin hóa đơn</h5>
             </div>
             <div class="card-body">
                 <div class="row g-3">
@@ -152,6 +177,19 @@
                             <option value="">-- Chọn phòng khám --</option>
                         </select>
                         <span asp-validation-for="PhongKhamId" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="PackageId" class="form-label required-field">Gói dịch vụ</label>
+                        <select id="PackageId" name="PackageId" class="form-select" asp-items="@(ViewData["PackageId"] as SelectList)">
+                            <option value="">-- Chọn gói dịch vụ --</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="Price" class="form-label">Đơn giá</label>
+                        <div class="input-group">
+                            <input type="text" id="Price" name="PriceDisplay" class="form-control" readonly />
+                            <span class="input-group-text">VNĐ</span>
+                        </div>
                     </div>
                     <div class="col-md-6">
                         <label asp-for="InvoiceType" class="form-label required-field">Loại hóa đơn</label>
@@ -167,10 +205,6 @@
                         <label asp-for="Status" class="form-label required-field">Trạng thái</label>
                         <select asp-for="Status" class="form-select" required>
                             <option value="">-- Chọn trạng thái --</option>
-                            <option value="Chờ xử lý">Chờ xử lý</option>
-                            <option value="Đang giao hàng">Đang giao hàng</option>
-                            <option value="Đã thanh toán">Đã thanh toán</option>
-                            <option value="Đã hủy">Đã hủy</option>
                         </select>
                         <span asp-validation-for="Status" class="text-danger"></span>
                     </div>
@@ -286,9 +320,9 @@
                                                             value="@displayQty" @(hasSelection ? string.Empty : "disabled") />
                                                     </div>
                                                 </label>
-                                            </div>
-                                        </div>
-                                    </div>
+                </div>
+            </div>
+        </div>
                                 }
                             </div>
                         </div>
@@ -297,21 +331,37 @@
             </div>
         </div>
 
+        <!-- Chi tiết thanh toán -->
         <div class="card mb-4">
             <div class="card-header">
-                <h5 class="mb-0"><i class="fas fa-credit-card me-2"></i> Chi tiết thanh toán</h5>
             </div>
             <div class="card-body">
-                <div class="row g-3 align-items-center">
                     <div class="col-md-6">
                         <label asp-for="TotalAmount" class="form-label required-field">Tổng tiền</label>
                         <div class="input-group">
-                            <input asp-for="TotalAmount" class="form-control" id="TotalAmount" placeholder="0"
-                                readonly />
                             <span class="input-group-text">VNĐ</span>
                         </div>
                         <small class="text-muted">Tự động tính theo gói và sản phẩm đã chọn</small>
                         <span asp-validation-for="TotalAmount" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="Method" class="form-label required-field">Phương thức thanh toán</label>
+                        <select asp-for="Method" class="form-select" required>
+                            <option value="">-- Chọn phương thức --</option>
+                            <option value="Tiền Mặt">
+                                <i class="fas fa-money-bill-wave"></i> Tiền mặt
+                            </option>
+                            <option value="Thẻ">
+                                <i class="fas fa-credit-card"></i> Thẻ
+                            </option>
+                            <option value="Chuyển Khoản">
+                                <i class="fas fa-university"></i> Chuyển khoản
+                            </option>
+                            <option value="VNPAY">
+                                <i class="fas fa-wallet"></i> Ví VNPAY
+                            </option>
+                        </select>
+                        <span asp-validation-for="Method" class="text-danger"></span>
                     </div>
                 </div>
             </div>
@@ -333,38 +383,14 @@
     </form>
 </div>
 @section Scripts {
+    <!-- Font Awesome CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 
     <script>
-        const updateTotal = () => {
-            let total = 0;
 
-            document.querySelectorAll('.package-checkbox:checked').forEach(cb => {
-                const price = Number(cb.dataset.price || 0);
-                const qtyInput = document.getElementById(`package-qty-${cb.value}`);
-                const qty = qtyInput ? Math.max(1, Number(qtyInput.value) || 1) : 1;
-                total += price * qty;
-            });
 
-            document.querySelectorAll('.product-checkbox:checked').forEach(cb => {
-                const price = Number(cb.dataset.price || 0);
-                const qtyInput = document.getElementById(`product-qty-${cb.value}`);
-                const qty = qtyInput ? Math.max(1, Number(qtyInput.value) || 1) : 1;
-                total += price * qty;
-            });
 
-            const totalInput = document.getElementById('TotalAmount');
-            if (totalInput) {
-                totalInput.value = total.toFixed(2);
-            }
-        };
 
-        const toggleQuantity = (checkbox, prefix) => {
-            const qtyInput = document.getElementById(`${prefix}-qty-${checkbox.value}`);
-            if (!qtyInput) return;
-            qtyInput.disabled = !checkbox.checked;
-            if (checkbox.checked && (!qtyInput.value || Number(qtyInput.value) < 1)) {
-                qtyInput.value = 1;
             }
         };
 
@@ -374,20 +400,12 @@
                     toggleQuantity(e.target, 'package');
                     updateTotal();
                 });
+        });
+
+        });
+
             });
 
-            document.querySelectorAll('.product-checkbox').forEach(cb => {
-                cb.addEventListener('change', (e) => {
-                    toggleQuantity(e.target, 'product');
-                    updateTotal();
-                });
-            });
-
-            document.querySelectorAll('.package-qty, .product-qty').forEach(input => {
-                input.addEventListener('input', () => updateTotal());
-            });
-
-            updateTotal();
         });
     </script>
 }

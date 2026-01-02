@@ -56,41 +56,9 @@ namespace PhapClinicX.Controllers
             {
                 return NotFound();
             }
-
-            var user = await _context.Users
-                .Where(p => p.IsActive == true)
-                .FirstOrDefaultAsync(m => m.UserId == userId);
-
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            var now = DateTime.Now;
-
-            var baseQuery = _context.DoctorAppointments
-                .Include(p => p.Doctor)
-                .ThenInclude(p => p.PhongKham)
-                .Where(p => p.UserId == userId);
-
-            var upcomingAppointments = await baseQuery
-                .Where(p => p.Status == true && p.DateTime.HasValue && p.DateTime.Value >= now)
-                .OrderBy(p => p.DateTime)
-                .ToListAsync();
-
-            var pastAppointments = await baseQuery
-                .Where(p => p.DateTime.HasValue && (p.DateTime.Value < now || p.Status == false))
-                .OrderByDescending(p => p.DateTime)
-                .ToListAsync();
-
-            var model = new AccountDashboardViewModel
-            {
-                User = user,
-                UpcomingDoctorAppointments = upcomingAppointments,
-                PastDoctorAppointments = pastAppointments
-            };
-
-            return View(model);
+        .Include(p => p.Doctor)
+            .ThenInclude(p => p.PhongKham)
+        .ToListAsync();
         }
 
         //public async Task<IActionResult> Index()
@@ -111,16 +79,15 @@ namespace PhapClinicX.Controllers
 
         public async Task<IActionResult> ViewInvoices()
         {
-            var userId = HttpContext.Session.GetInt32("UserId");
+            var userId = HttpContext.Session.GetInt32("UserId"); 
             if (userId == null)
             {
-                return RedirectToAction("Index", "Login");
+                return RedirectToAction("Index", "Login"); 
             }
 
             var invoices = await _context.Invoices
                 .Include(i => i.InvoiceDetails)
-                    .ThenInclude(d => d.Product).Include(d => d.InvoiceDetails).ThenInclude(d => d.Package)
-                .Where(i => i.UserId == userId)
+                .Where(i => i.UserId == userId) 
                 .OrderByDescending(i => i.CreatedAt)
                 .ToListAsync();
 
@@ -137,7 +104,6 @@ namespace PhapClinicX.Controllers
             }
 
             var invoice = await _context.Invoices
-                .Include(i => i.User).Include(i => i.PhongKham) // ✨ Thêm dòng này nè!
                 .Include(i => i.InvoiceDetails)
                     .ThenInclude(d => d.Product).Include(d => d.InvoiceDetails).ThenInclude(d => d.Package)
                 .FirstOrDefaultAsync(i => i.InvoiceId == id && i.UserId == userId);

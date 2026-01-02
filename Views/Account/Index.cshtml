@@ -1,14 +1,11 @@
-﻿@model PhapClinicX.Models.ViewModels.AccountDashboardViewModel
-@using Microsoft.AspNetCore.Http;
+﻿@using Microsoft.AspNetCore.Http;
+@using Microsoft.AspNetCore.Http.Extensions;
 @{
     ViewData["Title"] = "Thông Tin Người Dùng";
     var userid = Context.Session.GetInt32("UserId");
     var username = Context.Session.GetString("Username");
     var avatar = Context.Session.GetString("ProfileImage") ?? "default-avatar.jpg";
     var email = Context.Session.GetString("Email") ?? "example@gmail.com";
-    var user = Model.User;
-    List<DoctorAppointment> Upcoming = Model.UpcomingDoctorAppointments ?? new List<DoctorAppointment>();
-    List<DoctorAppointment> Past = Model.PastDoctorAppointments ?? new List<DoctorAppointment>();
 }
 
 <div class="container py-5">
@@ -69,61 +66,35 @@
                 <!-- Nội dung tabs -->
                 <div class="tab-content p-4" id="profileTabsContent">
                     <!-- Tab thông tin cá nhân -->
-                    <div class="tab-pane fade show active" id="info" role="tabpanel">
-                        <form id="profileForm" asp-action="UpdateProfile" method="post">
-                            @Html.AntiForgeryToken()
-                            <input type="hidden" asp-for="User.UserId" />
-
-                            <!-- Thông tin cơ bản -->
-                            <div class="card border-0 rounded-4 shadow-sm mb-4">
-                                <div class="card-header bg-light py-3 d-flex justify-content-between align-items-center">
-                                    <h5 class="mb-0 fw-bold text-primary">
-                                        <i class="fas fa-user me-2"></i>Thông tin cơ bản
-                                    </h5>
+                                <!-- Thông tin cơ bản -->
+                                <div class="card border-0 rounded-4 shadow-sm mb-4">
+                                        <h5 class="mb-0 fw-bold text-primary">
+                                        </h5>
                                     <button type="button" class="btn btn-sm btn-primary" onclick="toggleEdit('basicInfo')">
                                         <i class="fas fa-edit"></i> Chỉnh sửa
                                     </button>
-                                </div>
-                                <div class="card-body" id="basicInfo">
-                                    <div class="row mb-3">
-                                        <div class="col-md-4">
-                                            <strong class="text-muted">Họ và tên</strong>
+                                    </div>
                                         </div>
-                                        <div class="col-md-8">
-                                            <span class="view-mode">@user.FullName</span>
-                                            <input type="text" class="form-control edit-mode d-none" asp-for="User.FullName" required />
+                                        </div>
+                                        <div class="profile-info-item">
+                                            <span class="info-label"><i class="fas fa-phone text-primary me-2"></i>Số điện thoại</span>
+                                            <span class="info-value fw-medium">0123-456-789</span>
+                                        </div>
+                                        </div>
                                         </div>
                                     </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-4">
-                                            <strong class="text-muted">Username</strong>
-                                        </div>
-                                        <div class="col-md-8">
-                                            <span class="view-mode">@("@" + user.Username)</span>
-                                            <input type="text" class="form-control edit-mode d-none" asp-for="User.Username" required />
-                                        </div>
                                     </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-4">
-                                            <strong class="text-muted">Email</strong>
-                                        </div>
                                         <div class="col-md-8">
                                             <span class="view-mode">@user.Email</span>
                                             <input type="email" class="form-control edit-mode d-none" asp-for="User.Email" />
-                                        </div>
+                                </div>
+                            </div>
                                     </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-4">
-                                            <strong class="text-muted">Số điện thoại</strong>
                                         </div>
-                                        <div class="col-md-8">
-                                            <span class="view-mode">@user.Phone</span>
-                                            <input type="tel" class="form-control edit-mode d-none" asp-for="User.Phone" />
+                                        <div class="profile-info-item">
+                                            <span class="info-label"><i class="fas fa-city text-primary me-2"></i>Thành phố</span>
+                                            <span class="info-value fw-medium">Hà Nội</span>
                                         </div>
-                                    </div>
-                                    <div class="edit-mode d-none mt-3">
-                                        <button type="button" class="btn btn-success" onclick="saveSection('basicInfo')">
-                                            <i class="fas fa-save"></i> Lưu
                                         </button>
                                         <button type="button" class="btn btn-secondary" onclick="cancelEdit('basicInfo')">
                                             <i class="fas fa-times"></i> Hủy
@@ -132,29 +103,16 @@
                                 </div>
                             </div>
 
-                            <!-- Thông tin liên hệ -->
-                            <div class="card border-0 rounded-4 shadow-sm">
-                                <div class="card-header bg-light py-3 d-flex justify-content-between align-items-center">
-                                    <h5 class="mb-0 fw-bold text-primary">
-                                        <i class="fas fa-map-marker-alt me-2"></i>Thông tin liên hệ
-                                    </h5>
+                                <div class="card border-0 rounded-4 shadow-sm">
+                                        <h5 class="mb-0 fw-bold text-primary">
+                                        </h5>
                                     <button type="button" class="btn btn-sm btn-primary" onclick="toggleEdit('contactInfo')">
                                         <i class="fas fa-edit"></i> Chỉnh sửa
                                     </button>
-                                </div>
-                                <div class="card-body" id="contactInfo">
-                                    <div class="row mb-3">
-                                        <div class="col-md-4">
-                                            <strong class="text-muted">Địa chỉ</strong>
+                                    </div>
                                         </div>
-                                        <div class="col-md-8">
-                                            <span class="view-mode">@user.Address</span>
-                                            <textarea class="form-control edit-mode d-none" asp-for="User.Address" rows="3"></textarea>
                                         </div>
                                     </div>
-                                    <div class="edit-mode d-none mt-3">
-                                        <button type="button" class="btn btn-success" onclick="saveSection('contactInfo')">
-                                            <i class="fas fa-save"></i> Lưu
                                         </button>
                                         <button type="button" class="btn btn-secondary" onclick="cancelEdit('contactInfo')">
                                             <i class="fas fa-times"></i> Hủy
@@ -163,10 +121,10 @@
                                 </div>
                             </div>
                         </form>
+                        </div>
                     </div>
 
                     <!-- Tab hoạt động gần đây -->
-                    <div class="tab-pane fade" id="activity" role="tabpanel">
                         <div class="card border-0 rounded-4 shadow-sm">
                             <div class="card-header bg-light py-3">
                                 <h5 class="mb-0 fw-bold text-primary">
@@ -205,6 +163,16 @@
                                             <small class="text-muted">Hôm qua, 15:45</small>
                                         </div>
                                     </div>
+                                    <div class="timeline-item">
+                                        <div class="timeline-icon bg-warning">
+                                            <i class="fas fa-comment-medical text-white"></i>
+                                        </div>
+                                        <div class="timeline-content">
+                                            <h6 class="fw-bold mb-1">Nhận tư vấn trực tuyến</h6>
+                                            <p class="text-muted mb-0">Phiên tư vấn với Bác sĩ Trần B đã hoàn thành</p>
+                                            <small class="text-muted">3 ngày trước</small>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="card-footer bg-white text-center">
@@ -216,7 +184,6 @@
                     </div>
 
                     <!-- Tab lịch hẹn -->
-                    <div class="tab-pane fade" id="appointments" role="tabpanel">
                         <div class="d-flex justify-content-between align-items-center mb-4">
                             <h5 class="fw-bold text-primary mb-0">Lịch hẹn của bạn</h5>
                             <a asp-controller="Home" asp-action="Index" class="btn btn-primary">
@@ -224,11 +191,11 @@
                             </a>
                         </div>
 
+                        <!-- Lịch sắp tới -->
                         @if (TempData["SuccessMessage"] != null)
                         {
                             <div class="alert alert-success alert-dismissible fade show" role="alert">
                                 @TempData["SuccessMessage"]
-                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                             </div>
                         }
 
@@ -236,7 +203,6 @@
                         {
                             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                                 @TempData["ErrorMessage"]
-                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                             </div>
                         }
 
@@ -247,86 +213,50 @@
                                 </h6>
                             </div>
                             <div class="card-body p-0">
-                                @if (Upcoming.Any())
                                 {
-                                    @foreach (var p in Upcoming)
-                                    {
-                                        <div class="appointment-item d-flex align-items-center justify-content-between border-bottom px-3 py-3">
-                                            <div class="appointment-date text-center me-3">
-                                                <span class="month">Tháng @p.DateTime?.Month</span><br />
-                                                <span class="day fs-3 fw-bold">@p.DateTime?.Day</span><br />
-                                                <span class="time">@p.DateTime?.ToString("HH:mm")</span>
-                                            </div>
-                                            <div class="appointment-info flex-grow-1">
-                                                <h6 class="fw-bold mb-1">Khám tổng quát</h6>
-                                                <p class="text-muted mb-0"><i class="fas fa-user-md me-1"></i>Bác sĩ: @p.Doctor?.Fullname</p>
-                                                <p class="text-muted mb-0"><i class="fas fa-clinic-medical me-1"></i>Phòng: @p.Doctor?.PhongKham?.TenPhongKham</p>
-                                            </div>
-                                            <div class="appointment-action d-flex flex-column" style="min-width: 110px;">
-                                                <span class="badge @(p.Status ? "bg-success" : "bg-warning text-dark") mb-2">@(p.Status ? "Đã xác nhận" : "Chờ xác nhận")</span>
-                                                <form method="post" asp-controller="Booking" asp-action="cancelAppointment" asp-route-id="@p.AppointmentId" onsubmit="return confirm('Bạn có chắc muốn hủy lịch này không?');">
-                                                    <button type="submit" class="btn btn-sm btn-outline-danger w-100">
-                                                        <i class="fas fa-times-circle me-1"></i>Hủy lịch
-                                                    </button>
-                                                </form>
-                                            </div>
+                                        <div class="appointment-date text-center me-3">
+                                            <span class="month">Tháng @p.DateTime?.Month</span><br />
+                                            <span class="day fs-3 fw-bold">@p.DateTime?.Day</span><br />
+                                            <span class="time">@p.DateTime?.ToString("HH:mm")</span>
                                         </div>
-                                    }
+                                        <div class="appointment-info flex-grow-1">
+                                            <h6 class="fw-bold mb-1">Khám tổng quát</h6>
+                                        </div>
+                                        <div class="appointment-action d-flex flex-column" style="min-width: 110px;">
+                                            <form method="post" asp-controller="Booking" asp-action="cancelAppointment" asp-route-id="@p.AppointmentId" onsubmit="return confirm('Bạn có chắc muốn hủy lịch này không?');">
+                                            </form>
+                                        </div>
+                                    </div>
+                                }
                                 }
                                 else
                                 {
                                     <div class="text-center py-5">
                                         <i class="fas fa-calendar-times fa-3x text-muted mb-3"></i>
                                         <p class="text-muted">Chưa có lịch hẹn nào</p>
-                                    </div>
-                                }
                             </div>
+                                }
+                        </div>
                         </div>
 
-                        <div class="card border-0 rounded-4 shadow-sm mb-4">
                             <div class="card-header bg-light py-3">
                                 <h6 class="mb-0 fw-bold text-primary">
-                                    <i class="fas fa-history me-2"></i>Lịch hẹn đã qua / đã hủy
                                 </h6>
                             </div>
                             <div class="card-body p-0">
-                                @if (Past.Any())
-                                {
-                                    @foreach (var p in Past)
-                                    {
-                                        <div class="appointment-item d-flex align-items-center justify-content-between border-bottom px-3 py-3">
-                                            <div class="appointment-date text-center me-3">
-                                                <span class="month">Tháng @p.DateTime?.Month</span><br />
-                                                <span class="day fs-3 fw-bold">@p.DateTime?.Day</span><br />
-                                                <span class="time">@p.DateTime?.ToString("HH:mm")</span>
-                                            </div>
-                                            <div class="appointment-info flex-grow-1">
-                                                <h6 class="fw-bold mb-1">Khám tổng quát</h6>
-                                                <p class="text-muted mb-0"><i class="fas fa-user-md me-1"></i>Bác sĩ: @p.Doctor?.Fullname</p>
-                                                <p class="text-muted mb-0"><i class="fas fa-clinic-medical me-1"></i>Phòng: @p.Doctor?.PhongKham?.TenPhongKham</p>
-                                            </div>
-                                            <div class="appointment-action d-flex flex-column" style="min-width: 140px;">
-                                                <span class="badge @(p.Status ? "bg-secondary" : "bg-danger") mb-2">
-                                                    @(p.Status ? "Đã kết thúc" : "Đã hủy")
-                                                </span>
-                                            </div>
-                                        </div>
-                                    }
-                                }
-                                else
-                                {
-                                    <div class="text-center py-4">
-                                        <p class="text-muted mb-0">Chưa có lịch hẹn cũ</p>
                                     </div>
-                                }
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
                             </div>
                         </div>
                     </div>
 
                     <!-- Tab cài đặt -->
-                    <div class="tab-pane fade" id="settings" role="tabpanel">
                         <div class="row">
                             <div class="col-lg-6">
+                                <!-- Cài đặt bảo mật -->
                                 <div class="card border-0 rounded-4 shadow-sm mb-4">
                                     <div class="card-header bg-light py-3">
                                         <h5 class="mb-0 fw-bold text-primary">
@@ -339,11 +269,8 @@
                                                 <h6 class="fw-bold mb-1">Đổi mật khẩu</h6>
                                                 <small class="text-muted">Cập nhật mật khẩu của bạn</small>
                                             </div>
-                                            <button class="btn btn-sm btn-primary">
                                                 <i class="fas fa-key me-1"></i>Cập nhật
-                                            </button>
                                         </div>
-                                        <div class="setting-item d-flex justify-content-between align-items-center">
                                             <div>
                                                 <h6 class="fw-bold mb-1">Xác thực hai yếu tố</h6>
                                                 <small class="text-muted">Bảo mật tài khoản với xác thực hai lớp</small>
@@ -352,11 +279,21 @@
                                                 <input class="form-check-input" type="checkbox" id="2faSwitch">
                                             </div>
                                         </div>
+                                        <div class="setting-item d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <h6 class="fw-bold mb-1">Thiết bị đã đăng nhập</h6>
+                                                <small class="text-muted">Quản lý các thiết bị đã đăng nhập</small>
+                                            </div>
+                                            <button class="btn btn-sm btn-outline-primary">
+                                                <i class="fas fa-laptop me-1"></i>Xem
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="col-lg-6">
+                                <!-- Cài đặt thông báo -->
                                 <div class="card border-0 rounded-4 shadow-sm mb-4">
                                     <div class="card-header bg-light py-3">
                                         <h5 class="mb-0 fw-bold text-primary">
@@ -370,17 +307,18 @@
                                                 <small class="text-muted">Nhận thông báo về lịch hẹn sắp tới</small>
                                             </div>
                                             <div class="form-check form-switch">
-                                                <input class="form-check-input" type="checkbox" checked>
                                             </div>
                                         </div>
-                                        <div class="setting-item d-flex justify-content-between align-items-center">
                                             <div>
                                                 <h6 class="fw-bold mb-1">Thông báo qua email</h6>
                                                 <small class="text-muted">Nhận thông báo qua email</small>
                                             </div>
                                             <div class="form-check form-switch">
-                                                <input class="form-check-input" type="checkbox" checked>
                                             </div>
+                                            <select class="form-select form-select-sm" style="width: auto;">
+                                                <option selected>(GMT+7) Hà Nội</option>
+                                                <option>(GMT+8) Singapore</option>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -394,6 +332,7 @@
 </div>
 
 <style>
+    /* Thiết lập chung */
     body {
         background-color: #f8f9fa;
     }
@@ -407,6 +346,7 @@
         transition: all 0.3s ease;
     }
 
+    /* Màu chủ đạo */
     .bg-primary {
         background-color: #2575fc !important;
     }
@@ -425,6 +365,19 @@
             border-color: #1a68e5;
         }
 
+    .btn-warning {
+        background-color: #ff9a3c;
+        border-color: #ff9a3c;
+        color: white;
+    }
+
+        .btn-warning:hover {
+            background-color: #ff8920;
+            border-color: #ff8920;
+            color: white;
+        }
+
+    /* Ảnh đại diện và overlay upload */
     .profile-image {
         box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
         transition: all 0.3s ease;
@@ -450,6 +403,7 @@
         box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
     }
 
+    /* Tabs điều hướng */
     .profile-tabs {
         background-color: #f8f9fa;
         padding: 1rem;
@@ -468,20 +422,16 @@
                 color: white;
             }
 
-    .card {
-        border: none;
-        box-shadow: 0 0 20px rgba(0,0,0,0.08);
     }
 
-    .card-header {
-        background-color: #f8f9fa;
-        border-bottom: 2px solid #e9ecef;
+        }
+
     }
 
-    .edit-mode input, .edit-mode textarea {
-        border: 2px solid #2575fc;
+    .info-value {
+        color: #343a40;
     }
-
+    /* Timeline hoạt động */
     .timeline-container {
         position: relative;
         padding: 1rem;
@@ -519,6 +469,22 @@
         padding-left: 0.5rem;
     }
 
+    /* Lịch hẹn */
+    .appointment-item {
+        display: flex;
+        align-items: center;
+        padding: 1.25rem;
+        border-bottom: 1px solid #f1f1f1;
+    }
+
+        .appointment-item:last-child {
+            border-bottom: none;
+        }
+
+        .appointment-item.completed {
+            background-color: #f8f9fa;
+        }
+
     .appointment-date {
         display: flex;
         flex-direction: column;
@@ -554,6 +520,12 @@
         flex: 1;
     }
 
+    .appointment-action {
+        width: 100px;
+        text-align: center;
+    }
+
+    /* Cài đặt */
     .setting-item {
         padding-bottom: 1rem;
         margin-bottom: 1rem;
@@ -566,6 +538,7 @@
             padding-bottom: 0;
         }
 
+    /* Form switch */
     .form-switch .form-check-input {
         width: 3em;
         height: 1.5em;
@@ -632,16 +605,3 @@
                     }
                 });
 
-                cancelEdit(sectionId);
-                alert('Cập nhật thành công!');
-                location.reload();
-            } else {
-                alert('Có lỗi xảy ra: ' + data.message);
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Có lỗi xảy ra khi cập nhật thông tin');
-        });
-    }
-</script>

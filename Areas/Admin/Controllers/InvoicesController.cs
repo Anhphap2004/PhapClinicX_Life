@@ -57,12 +57,7 @@ namespace PhapClinicX.Areas.Admin.Controllers
         // GET: Admin/Invoices/Create
         public IActionResult Create()
         {
-            var invoice = new Invoice
-            {
-                CreatedAt = DateTime.Now
-            };
 
-            LoadSelections(null, null, new Dictionary<int, int>(), new Dictionary<int, int>());
             return View(invoice);
         }
 
@@ -72,10 +67,6 @@ namespace PhapClinicX.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(
             [Bind("UserId,TotalAmount,Status,CreatedAt,PhongKhamId,InvoiceType,Method,DiscountAmount,DiscountCode,DiscountId")] Invoice invoice,
-            int[]? packageIds,
-            int[]? packageQuantities,
-            int[]? productIds,
-            int[]? productQuantities)
         {
             var selectedPackageQuantities = BuildSelectionDictionary(packageIds, packageQuantities);
             var selectedProductQuantities = BuildSelectionDictionary(productIds, productQuantities);
@@ -99,45 +90,42 @@ namespace PhapClinicX.Areas.Admin.Controllers
                 _context.Add(invoice);
                 await _context.SaveChangesAsync();
 
-                foreach (var detail in invoiceDetails)
                 {
-                    detail.InvoiceId = invoice.InvoiceId;
-                }
 
-                if (invoiceDetails.Any())
-                {
-                    _context.InvoiceDetails.AddRange(invoiceDetails);
-                    await _context.SaveChangesAsync();
+                        await _context.SaveChangesAsync();
+                    }
                 }
 
                 return RedirectToAction(nameof(Index));
             }
 
-            LoadSelections(invoice.UserId, invoice.PhongKhamId, selectedPackageQuantities, selectedProductQuantities);
             return View(invoice);
         }
 
 
         // GET: Admin/Invoices/Edit/5
+        // GET: Admin/Invoices/Edit/5
+        // GET: Admin/Invoices/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null) return NotFound();
 
-            var invoice = await _context.Invoices
-                .Include(i => i.InvoiceDetails)
-                .FirstOrDefaultAsync(i => i.InvoiceId == id);
-
             if (invoice == null) return NotFound();
 
-            var selectedPackageQuantities = invoice.InvoiceDetails
-                .Where(d => d.PackageId.HasValue)
-                .ToDictionary(d => d.PackageId!.Value, d => d.Quantity ?? 1);
 
-            var selectedProductQuantities = invoice.InvoiceDetails
-                .Where(d => d.ProductId.HasValue)
-                .ToDictionary(d => d.ProductId!.Value, d => d.Quantity ?? 1);
 
-            LoadSelections(invoice.UserId, invoice.PhongKhamId, selectedPackageQuantities, selectedProductQuantities);
+
+            // Tìm chi tiết có gói dịch vụ (nếu có)
+            var existingPackage = await _context.InvoiceDetails
+                .Where(d => d.InvoiceId == id && d.PackageId != null)
+                .Select(d => d.PackageId)
+                .FirstOrDefaultAsync();
+
+            ViewData["SelectedPackageId"] = existingPackage;
+            ViewData["PackagesJson"] = JsonConvert.SerializeObject(packages);
+            ViewData["Packages"] = packages;
+
+            ViewData["PhongKhamId"] = new SelectList(_context.PhongKhams, "PhongKhamId", "TenPhongKham", invoice.PhongKhamId);
 
             return View(invoice);
         }
@@ -149,10 +137,6 @@ namespace PhapClinicX.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id,
             [Bind("InvoiceId,UserId,TotalAmount,Status,CreatedAt,PhongKhamId,InvoiceType,Method,DiscountAmount,DiscountCode,DiscountId")] Invoice invoice,
-            int[]? packageIds,
-            int[]? packageQuantities,
-            int[]? productIds,
-            int[]? productQuantities)
         {
             if (id != invoice.InvoiceId) return NotFound();
 
@@ -163,45 +147,14 @@ namespace PhapClinicX.Areas.Admin.Controllers
             {
                 try
                 {
-                    var existingInvoice = await _context.Invoices
-                        .Include(i => i.InvoiceDetails)
-                        .FirstOrDefaultAsync(i => i.InvoiceId == id);
 
-                    if (existingInvoice == null) return NotFound();
 
-                    existingInvoice.UserId = invoice.UserId;
-                    existingInvoice.Status = invoice.Status;
-                    existingInvoice.PhongKhamId = invoice.PhongKhamId;
-                    existingInvoice.InvoiceType = invoice.InvoiceType;
-                    existingInvoice.Method = invoice.Method;
-                    existingInvoice.DiscountAmount = invoice.DiscountAmount;
-                    existingInvoice.DiscountCode = invoice.DiscountCode;
-                    existingInvoice.DiscountId = invoice.DiscountId;
 
-                    _context.InvoiceDetails.RemoveRange(existingInvoice.InvoiceDetails);
-
-                    var invoiceDetails = new List<InvoiceDetail>();
-                    decimal totalAmount = 0;
-
-                    totalAmount += await AppendPackageDetails(packageIds, packageQuantities, invoiceDetails);
-                    totalAmount += await AppendProductDetails(productIds, productQuantities, invoiceDetails);
-
-                    if (!invoiceDetails.Any())
+                            {
+                                }
                     {
-                        ModelState.AddModelError(string.Empty, "Vui lòng chọn ít nhất một gói dịch vụ hoặc sản phẩm.");
-                    }
-                    else
-                    {
-                        existingInvoice.TotalAmount = totalAmount;
-
-                        foreach (var detail in invoiceDetails)
                         {
-                            detail.InvoiceId = existingInvoice.InvoiceId;
-                        }
-
-                        _context.InvoiceDetails.AddRange(invoiceDetails);
-                        await _context.SaveChangesAsync();
-                        return RedirectToAction(nameof(Index));
+                            await _context.SaveChangesAsync();
                     }
                 }
                 catch (DbUpdateConcurrencyException)
@@ -211,9 +164,10 @@ namespace PhapClinicX.Areas.Admin.Controllers
                     else
                         throw;
                 }
+
+                return RedirectToAction(nameof(Index));
             }
 
-            LoadSelections(invoice.UserId, invoice.PhongKhamId, selectedPackageQuantities, selectedProductQuantities);
             return View(invoice);
         }
         // GET: Admin/Invoices/Delete/5

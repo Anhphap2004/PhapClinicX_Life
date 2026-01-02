@@ -28,7 +28,6 @@ namespace PhapClinicX.Controllers
         [Route(("/booking/bacsi/{id}.html"))]
         public async Task<IActionResult> Detail_doctor(int? id)
         {
-            if (id == null || _context.DoctorProfiles == null)
             {
                 return NotFound();
             }
@@ -109,7 +108,6 @@ namespace PhapClinicX.Controllers
                 Phone = PhoneNumber,
                 DateTime = appointmentTime,
                 UserId = userId.Value,
-                Status = false,
             };
 
             _context.DoctorAppointments.Add(newAppointment);
@@ -122,19 +120,15 @@ namespace PhapClinicX.Controllers
         public async Task<IActionResult> cancelAppointment(int id)
         {
             var userId = HttpContext.Session.GetInt32("UserId");
-            var appointment = await _context.DoctorAppointments.FirstOrDefaultAsync(p => p.AppointmentId == id && p.UserId == userId);
-            if (appointment == null)
             {
-                TempData["ErrorMessage"] = "Lịch hẹn không tồn tại hoặc không thuộc về bạn.";
-                return RedirectToAction("Index", "Account", new { id = userId });
+                await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = "Đã huỷ lịch hẹn thành công!";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Lịch hẹn không tồn tại!";
             }
 
-            appointment.Status = false;
-            _context.DoctorAppointments.Update(appointment);
-            await _context.SaveChangesAsync();
-            TempData["SuccessMessage"] = "Đã huỷ lịch hẹn thành công!";
-
-            return RedirectToAction("Index", "Account", new { id = userId });
         }
 
         [Route("/booking/chi-nhanh-kham/{id}.html")]
@@ -150,7 +144,7 @@ namespace PhapClinicX.Controllers
             {
                 return NotFound();
             }
-
+           
             ViewBag.PhongKhamId = id;
             return View(branch);
         }
@@ -198,7 +192,7 @@ namespace PhapClinicX.Controllers
             {
                 PhongKhamId = PhongKhamId,
                 Fullname = PatientName,
-                Phone = PhoneNumber,
+                Phone = PhoneNumber,  
                 DateTime = appointmentTime,
                 Status = false,
 

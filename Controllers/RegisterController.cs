@@ -61,13 +61,7 @@ public class RegisterController : Controller
         var hashedPassword = BCrypt.Net.BCrypt.HashPassword(model.PasswordHash);
 
 
-
-        model.PasswordHash = hashedPassword;
-        model.RoleId = 3; // Gán quyền mặc định
-      
-
         // Lưu người dùng vào cơ sở dữ liệu
-        _context.Users.Add(model);
         await _context.SaveChangesAsync();
 
         TempData["SuccessMessage"] = "🎉 Đăng ký thành công. Vui lòng đăng nhập!";
